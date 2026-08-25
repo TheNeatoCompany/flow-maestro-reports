@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Steps — picking-flow</title>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; max-width: 800px; margin: 2rem auto; padding: 0 1rem; color: #222; }
+  h1 { border-bottom: 1px solid #eee; padding-bottom: 0.5rem; }
+  a { color: #0366d6; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  table { border-collapse: collapse; width: 100%; font-size: 0.9rem; }
+  th, td { text-align: left; padding: 0.5rem 0.6rem; border-bottom: 1px solid #f0f0f0; vertical-align: top; }
+  th { border-bottom: 1px solid #ddd; color: #666; font-weight: 600; }
+  td.num { color: #999; text-align: right; width: 2.5rem; }
+  code, td.target { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.85rem; word-break: break-word; }
+  .pass { color: #0a7d3e; font-weight: 600; }
+  .fail { color: #c62828; font-weight: 600; }
+  .skipped { color: #999; font-weight: 600; }
+  tr.fail { background: #fdecec; }
+  tr.skip { color: #999; }
+  .summary { background: #fafafa; border: 1px solid #f0f0f0; padding: 0.6rem 0.75rem; margin: 1rem 0; font-size: 0.9rem; color: #444; }
+  .meta { color: #999; font-size: 0.85rem; margin-top: 0.25rem; }
+</style>
+</head>
+<body>
+<h1>Steps — picking-flow</h1>
+<p><a href="../">← Back to run</a></p>
+<div class="summary">Result: <span class="fail">FAILED</span> &middot; Steps: 17 &middot; Duration: 1m 36s &middot; Started: 2026-08-25 14:09:30</div>
+<table>
+  <thead>
+    <tr><th>#</th><th>Command</th><th>Target</th><th>Status</th><th>Duration</th></tr>
+  </thead>
+  <tbody>
+      <tr class="ok"><td class="num">1</td><td><code>defineVariablesCommand</code></td><td class="target">{&quot;MAESTRO_FILENAME&quot;:&quot;picking-flow&quot;}</td><td>COMPLETED</td><td>2ms</td></tr>
+      <tr class="ok"><td class="num">2</td><td><code>applyConfigurationCommand</code></td><td class="target">{&quot;appId&quot;:&quot;com.flowmobile&quot;,&quot;tags&quot;:[&quot;picking&quot;,&quot;operations&quot;,&quot;smoke&quot;,&quot;e2e&quot;]}</td><td>COMPLETED</td><td>0ms</td></tr>
+      <tr class="ok"><td class="num">3</td><td><code>clearStateCommand</code></td><td class="target">com.flowmobile</td><td>COMPLETED</td><td>4.3s</td></tr>
+      <tr class="ok"><td class="num">4</td><td><code>launchAppCommand</code></td><td class="target">com.flowmobile</td><td>COMPLETED</td><td>3.1s</td></tr>
+      <tr class="fail"><td class="num">5</td><td><code>runFlowCommand</code></td><td class="target">flows/shared-login.yaml</td><td>FAILED</td><td>48.3s</td></tr>
+      <tr class="ok"><td class="num">6</td><td><code>defineVariablesCommand</code></td><td class="target">{&quot;TEST_USERNAME&quot;:&quot;neato-tester-local&quot;,&quot;TEST_PASSWORD&quot;:&quot;Test1234!&quot;,&quot;DEFAULT_WAREHOUSE&quot;:&quot;NEATOLV1&quot;}</td><td>COMPLETED</td><td>0ms</td></tr>
+      <tr class="ok"><td class="num">7</td><td><code>applyConfigurationCommand</code></td><td class="target">{&quot;appId&quot;:&quot;com.flowmobile&quot;}</td><td>COMPLETED</td><td>1ms</td></tr>
+      <tr class="ok"><td class="num">8</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td>COMPLETED</td><td>4.6s</td></tr>
+      <tr class="skip"><td class="num">9</td><td><code>tapOnElement</code></td><td class="target">text: Later</td><td>WARNED</td><td>—</td></tr>
+      <tr class="ok"><td class="num">10</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td>COMPLETED</td><td>946ms</td></tr>
+      <tr class="ok"><td class="num">11</td><td><code>assertConditionCommand</code></td><td class="target">visible id: login-username-input</td><td>COMPLETED</td><td>5.0s</td></tr>
+      <tr class="ok"><td class="num">12</td><td><code>tapOnElement</code></td><td class="target">id: login-username-input</td><td>COMPLETED</td><td>3.3s</td></tr>
+      <tr class="ok"><td class="num">13</td><td><code>inputTextCommand</code></td><td class="target">&quot;neato-tester-local&quot;</td><td>COMPLETED</td><td>3.1s</td></tr>
+      <tr class="ok"><td class="num">14</td><td><code>tapOnElement</code></td><td class="target">id: login-password-input</td><td>COMPLETED</td><td>3.0s</td></tr>
+      <tr class="ok"><td class="num">15</td><td><code>inputTextCommand</code></td><td class="target">&quot;Test1234!&quot;</td><td>COMPLETED</td><td>1.7s</td></tr>
+      <tr class="ok"><td class="num">16</td><td><code>hideKeyboardCommand</code></td><td class="target">—</td><td>COMPLETED</td><td>1.6s</td></tr>
+      <tr class="fail"><td class="num">17</td><td><code>tapOnElement</code></td><td class="target">id: login-submit-button</td><td>FAILED</td><td>17.1s</td></tr>
+  </tbody>
+</table>
+
+</body>
+</html>
