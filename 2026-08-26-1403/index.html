@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Maestro run — 2026-08-26-1403</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --surface: #f9fafb;
+    --border: #e5e7eb;
+    --text: #111827;
+    --muted: #6b7280;
+    --pass: #15803d;
+    --fail: #dc2626;
+    --skip: #6b7280;
+    --link: #2563eb;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0a0a0a;
+      --surface: #141414;
+      --border: #2a2a2a;
+      --text: #f5f5f5;
+      --muted: #a0a0a0;
+      --pass: #4ade80;
+      --fail: #f87171;
+      --skip: #666666;
+      --link: #60a5fa;
+    }
+  }
+
+  /* No wrapper element is emitted, so the page frame lives on html/body:
+     html paints the whole viewport, body is the centred column. */
+  html { background: var(--bg); }
+  body {
+    max-width: 960px; margin: 2rem auto; padding: 0 1.5rem;
+    background: var(--bg); color: var(--text);
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 14px; line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1 { font-weight: 600; font-size: 1.5rem; margin: 0 0 0.5rem; }
+  a { color: var(--link); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.85rem; word-break: break-word; }
+  .meta { color: var(--muted); font-size: 0.75rem; margin-top: 0.25rem; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  table { width: 100%; border-collapse: collapse; }
+  th {
+    text-align: left; padding: 0.75rem 1rem;
+    font-size: 0.75rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.05em;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+  }
+  td { padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+
+  /* Status badges: PASSED / FAILED / everything else. */
+  .pill {
+    display: inline-flex; align-items: center; gap: 0.375rem;
+    padding: 0.125rem 0.625rem; border-radius: 9999px;
+    font-size: 0.6875rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+  .pill::before { content: ""; width: 6px; height: 6px; border-radius: 50%; }
+  .pill.pass { color: var(--pass); background: color-mix(in oklab, var(--pass) 15%, transparent); }
+  .pill.pass::before { background: var(--pass); }
+  .pill.fail { color: var(--fail); background: color-mix(in oklab, var(--fail) 15%, transparent); }
+  .pill.fail::before { background: var(--fail); }
+  .pill.skip { color: var(--skip); background: color-mix(in oklab, var(--skip) 15%, transparent); }
+  .pill.skip::before { background: var(--skip); }
+  td.num { color: var(--muted); text-align: right; width: 2.5rem; }
+  td.target { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.85rem; word-break: break-word; }
+  /* Inline status text (the totals headline count); badges use .pill. */
+  .pass { color: var(--pass); font-weight: 600; }
+  .fail { color: var(--fail); font-weight: 600; }
+  .skipped { color: var(--skip); font-weight: 600; }
+  tr:hover td { background: var(--surface); }
+  tr.skip td { color: var(--muted); }
+  .summary { color: var(--muted); margin: 1rem 0; }
+  /* Run totals: CSS-only pie beside the headline numbers. */
+  .totals { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.5rem; }
+  .pie { width: 120px; height: 120px; border-radius: 50%; flex-shrink: 0; }
+  .totals-text { line-height: 1.7; }
+  .totals-text .count { font-weight: 600; font-size: 1.05rem; }
+  /* Accordion: a flow row plus the details row that follows it. */
+  tr.flow.clickable { cursor: pointer; }
+  td.chev { width: 1.5rem; color: var(--muted); user-select: none; }
+  tr.flow.open td.chev { color: var(--text); }
+  tr.details { display: none; }
+  tr.flow.open + tr.details { display: table-row; }
+  /* The panel keeps its own tint on hover — only flow rows react to the pointer. */
+  tr.details > td, tr.details:hover > td { background: var(--surface); padding: 0.75rem 1rem 1.25rem 2rem; }
+  tr.details .summary { margin: 0 0 0.75rem; }
+  tr.details table { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; }
+  tr.details th, tr.details td { padding: 0.5rem 0.75rem; }
+  tr.details tbody tr:last-child td { border-bottom: none; }
+</style>
+</head>
+<body>
+<h1>Maestro run — 2026-08-26-1403</h1>
+<p><a href="../">← All runs</a></p>
+<div class="card totals">
+  <div class="pie" style="background: var(--pass);"></div>
+  <div class="totals-text">
+    <div class="count"><span class="pass">9</span> of 9 flows passed</div>
+    <div>Total: 17m 50s</div>
+    <div>Started: 2026-08-26 14:04:49</div>
+  </div>
+</div>
+<table>
+  <thead>
+    <tr><th></th><th>Flow</th><th>Result</th><th>Steps</th><th>Duration</th><th>Report</th></tr>
+  </thead>
+  <tbody>
+      <tr class="flow clickable"><td class="chev">&#9656;</td><td>check-status-flow</td><td><span class="pill pass">PASSED</span></td><td>47</td><td>1m 36s</td><td><a href="./check-status-flow.html">Summary</a></td></tr>
+      <tr class="details"><td colspan="6">
+        <div class="summary">Result: <span class="pill pass">PASSED</span> &middot; Steps: 47 &middot; Duration: 1m 36s &middot; Started: 2026-08-26 14:21:02</div>
+        <table>
+          <thead>
+            <tr><th>#</th><th>Command</th><th>Target</th><th>Status</th><th>Duration</th></tr>
+          </thead>
+          <tbody>
+            <tr class="ok"><td class="num">1</td><td><code>defineVariablesCommand</code></td><td class="target">{&quot;MAESTRO_FILENAME&quot;:&quot;check-status-flow&quot;}</td><td><span class="pill pass">COMPLETED</span></td><td>2ms</td></tr>
+            <tr class="ok"><td class="num">2</td><td><code>clearStateCommand</code></td><td class="target">com.flowmobile</td><td><span class="pill pass">COMPLETED</span></td><td>11.3s</td></tr>
+            <tr class="ok"><td class="num">3</td><td><code>applyConfigurationCommand</code></td><td class="target">{&quot;appId&quot;:&quot;com.flowmobile&quot;,&quot;tags&quot;:[&quot;check-status&quot;,&quot;operations&quot;,&quot;smoke&quot;,&quot;e2e&quot;]}</td><td><span class="pill pass">COMPLETED</span></td><td>0ms</td></tr>
+            <tr class="ok"><td class="num">4</td><td><code>launchAppCommand</code></td><td class="target">com.flowmobile</td><td><span class="pill pass">COMPLETED</span></td><td>11.1s</td></tr>
+            <tr class="ok"><td class="num">5</td><td><code>runFlowCommand</code></td><td class="target">flows/shared-login.yaml</td><td><span class="pill pass">COMPLETED</span></td><td>37.1s</td></tr>
+            <tr class="ok"><td class="num">6</td><td><code>defineVariablesCommand</code></td><td class="target">{&quot;TEST_USERNAME&quot;:&quot;neato-tester-local&quot;,&quot;TEST_PASSWORD&quot;:&quot;Test1234!&quot;,&quot;DEFAULT_WAREHOUSE&quot;:&quot;NEATOLV1&quot;}</td><td><span class="pill pass">COMPLETED</span></td><td>1ms</td></tr>
+            <tr class="ok"><td class="num">7</td><td><code>applyConfigurationCommand</code></td><td class="target">{&quot;appId&quot;:&quot;com.flowmobile&quot;}</td><td><span class="pill pass">COMPLETED</span></td><td>1ms</td></tr>
+            <tr class="ok"><td class="num">8</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>2.1s</td></tr>
+            <tr class="skip"><td class="num">9</td><td><code>tapOnElement</code></td><td class="target">text: Later</td><td><span class="pill skip">WARNED</span></td><td>—</td></tr>
+            <tr class="ok"><td class="num">10</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>640ms</td></tr>
+            <tr class="ok"><td class="num">11</td><td><code>assertConditionCommand</code></td><td class="target">visible id: login-username-input</td><td><span class="pill pass">COMPLETED</span></td><td>707ms</td></tr>
+            <tr class="ok"><td class="num">12</td><td><code>tapOnElement</code></td><td class="target">id: login-username-input</td><td><span class="pill pass">COMPLETED</span></td><td>4.8s</td></tr>
+            <tr class="ok"><td class="num">13</td><td><code>inputTextCommand</code></td><td class="target">&quot;neato-tester-local&quot;</td><td><span class="pill pass">COMPLETED</span></td><td>4.2s</td></tr>
+            <tr class="ok"><td class="num">14</td><td><code>tapOnElement</code></td><td class="target">id: login-password-input</td><td><span class="pill pass">COMPLETED</span></td><td>3.5s</td></tr>
+            <tr class="ok"><td class="num">15</td><td><code>inputTextCommand</code></td><td class="target">&quot;Test1234!&quot;</td><td><span class="pill pass">COMPLETED</span></td><td>2.3s</td></tr>
+            <tr class="ok"><td class="num">16</td><td><code>hideKeyboardCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>1.3s</td></tr>
+            <tr class="ok"><td class="num">17</td><td><code>tapOnElement</code></td><td class="target">id: login-submit-button</td><td><span class="pill pass">COMPLETED</span></td><td>3.2s</td></tr>
+            <tr class="ok"><td class="num">18</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>1.1s</td></tr>
+            <tr class="ok"><td class="num">19</td><td><code>assertConditionCommand</code></td><td class="target">visible text: NEATOLV1</td><td><span class="pill pass">COMPLETED</span></td><td>1.1s</td></tr>
+            <tr class="ok"><td class="num">20</td><td><code>tapOnElement</code></td><td class="target">text: NEATOLV1</td><td><span class="pill pass">COMPLETED</span></td><td>2.8s</td></tr>
+            <tr class="ok"><td class="num">21</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>1.6s</td></tr>
+            <tr class="ok"><td class="num">22</td><td><code>assertConditionCommand</code></td><td class="target">visible id: dashboard-operations-button</td><td><span class="pill pass">COMPLETED</span></td><td>208ms</td></tr>
+            <tr class="ok"><td class="num">23</td><td><code>assertConditionCommand</code></td><td class="target">visible id: dashboard-operations-button</td><td><span class="pill pass">COMPLETED</span></td><td>285ms</td></tr>
+            <tr class="ok"><td class="num">24</td><td><code>assertConditionCommand</code></td><td class="target">visible id: dashboard-operations-button</td><td><span class="pill pass">COMPLETED</span></td><td>276ms</td></tr>
+            <tr class="ok"><td class="num">25</td><td><code>tapOnElement</code></td><td class="target">id: dashboard-operations-button — Open Operations</td><td><span class="pill pass">COMPLETED</span></td><td>3.4s</td></tr>
+            <tr class="ok"><td class="num">26</td><td><code>assertConditionCommand</code></td><td class="target">visible id: operations-check-status-button</td><td><span class="pill pass">COMPLETED</span></td><td>277ms</td></tr>
+            <tr class="ok"><td class="num">27</td><td><code>tapOnElement</code></td><td class="target">id: operations-check-status-button — Open Check Status</td><td><span class="pill pass">COMPLETED</span></td><td>3.2s</td></tr>
+            <tr class="ok"><td class="num">28</td><td><code>assertConditionCommand</code></td><td class="target">visible id: check-status-scan-button</td><td><span class="pill pass">COMPLETED</span></td><td>2.3s</td></tr>
+            <tr class="ok"><td class="num">29</td><td><code>defineVariablesCommand</code></td><td class="target">{&quot;triggerId&quot;:&quot;check-status-scan-button&quot;,&quot;value&quot;:&quot;TEST-PICK-SHARED-PALLET&quot;}</td><td><span class="pill pass">COMPLETED</span></td><td>0ms</td></tr>
+            <tr class="ok"><td class="num">30</td><td><code>applyConfigurationCommand</code></td><td class="target">{&quot;appId&quot;:&quot;com.flowmobile&quot;}</td><td><span class="pill pass">COMPLETED</span></td><td>0ms</td></tr>
+            <tr class="ok"><td class="num">31</td><td><code>runFlowCommand</code></td><td class="target">flows/manual-scan.yaml — Scan pallet TEST-PICK-SHARED-PALLET</td><td><span class="pill pass">COMPLETED</span></td><td>26.6s</td></tr>
+            <tr class="ok"><td class="num">32</td><td><code>assertConditionCommand</code></td><td class="target">visible id: ${triggerId}</td><td><span class="pill pass">COMPLETED</span></td><td>508ms</td></tr>
+            <tr class="ok"><td class="num">33</td><td><code>tapOnElement</code></td><td class="target">id: ${triggerId}</td><td><span class="pill pass">COMPLETED</span></td><td>5.2s</td></tr>
+            <tr class="ok"><td class="num">34</td><td><code>assertConditionCommand</code></td><td class="target">visible id: scanner-manual-entry-button</td><td><span class="pill pass">COMPLETED</span></td><td>94ms</td></tr>
+            <tr class="ok"><td class="num">35</td><td><code>tapOnElement</code></td><td class="target">id: scanner-manual-entry-button</td><td><span class="pill pass">COMPLETED</span></td><td>4.4s</td></tr>
+            <tr class="ok"><td class="num">36</td><td><code>assertConditionCommand</code></td><td class="target">visible id: scanner-manual-input</td><td><span class="pill pass">COMPLETED</span></td><td>140ms</td></tr>
+            <tr class="ok"><td class="num">37</td><td><code>tapOnElement</code></td><td class="target">id: scanner-manual-input</td><td><span class="pill pass">COMPLETED</span></td><td>3.5s</td></tr>
+            <tr class="ok"><td class="num">38</td><td><code>inputTextCommand</code></td><td class="target">&quot;${value}&quot;</td><td><span class="pill pass">COMPLETED</span></td><td>5.2s</td></tr>
+            <tr class="ok"><td class="num">39</td><td><code>tapOnElement</code></td><td class="target">id: scanner-manual-submit</td><td><span class="pill pass">COMPLETED</span></td><td>5.4s</td></tr>
+            <tr class="ok"><td class="num">40</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>2.2s</td></tr>
+            <tr class="ok"><td class="num">41</td><td><code>assertConditionCommand</code></td><td class="target">visible id: pallet-details-module</td><td><span class="pill pass">COMPLETED</span></td><td>287ms</td></tr>
+            <tr class="ok"><td class="num">42</td><td><code>assertConditionCommand</code></td><td class="target">visible id: related-work-orders-module</td><td><span class="pill pass">COMPLETED</span></td><td>232ms</td></tr>
+            <tr class="ok"><td class="num">43</td><td><code>assertConditionCommand</code></td><td class="target">visible id: inventory-lots-module</td><td><span class="pill pass">COMPLETED</span></td><td>234ms</td></tr>
+            <tr class="ok"><td class="num">44</td><td><code>scrollUntilVisible</code></td><td class="target">id: scan-another-barcode-button (DOWN)</td><td><span class="pill pass">COMPLETED</span></td><td>2.4s</td></tr>
+            <tr class="ok"><td class="num">45</td><td><code>tapOnElement</code></td><td class="target">id: scan-another-barcode-button — Scan another barcode</td><td><span class="pill pass">COMPLETED</span></td><td>3.3s</td></tr>
+            <tr class="ok"><td class="num">46</td><td><code>assertConditionCommand</code></td><td class="target">visible id: check-status-scan-button</td><td><span class="pill pass">COMPLETED</span></td><td>195ms</td></tr>
+            <tr class="ok"><td class="num">47</td><td><code>assertConditionCommand</code></td><td class="target">notVisible id: pallet-details-module</td><td><span class="pill pass">COMPLETED</span></td><td>685ms</td></tr>
+          </tbody>
+        </table>
+      </td></tr>
+      <tr class="flow clickable"><td class="chev">&#9656;</td><td>downtime-flow</td><td><span class="pill pass">PASSED</span></td><td>31</td><td>1m 5s</td><td><a href="./downtime-flow.html">Summary</a></td></tr>
+      <tr class="details"><td colspan="6">
+        <div class="summary">Result: <span class="pill pass">PASSED</span> &middot; Steps: 31 &middot; Duration: 1m 5s &middot; Started: 2026-08-26 14:22:58</div>
+        <table>
+          <thead>
+            <tr><th>#</th><th>Command</th><th>Target</th><th>Status</th><th>Duration</th></tr>
+          </thead>
+          <tbody>
+            <tr class="ok"><td class="num">1</td><td><code>defineVariablesCommand</code></td><td class="target">{&quot;MAESTRO_FILENAME&quot;:&quot;downtime-flow&quot;}</td><td><span class="pill pass">COMPLETED</span></td><td>1ms</td></tr>
+            <tr class="ok"><td class="num">2</td><td><code>clearStateCommand</code></td><td class="target">com.flowmobile</td><td><span class="pill pass">COMPLETED</span></td><td>11.4s</td></tr>
+            <tr class="ok"><td class="num">3</td><td><code>applyConfigurationCommand</code></td><td class="target">{&quot;appId&quot;:&quot;com.flowmobile&quot;,&quot;tags&quot;:[&quot;downtime&quot;,&quot;operations&quot;,&quot;smoke&quot;,&quot;e2e&quot;]}</td><td><span class="pill pass">COMPLETED</span></td><td>0ms</td></tr>
+            <tr class="ok"><td class="num">4</td><td><code>launchAppCommand</code></td><td class="target">com.flowmobile</td><td><span class="pill pass">COMPLETED</span></td><td>10.3s</td></tr>
+            <tr class="ok"><td class="num">5</td><td><code>runFlowCommand</code></td><td class="target">flows/shared-login.yaml</td><td><span class="pill pass">COMPLETED</span></td><td>37.1s</td></tr>
+            <tr class="ok"><td class="num">6</td><td><code>defineVariablesCommand</code></td><td class="target">{&quot;TEST_USERNAME&quot;:&quot;neato-tester-local&quot;,&quot;TEST_PASSWORD&quot;:&quot;Test1234!&quot;,&quot;DEFAULT_WAREHOUSE&quot;:&quot;NEATOLV1&quot;}</td><td><span class="pill pass">COMPLETED</span></td><td>0ms</td></tr>
+            <tr class="ok"><td class="num">7</td><td><code>applyConfigurationCommand</code></td><td class="target">{&quot;appId&quot;:&quot;com.flowmobile&quot;}</td><td><span class="pill pass">COMPLETED</span></td><td>1ms</td></tr>
+            <tr class="ok"><td class="num">8</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>2.0s</td></tr>
+            <tr class="skip"><td class="num">9</td><td><code>tapOnElement</code></td><td class="target">text: Later</td><td><span class="pill skip">WARNED</span></td><td>—</td></tr>
+            <tr class="ok"><td class="num">10</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>724ms</td></tr>
+            <tr class="ok"><td class="num">11</td><td><code>assertConditionCommand</code></td><td class="target">visible id: login-username-input</td><td><span class="pill pass">COMPLETED</span></td><td>620ms</td></tr>
+            <tr class="ok"><td class="num">12</td><td><code>tapOnElement</code></td><td class="target">id: login-username-input</td><td><span class="pill pass">COMPLETED</span></td><td>5.2s</td></tr>
+            <tr class="ok"><td class="num">13</td><td><code>inputTextCommand</code></td><td class="target">&quot;neato-tester-local&quot;</td><td><span class="pill pass">COMPLETED</span></td><td>3.7s</td></tr>
+            <tr class="ok"><td class="num">14</td><td><code>tapOnElement</code></td><td class="target">id: login-password-input</td><td><span class="pill pass">COMPLETED</span></td><td>3.5s</td></tr>
+            <tr class="ok"><td class="num">15</td><td><code>inputTextCommand</code></td><td class="target">&quot;Test1234!&quot;</td><td><span class="pill pass">COMPLETED</span></td><td>2.3s</td></tr>
+            <tr class="ok"><td class="num">16</td><td><code>hideKeyboardCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>1.3s</td></tr>
+            <tr class="ok"><td class="num">17</td><td><code>tapOnElement</code></td><td class="target">id: login-submit-button</td><td><span class="pill pass">COMPLETED</span></td><td>4.1s</td></tr>
+            <tr class="ok"><td class="num">18</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>1.1s</td></tr>
+            <tr class="ok"><td class="num">19</td><td><code>assertConditionCommand</code></td><td class="target">visible text: NEATOLV1</td><td><span class="pill pass">COMPLETED</span></td><td>917ms</td></tr>
+            <tr class="ok"><td class="num">20</td><td><code>tapOnElement</code></td><td class="target">text: NEATOLV1</td><td><span class="pill pass">COMPLETED</span></td><td>3.1s</td></tr>
+            <tr class="ok"><td class="num">21</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>788ms</td></tr>
+            <tr class="ok"><td class="num">22</td><td><code>assertConditionCommand</code></td><td class="target">visible id: dashboard-operations-button</td><td><span class="pill pass">COMPLETED</span></td><td>280ms</td></tr>
+            <tr class="ok"><td class="num">23</td><td><code>assertConditionCommand</code></td><td class="target">visible id: dashboard-operations-button</td><td><span class="pill pass">COMPLETED</span></td><td>308ms</td></tr>
+            <tr class="ok"><td class="num">24</td><td><code>assertConditionCommand</code></td><td class="target">visible id: dashboard-downtime-button</td><td><span class="pill pass">COMPLETED</span></td><td>255ms</td></tr>
+            <tr class="ok"><td class="num">25</td><td><code>tapOnElement</code></td><td class="target">id: dashboard-downtime-button — Start Downtime</td><td><span class="pill pass">COMPLETED</span></td><td>4.6s</td></tr>
+            <tr class="ok"><td class="num">26</td><td><code>assertConditionCommand</code></td><td class="target">visible id: downtime-reason-lunch</td><td><span class="pill pass">COMPLETED</span></td><td>304ms</td></tr>
+            <tr class="ok"><td class="num">27</td><td><code>tapOnElement</code></td><td class="target">id: downtime-reason-lunch — Pick reason Lunch</td><td><span class="pill pass">COMPLETED</span></td><td>3.8s</td></tr>
+            <tr class="ok"><td class="num">28</td><td><code>assertConditionCommand</code></td><td class="target">visible id: active-downtime-end-button</td><td><span class="pill pass">COMPLETED</span></td><td>200ms</td></tr>
+            <tr class="ok"><td class="num">29</td><td><code>tapOnElement</code></td><td class="target">id: active-downtime-end-button — End downtime event</td><td><span class="pill pass">COMPLETED</span></td><td>3.8s</td></tr>
+            <tr class="ok"><td class="num">30</td><td><code>assertConditionCommand</code></td><td class="target">visible id: downtime-summary-done-button</td><td><span class="pill pass">COMPLETED</span></td><td>179ms</td></tr>
+            <tr class="ok"><td class="num">31</td><td><code>assertConditionCommand</code></td><td class="target">visible text: Session complete</td><td><span class="pill pass">COMPLETED</span></td><td>203ms</td></tr>
+          </tbody>
+        </table>
+      </td></tr>
+      <tr class="flow clickable"><td class="chev">&#9656;</td><td>invalid-login-flow</td><td><span class="pill pass">PASSED</span></td><td>19</td><td>50.8s</td><td><a href="./invalid-login-flow.html">Summary</a></td></tr>
+      <tr class="details"><td colspan="6">
+        <div class="summary">Result: <span class="pill pass">PASSED</span> &middot; Steps: 19 &middot; Duration: 50.8s &middot; Started: 2026-08-26 14:04:49</div>
+        <table>
+          <thead>
+            <tr><th>#</th><th>Command</th><th>Target</th><th>Status</th><th>Duration</th></tr>
+          </thead>
+          <tbody>
+            <tr class="ok"><td class="num">1</td><td><code>defineVariablesCommand</code></td><td class="target">{&quot;MAESTRO_FILENAME&quot;:&quot;invalid-login-flow&quot;}</td><td><span class="pill pass">COMPLETED</span></td><td>2ms</td></tr>
+            <tr class="ok"><td class="num">2</td><td><code>clearStateCommand</code></td><td class="target">com.flowmobile</td><td><span class="pill pass">COMPLETED</span></td><td>11.0s</td></tr>
+            <tr class="ok"><td class="num">3</td><td><code>applyConfigurationCommand</code></td><td class="target">{&quot;appId&quot;:&quot;com.flowmobile&quot;,&quot;tags&quot;:[&quot;smoke&quot;,&quot;authentication&quot;,&quot;negative&quot;,&quot;error-handling&quot;]}</td><td><span class="pill pass">COMPLETED</span></td><td>0ms</td></tr>
+            <tr class="ok"><td class="num">4</td><td><code>launchAppCommand</code></td><td class="target">com.flowmobile</td><td><span class="pill pass">COMPLETED</span></td><td>10.6s</td></tr>
+            <tr class="ok"><td class="num">5</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>2.8s</td></tr>
+            <tr class="skip"><td class="num">6</td><td><code>tapOnElement</code></td><td class="target">text: Later</td><td><span class="pill skip">WARNED</span></td><td>—</td></tr>
+            <tr class="ok"><td class="num">7</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>809ms</td></tr>
+            <tr class="ok"><td class="num">8</td><td><code>assertConditionCommand</code></td><td class="target">visible id: login-username-input</td><td><span class="pill pass">COMPLETED</span></td><td>188ms</td></tr>
+            <tr class="ok"><td class="num">9</td><td><code>tapOnElement</code></td><td class="target">id: login-username-input</td><td><span class="pill pass">COMPLETED</span></td><td>3.3s</td></tr>
+            <tr class="ok"><td class="num">10</td><td><code>inputTextCommand</code></td><td class="target">&quot;invalid-user&quot;</td><td><span class="pill pass">COMPLETED</span></td><td>2.8s</td></tr>
+            <tr class="ok"><td class="num">11</td><td><code>tapOnElement</code></td><td class="target">id: login-password-input</td><td><span class="pill pass">COMPLETED</span></td><td>4.4s</td></tr>
+            <tr class="ok"><td class="num">12</td><td><code>inputTextCommand</code></td><td class="target">&quot;WrongPassword123!&quot;</td><td><span class="pill pass">COMPLETED</span></td><td>3.4s</td></tr>
+            <tr class="ok"><td class="num">13</td><td><code>hideKeyboardCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>1.2s</td></tr>
+            <tr class="ok"><td class="num">14</td><td><code>tapOnElement</code></td><td class="target">id: login-submit-button</td><td><span class="pill pass">COMPLETED</span></td><td>4.1s</td></tr>
+            <tr class="ok"><td class="num">15</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>1.7s</td></tr>
+            <tr class="ok"><td class="num">16</td><td><code>tapOnElement</code></td><td class="target">text: OK</td><td><span class="pill pass">COMPLETED</span></td><td>2.7s</td></tr>
+            <tr class="ok"><td class="num">17</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>958ms</td></tr>
+            <tr class="ok"><td class="num">18</td><td><code>assertConditionCommand</code></td><td class="target">visible id: login-username-input</td><td><span class="pill pass">COMPLETED</span></td><td>591ms</td></tr>
+            <tr class="ok"><td class="num">19</td><td><code>assertConditionCommand</code></td><td class="target">visible id: login-password-input</td><td><span class="pill pass">COMPLETED</span></td><td>188ms</td></tr>
+          </tbody>
+        </table>
+      </td></tr>
+      <tr class="flow clickable"><td class="chev">&#9656;</td><td>logout-flow</td><td><span class="pill pass">PASSED</span></td><td>33</td><td>1m 6s</td><td><a href="./logout-flow.html">Summary</a></td></tr>
+      <tr class="details"><td colspan="6">
+        <div class="summary">Result: <span class="pill pass">PASSED</span> &middot; Steps: 33 &middot; Duration: 1m 6s &middot; Started: 2026-08-26 14:24:22</div>
+        <table>
+          <thead>
+            <tr><th>#</th><th>Command</th><th>Target</th><th>Status</th><th>Duration</th></tr>
+          </thead>
+          <tbody>
+            <tr class="ok"><td class="num">1</td><td><code>defineVariablesCommand</code></td><td class="target">{&quot;MAESTRO_FILENAME&quot;:&quot;logout-flow&quot;}</td><td><span class="pill pass">COMPLETED</span></td><td>2ms</td></tr>
+            <tr class="ok"><td class="num">2</td><td><code>clearStateCommand</code></td><td class="target">com.flowmobile</td><td><span class="pill pass">COMPLETED</span></td><td>11.4s</td></tr>
+            <tr class="ok"><td class="num">3</td><td><code>applyConfigurationCommand</code></td><td class="target">{&quot;appId&quot;:&quot;com.flowmobile&quot;,&quot;tags&quot;:[&quot;smoke&quot;,&quot;authentication&quot;,&quot;logout&quot;,&quot;e2e&quot;]}</td><td><span class="pill pass">COMPLETED</span></td><td>0ms</td></tr>
+            <tr class="ok"><td class="num">4</td><td><code>launchAppCommand</code></td><td class="target">com.flowmobile</td><td><span class="pill pass">COMPLETED</span></td><td>11.7s</td></tr>
+            <tr class="ok"><td class="num">5</td><td><code>runFlowCommand</code></td><td class="target">flows/shared-login.yaml</td><td><span class="pill pass">COMPLETED</span></td><td>37.1s</td></tr>
+            <tr class="ok"><td class="num">6</td><td><code>defineVariablesCommand</code></td><td class="target">{&quot;TEST_USERNAME&quot;:&quot;neato-tester-local&quot;,&quot;TEST_PASSWORD&quot;:&quot;Test1234!&quot;,&quot;DEFAULT_WAREHOUSE&quot;:&quot;NEATOLV1&quot;}</td><td><span class="pill pass">COMPLETED</span></td><td>1ms</td></tr>
+            <tr class="ok"><td class="num">7</td><td><code>applyConfigurationCommand</code></td><td class="target">{&quot;appId&quot;:&quot;com.flowmobile&quot;}</td><td><span class="pill pass">COMPLETED</span></td><td>1ms</td></tr>
+            <tr class="ok"><td class="num">8</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>1.8s</td></tr>
+            <tr class="skip"><td class="num">9</td><td><code>tapOnElement</code></td><td class="target">text: Later</td><td><span class="pill skip">WARNED</span></td><td>—</td></tr>
+            <tr class="ok"><td class="num">10</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>653ms</td></tr>
+            <tr class="ok"><td class="num">11</td><td><code>assertConditionCommand</code></td><td class="target">visible id: login-username-input</td><td><span class="pill pass">COMPLETED</span></td><td>793ms</td></tr>
+            <tr class="ok"><td class="num">12</td><td><code>tapOnElement</code></td><td class="target">id: login-username-input</td><td><span class="pill pass">COMPLETED</span></td><td>4.5s</td></tr>
+            <tr class="ok"><td class="num">13</td><td><code>inputTextCommand</code></td><td class="target">&quot;neato-tester-local&quot;</td><td><span class="pill pass">COMPLETED</span></td><td>3.9s</td></tr>
+            <tr class="ok"><td class="num">14</td><td><code>tapOnElement</code></td><td class="target">id: login-password-input</td><td><span class="pill pass">COMPLETED</span></td><td>3.6s</td></tr>
+            <tr class="ok"><td class="num">15</td><td><code>inputTextCommand</code></td><td class="target">&quot;Test1234!&quot;</td><td><span class="pill pass">COMPLETED</span></td><td>2.6s</td></tr>
+            <tr class="ok"><td class="num">16</td><td><code>hideKeyboardCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>1.2s</td></tr>
+            <tr class="ok"><td class="num">17</td><td><code>tapOnElement</code></td><td class="target">id: login-submit-button</td><td><span class="pill pass">COMPLETED</span></td><td>3.3s</td></tr>
+            <tr class="ok"><td class="num">18</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>2.9s</td></tr>
+            <tr class="ok"><td class="num">19</td><td><code>assertConditionCommand</code></td><td class="target">visible text: NEATOLV1</td><td><span class="pill pass">COMPLETED</span></td><td>103ms</td></tr>
+            <tr class="ok"><td class="num">20</td><td><code>tapOnElement</code></td><td class="target">text: NEATOLV1</td><td><span class="pill pass">COMPLETED</span></td><td>3.1s</td></tr>
+            <tr class="ok"><td class="num">21</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>801ms</td></tr>
+            <tr class="ok"><td class="num">22</td><td><code>assertConditionCommand</code></td><td class="target">visible id: dashboard-operations-button</td><td><span class="pill pass">COMPLETED</span></td><td>267ms</td></tr>
+            <tr class="ok"><td class="num">23</td><td><code>assertConditionCommand</code></td><td class="target">visible id: dashboard-operations-button</td><td><span class="pill pass">COMPLETED</span></td><td>250ms</td></tr>
+            <tr class="ok"><td class="num">24</td><td><code>tapOnElement</code></td><td class="target">id: header-user-button</td><td><span class="pill pass">COMPLETED</span></td><td>3.3s</td></tr>
+            <tr class="ok"><td class="num">25</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>1.6s</td></tr>
+            <tr class="ok"><td class="num">26</td><td><code>assertConditionCommand</code></td><td class="target">visible text: Logout</td><td><span class="pill pass">COMPLETED</span></td><td>205ms</td></tr>
+            <tr class="ok"><td class="num">27</td><td><code>tapOnElement</code></td><td class="target">text: Logout</td><td><span class="pill pass">COMPLETED</span></td><td>3.2s</td></tr>
+            <tr class="ok"><td class="num">28</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>791ms</td></tr>
+            <tr class="ok"><td class="num">29</td><td><code>tapOnElement</code></td><td class="target">text: Logout</td><td><span class="pill pass">COMPLETED</span></td><td>3.2s</td></tr>
+            <tr class="ok"><td class="num">30</td><td><code>assertConditionCommand</code></td><td class="target">visible id: login-username-input</td><td><span class="pill pass">COMPLETED</span></td><td>162ms</td></tr>
+            <tr class="ok"><td class="num">31</td><td><code>assertConditionCommand</code></td><td class="target">visible id: login-username-input</td><td><span class="pill pass">COMPLETED</span></td><td>184ms</td></tr>
+            <tr class="ok"><td class="num">32</td><td><code>assertConditionCommand</code></td><td class="target">visible id: login-password-input</td><td><span class="pill pass">COMPLETED</span></td><td>149ms</td></tr>
+            <tr class="ok"><td class="num">33</td><td><code>assertConditionCommand</code></td><td class="target">notVisible id: dashboard-operations-button</td><td><span class="pill pass">COMPLETED</span></td><td>706ms</td></tr>
+          </tbody>
+        </table>
+      </td></tr>
+      <tr class="flow clickable"><td class="chev">&#9656;</td><td>outbound-pallet-create-flow</td><td><span class="pill pass">PASSED</span></td><td>62</td><td>2m 7s</td><td><a href="./outbound-pallet-create-flow.html">Summary</a></td></tr>
+      <tr class="details"><td colspan="6">
+        <div class="summary">Result: <span class="pill pass">PASSED</span> &middot; Steps: 62 &middot; Duration: 2m 7s &middot; Started: 2026-08-26 14:18:36</div>
+        <table>
+          <thead>
+            <tr><th>#</th><th>Command</th><th>Target</th><th>Status</th><th>Duration</th></tr>
+          </thead>
+          <tbody>
+            <tr class="ok"><td class="num">1</td><td><code>defineVariablesCommand</code></td><td class="target">{&quot;MAESTRO_FILENAME&quot;:&quot;outbound-pallet-create-flow&quot;}</td><td><span class="pill pass">COMPLETED</span></td><td>2ms</td></tr>
+            <tr class="ok"><td class="num">2</td><td><code>applyConfigurationCommand</code></td><td class="target">{&quot;appId&quot;:&quot;com.flowmobile&quot;,&quot;tags&quot;:[&quot;outbound&quot;,&quot;operations&quot;,&quot;e2e&quot;]}</td><td><span class="pill pass">COMPLETED</span></td><td>0ms</td></tr>
+            <tr class="ok"><td class="num">3</td><td><code>clearStateCommand</code></td><td class="target">com.flowmobile</td><td><span class="pill pass">COMPLETED</span></td><td>11.2s</td></tr>
+            <tr class="ok"><td class="num">4</td><td><code>launchAppCommand</code></td><td class="target">com.flowmobile</td><td><span class="pill pass">COMPLETED</span></td><td>11.3s</td></tr>
+            <tr class="ok"><td class="num">5</td><td><code>runFlowCommand</code></td><td class="target">flows/shared-login.yaml</td><td><span class="pill pass">COMPLETED</span></td><td>37.7s</td></tr>
+            <tr class="ok"><td class="num">6</td><td><code>defineVariablesCommand</code></td><td class="target">{&quot;TEST_USERNAME&quot;:&quot;neato-tester-local&quot;,&quot;TEST_PASSWORD&quot;:&quot;Test1234!&quot;,&quot;DEFAULT_WAREHOUSE&quot;:&quot;NEATOLV1&quot;}</td><td><span class="pill pass">COMPLETED</span></td><td>1ms</td></tr>
+            <tr class="ok"><td class="num">7</td><td><code>applyConfigurationCommand</code></td><td class="target">{&quot;appId&quot;:&quot;com.flowmobile&quot;}</td><td><span class="pill pass">COMPLETED</span></td><td>1ms</td></tr>
+            <tr class="ok"><td class="num">8</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>1.9s</td></tr>
+            <tr class="skip"><td class="num">9</td><td><code>tapOnElement</code></td><td class="target">text: Later</td><td><span class="pill skip">WARNED</span></td><td>—</td></tr>
+            <tr class="ok"><td class="num">10</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>684ms</td></tr>
+            <tr class="ok"><td class="num">11</td><td><code>assertConditionCommand</code></td><td class="target">visible id: login-username-input</td><td><span class="pill pass">COMPLETED</span></td><td>1.1s</td></tr>
+            <tr class="ok"><td class="num">12</td><td><code>tapOnElement</code></td><td class="target">id: login-username-input</td><td><span class="pill pass">COMPLETED</span></td><td>3.6s</td></tr>
+            <tr class="ok"><td class="num">13</td><td><code>inputTextCommand</code></td><td class="target">&quot;neato-tester-local&quot;</td><td><span class="pill pass">COMPLETED</span></td><td>3.9s</td></tr>
+            <tr class="ok"><td class="num">14</td><td><code>tapOnElement</code></td><td class="target">id: login-password-input</td><td><span class="pill pass">COMPLETED</span></td><td>4.3s</td></tr>
+            <tr class="ok"><td class="num">15</td><td><code>inputTextCommand</code></td><td class="target">&quot;Test1234!&quot;</td><td><span class="pill pass">COMPLETED</span></td><td>2.3s</td></tr>
+            <tr class="ok"><td class="num">16</td><td><code>hideKeyboardCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>2.3s</td></tr>
+            <tr class="ok"><td class="num">17</td><td><code>tapOnElement</code></td><td class="target">id: login-submit-button</td><td><span class="pill pass">COMPLETED</span></td><td>3.2s</td></tr>
+            <tr class="ok"><td class="num">18</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>1.2s</td></tr>
+            <tr class="ok"><td class="num">19</td><td><code>assertConditionCommand</code></td><td class="target">visible text: NEATOLV1</td><td><span class="pill pass">COMPLETED</span></td><td>917ms</td></tr>
+            <tr class="ok"><td class="num">20</td><td><code>tapOnElement</code></td><td class="target">text: NEATOLV1</td><td><span class="pill pass">COMPLETED</span></td><td>3.4s</td></tr>
+            <tr class="ok"><td class="num">21</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>772ms</td></tr>
+            <tr class="ok"><td class="num">22</td><td><code>assertConditionCommand</code></td><td class="target">visible id: dashboard-operations-button</td><td><span class="pill pass">COMPLETED</span></td><td>295ms</td></tr>
+            <tr class="ok"><td class="num">23</td><td><code>assertConditionCommand</code></td><td class="target">visible id: dashboard-operations-button</td><td><span class="pill pass">COMPLETED</span></td><td>642ms</td></tr>
+            <tr class="ok"><td class="num">24</td><td><code>applyConfigurationCommand</code></td><td class="target">{&quot;appId&quot;:&quot;com.flowmobile&quot;}</td><td><span class="pill pass">COMPLETED</span></td><td>0ms</td></tr>
+            <tr class="ok"><td class="num">25</td><td><code>defineVariablesCommand</code></td><td class="target">{&quot;operation&quot;:&quot;outbound&quot;}</td><td><span class="pill pass">COMPLETED</span></td><td>0ms</td></tr>
+            <tr class="ok"><td class="num">26</td><td><code>runFlowCommand</code></td><td class="target">flows/navigate-to-operation.yaml</td><td><span class="pill pass">COMPLETED</span></td><td>11.7s</td></tr>
+            <tr class="ok"><td class="num">27</td><td><code>assertConditionCommand</code></td><td class="target">visible text: DASHBOARD</td><td><span class="pill pass">COMPLETED</span></td><td>274ms</td></tr>
+            <tr class="ok"><td class="num">28</td><td><code>tapOnElement</code></td><td class="target">id: dashboard-operations-button</td><td><span class="pill pass">COMPLETED</span></td><td>3.7s</td></tr>
+            <tr class="ok"><td class="num">29</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>814ms</td></tr>
+            <tr class="ok"><td class="num">30</td><td><code>assertConditionCommand</code></td><td class="target">visible text: OPERATIONS</td><td><span class="pill pass">COMPLETED</span></td><td>311ms</td></tr>
+            <tr class="ok"><td class="num">31</td><td><code>scrollCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>1.3s</td></tr>
+            <tr class="ok"><td class="num">32</td><td><code>tapOnElement</code></td><td class="target">id: operations-${operation}-button</td><td><span class="pill pass">COMPLETED</span></td><td>4.5s</td></tr>
+            <tr class="ok"><td class="num">33</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>777ms</td></tr>
+            <tr class="ok"><td class="num">34</td><td><code>assertConditionCommand</code></td><td class="target">visible text: Outbound</td><td><span class="pill pass">COMPLETED</span></td><td>270ms</td></tr>
+            <tr class="ok"><td class="num">35</td><td><code>tapOnElement</code></td><td class="target">text: Create Outbound Pallet</td><td><span class="pill pass">COMPLETED</span></td><td>3.3s</td></tr>
+            <tr class="ok"><td class="num">36</td><td><code>assertConditionCommand</code></td><td class="target">visible text: Create outbound pallet</td><td><span class="pill pass">COMPLETED</span></td><td>217ms</td></tr>
+            <tr class="ok"><td class="num">37</td><td><code>tapOnElement</code></td><td class="target">id: outbound-plan-input</td><td><span class="pill pass">COMPLETED</span></td><td>6.9s</td></tr>
+            <tr class="ok"><td class="num">38</td><td><code>inputTextCommand</code></td><td class="target">&quot;TEST-OUTBOUND-001&quot;</td><td><span class="pill pass">COMPLETED</span></td><td>3.8s</td></tr>
+            <tr class="ok"><td class="num">39</td><td><code>hideKeyboardCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>2.0s</td></tr>
+            <tr class="ok"><td class="num">40</td><td><code>assertConditionCommand</code></td><td class="target">visible id: outbound-plan-row-TEST-OUTBOUND-001</td><td><span class="pill pass">COMPLETED</span></td><td>210ms</td></tr>
+            <tr class="ok"><td class="num">41</td><td><code>tapOnElement</code></td><td class="target">id: outbound-plan-row-TEST-OUTBOUND-001 — Select shipping plan TEST-OUTBOUND-001</td><td><span class="pill pass">COMPLETED</span></td><td>4.0s</td></tr>
+            <tr class="ok"><td class="num">42</td><td><code>assertConditionCommand</code></td><td class="target">visible id: outbound-arc-input</td><td><span class="pill pass">COMPLETED</span></td><td>242ms</td></tr>
+            <tr class="ok"><td class="num">43</td><td><code>tapOnElement</code></td><td class="target">id: outbound-arc-input</td><td><span class="pill pass">COMPLETED</span></td><td>4.7s</td></tr>
+            <tr class="ok"><td class="num">44</td><td><code>inputTextCommand</code></td><td class="target">&quot;Dest X&quot;</td><td><span class="pill pass">COMPLETED</span></td><td>2.2s</td></tr>
+            <tr class="ok"><td class="num">45</td><td><code>hideKeyboardCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>1.7s</td></tr>
+            <tr class="ok"><td class="num">46</td><td><code>assertConditionCommand</code></td><td class="target">visible id: outbound-arc-row-TEST-OUTBOUND-001-Dest-X</td><td><span class="pill pass">COMPLETED</span></td><td>214ms</td></tr>
+            <tr class="ok"><td class="num">47</td><td><code>tapOnElement</code></td><td class="target">id: outbound-arc-row-TEST-OUTBOUND-001-Dest-X</td><td><span class="pill pass">COMPLETED</span></td><td>3.7s</td></tr>
+            <tr class="ok"><td class="num">48</td><td><code>runFlowCommand</code></td><td class="target">flows/manual-scan.yaml — Scan dock location 2DOCKDOOR1</td><td><span class="pill pass">COMPLETED</span></td><td>22.2s</td></tr>
+            <tr class="ok"><td class="num">49</td><td><code>assertConditionCommand</code></td><td class="target">visible id: ${triggerId}</td><td><span class="pill pass">COMPLETED</span></td><td>233ms</td></tr>
+            <tr class="ok"><td class="num">50</td><td><code>applyConfigurationCommand</code></td><td class="target">{&quot;appId&quot;:&quot;com.flowmobile&quot;}</td><td><span class="pill pass">COMPLETED</span></td><td>0ms</td></tr>
+            <tr class="ok"><td class="num">51</td><td><code>defineVariablesCommand</code></td><td class="target">{&quot;triggerId&quot;:&quot;outbound-location-scan-button&quot;,&quot;value&quot;:&quot;2DOCKDOOR1&quot;}</td><td><span class="pill pass">COMPLETED</span></td><td>0ms</td></tr>
+            <tr class="ok"><td class="num">52</td><td><code>tapOnElement</code></td><td class="target">id: ${triggerId}</td><td><span class="pill pass">COMPLETED</span></td><td>4.6s</td></tr>
+            <tr class="ok"><td class="num">53</td><td><code>assertConditionCommand</code></td><td class="target">visible id: scanner-manual-entry-button</td><td><span class="pill pass">COMPLETED</span></td><td>66ms</td></tr>
+            <tr class="ok"><td class="num">54</td><td><code>tapOnElement</code></td><td class="target">id: scanner-manual-entry-button</td><td><span class="pill pass">COMPLETED</span></td><td>4.4s</td></tr>
+            <tr class="ok"><td class="num">55</td><td><code>assertConditionCommand</code></td><td class="target">visible id: scanner-manual-input</td><td><span class="pill pass">COMPLETED</span></td><td>133ms</td></tr>
+            <tr class="ok"><td class="num">56</td><td><code>tapOnElement</code></td><td class="target">id: scanner-manual-input</td><td><span class="pill pass">COMPLETED</span></td><td>3.4s</td></tr>
+            <tr class="ok"><td class="num">57</td><td><code>inputTextCommand</code></td><td class="target">&quot;${value}&quot;</td><td><span class="pill pass">COMPLETED</span></td><td>3.0s</td></tr>
+            <tr class="ok"><td class="num">58</td><td><code>tapOnElement</code></td><td class="target">id: scanner-manual-submit</td><td><span class="pill pass">COMPLETED</span></td><td>5.6s</td></tr>
+            <tr class="ok"><td class="num">59</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>804ms</td></tr>
+            <tr class="ok"><td class="num">60</td><td><code>scrollUntilVisible</code></td><td class="target">id: outbound-submit-button (DOWN)</td><td><span class="pill pass">COMPLETED</span></td><td>2.6s</td></tr>
+            <tr class="ok"><td class="num">61</td><td><code>tapOnElement</code></td><td class="target">id: outbound-submit-button — Create pallet &amp; print tag</td><td><span class="pill pass">COMPLETED</span></td><td>4.2s</td></tr>
+            <tr class="ok"><td class="num">62</td><td><code>assertConditionCommand</code></td><td class="target">visible text: Bluetooth printer required</td><td><span class="pill pass">COMPLETED</span></td><td>99ms</td></tr>
+          </tbody>
+        </table>
+      </td></tr>
+      <tr class="flow clickable"><td class="chev">&#9656;</td><td>packing-flow</td><td><span class="pill pass">PASSED</span></td><td>65</td><td>2m 8s</td><td><a href="./packing-flow.html">Summary</a></td></tr>
+      <tr class="details"><td colspan="6">
+        <div class="summary">Result: <span class="pill pass">PASSED</span> &middot; Steps: 65 &middot; Duration: 2m 8s &middot; Started: 2026-08-26 14:13:27</div>
+        <table>
+          <thead>
+            <tr><th>#</th><th>Command</th><th>Target</th><th>Status</th><th>Duration</th></tr>
+          </thead>
+          <tbody>
+            <tr class="ok"><td class="num">1</td><td><code>defineVariablesCommand</code></td><td class="target">{&quot;MAESTRO_FILENAME&quot;:&quot;packing-flow&quot;}</td><td><span class="pill pass">COMPLETED</span></td><td>2ms</td></tr>
+            <tr class="ok"><td class="num">2</td><td><code>clearStateCommand</code></td><td class="target">com.flowmobile</td><td><span class="pill pass">COMPLETED</span></td><td>10.5s</td></tr>
+            <tr class="ok"><td class="num">3</td><td><code>applyConfigurationCommand</code></td><td class="target">{&quot;appId&quot;:&quot;com.flowmobile&quot;,&quot;tags&quot;:[&quot;smoke&quot;,&quot;production&quot;,&quot;e2e&quot;,&quot;packing&quot;]}</td><td><span class="pill pass">COMPLETED</span></td><td>0ms</td></tr>
+            <tr class="ok"><td class="num">4</td><td><code>launchAppCommand</code></td><td class="target">com.flowmobile</td><td><span class="pill pass">COMPLETED</span></td><td>11.5s</td></tr>
+            <tr class="ok"><td class="num">5</td><td><code>runFlowCommand</code></td><td class="target">flows/shared-login.yaml</td><td><span class="pill pass">COMPLETED</span></td><td>36.8s</td></tr>
+            <tr class="ok"><td class="num">6</td><td><code>defineVariablesCommand</code></td><td class="target">{&quot;TEST_USERNAME&quot;:&quot;neato-tester-local&quot;,&quot;TEST_PASSWORD&quot;:&quot;Test1234!&quot;,&quot;DEFAULT_WAREHOUSE&quot;:&quot;NEATOLV1&quot;}</td><td><span class="pill pass">COMPLETED</span></td><td>0ms</td></tr>
+            <tr class="ok"><td class="num">7</td><td><code>applyConfigurationCommand</code></td><td class="target">{&quot;appId&quot;:&quot;com.flowmobile&quot;}</td><td><span class="pill pass">COMPLETED</span></td><td>0ms</td></tr>
+            <tr class="ok"><td class="num">8</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>1.9s</td></tr>
+            <tr class="skip"><td class="num">9</td><td><code>tapOnElement</code></td><td class="target">text: Later</td><td><span class="pill skip">WARNED</span></td><td>—</td></tr>
+            <tr class="ok"><td class="num">10</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>672ms</td></tr>
+            <tr class="ok"><td class="num">11</td><td><code>assertConditionCommand</code></td><td class="target">visible id: login-username-input</td><td><span class="pill pass">COMPLETED</span></td><td>763ms</td></tr>
+            <tr class="ok"><td class="num">12</td><td><code>tapOnElement</code></td><td class="target">id: login-username-input</td><td><span class="pill pass">COMPLETED</span></td><td>3.8s</td></tr>
+            <tr class="ok"><td class="num">13</td><td><code>inputTextCommand</code></td><td class="target">&quot;neato-tester-local&quot;</td><td><span class="pill pass">COMPLETED</span></td><td>3.8s</td></tr>
+            <tr class="ok"><td class="num">14</td><td><code>tapOnElement</code></td><td class="target">id: login-password-input</td><td><span class="pill pass">COMPLETED</span></td><td>3.8s</td></tr>
+            <tr class="ok"><td class="num">15</td><td><code>inputTextCommand</code></td><td class="target">&quot;Test1234!&quot;</td><td><span class="pill pass">COMPLETED</span></td><td>2.3s</td></tr>
+            <tr class="ok"><td class="num">16</td><td><code>hideKeyboardCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>1.3s</td></tr>
+            <tr class="ok"><td class="num">17</td><td><code>tapOnElement</code></td><td class="target">id: login-submit-button</td><td><span class="pill pass">COMPLETED</span></td><td>5.9s</td></tr>
+            <tr class="ok"><td class="num">18</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>783ms</td></tr>
+            <tr class="ok"><td class="num">19</td><td><code>assertConditionCommand</code></td><td class="target">visible text: NEATOLV1</td><td><span class="pill pass">COMPLETED</span></td><td>80ms</td></tr>
+            <tr class="ok"><td class="num">20</td><td><code>tapOnElement</code></td><td class="target">text: NEATOLV1</td><td><span class="pill pass">COMPLETED</span></td><td>3.2s</td></tr>
+            <tr class="ok"><td class="num">21</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>730ms</td></tr>
+            <tr class="ok"><td class="num">22</td><td><code>assertConditionCommand</code></td><td class="target">visible id: dashboard-operations-button</td><td><span class="pill pass">COMPLETED</span></td><td>275ms</td></tr>
+            <tr class="ok"><td class="num">23</td><td><code>assertConditionCommand</code></td><td class="target">visible id: dashboard-operations-button</td><td><span class="pill pass">COMPLETED</span></td><td>256ms</td></tr>
+            <tr class="ok"><td class="num">24</td><td><code>runFlowCommand</code></td><td class="target">flows/navigate-to-operation.yaml</td><td><span class="pill pass">COMPLETED</span></td><td>11.6s</td></tr>
+            <tr class="ok"><td class="num">25</td><td><code>applyConfigurationCommand</code></td><td class="target">{&quot;appId&quot;:&quot;com.flowmobile&quot;}</td><td><span class="pill pass">COMPLETED</span></td><td>1ms</td></tr>
+            <tr class="ok"><td class="num">26</td><td><code>defineVariablesCommand</code></td><td class="target">{&quot;operation&quot;:&quot;production&quot;}</td><td><span class="pill pass">COMPLETED</span></td><td>0ms</td></tr>
+            <tr class="ok"><td class="num">27</td><td><code>assertConditionCommand</code></td><td class="target">visible text: DASHBOARD</td><td><span class="pill pass">COMPLETED</span></td><td>223ms</td></tr>
+            <tr class="ok"><td class="num">28</td><td><code>tapOnElement</code></td><td class="target">id: dashboard-operations-button</td><td><span class="pill pass">COMPLETED</span></td><td>4.2s</td></tr>
+            <tr class="ok"><td class="num">29</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>758ms</td></tr>
+            <tr class="ok"><td class="num">30</td><td><code>assertConditionCommand</code></td><td class="target">visible text: OPERATIONS</td><td><span class="pill pass">COMPLETED</span></td><td>292ms</td></tr>
+            <tr class="ok"><td class="num">31</td><td><code>scrollCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>1.3s</td></tr>
+            <tr class="ok"><td class="num">32</td><td><code>tapOnElement</code></td><td class="target">id: operations-${operation}-button</td><td><span class="pill pass">COMPLETED</span></td><td>4.0s</td></tr>
+            <tr class="ok"><td class="num">33</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>743ms</td></tr>
+            <tr class="ok"><td class="num">34</td><td><code>assertConditionCommand</code></td><td class="target">visible text: Select Line</td><td><span class="pill pass">COMPLETED</span></td><td>1.4s</td></tr>
+            <tr class="ok"><td class="num">35</td><td><code>tapOnElement</code></td><td class="target">text: Production Line 1 — Select production line</td><td><span class="pill pass">COMPLETED</span></td><td>3.7s</td></tr>
+            <tr class="ok"><td class="num">36</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>791ms</td></tr>
+            <tr class="ok"><td class="num">37</td><td><code>assertConditionCommand</code></td><td class="target">visible id: scan-pallet-button</td><td><span class="pill pass">COMPLETED</span></td><td>203ms</td></tr>
+            <tr class="ok"><td class="num">38</td><td><code>runFlowCommand</code></td><td class="target">flows/manual-scan.yaml — Scan pallet PRODUCTION-TEST-PALLET</td><td><span class="pill pass">COMPLETED</span></td><td>25.5s</td></tr>
+            <tr class="ok"><td class="num">39</td><td><code>applyConfigurationCommand</code></td><td class="target">{&quot;appId&quot;:&quot;com.flowmobile&quot;}</td><td><span class="pill pass">COMPLETED</span></td><td>1ms</td></tr>
+            <tr class="ok"><td class="num">40</td><td><code>defineVariablesCommand</code></td><td class="target">{&quot;triggerId&quot;:&quot;scan-pallet-button&quot;,&quot;value&quot;:&quot;PRODUCTION-TEST-PALLET&quot;}</td><td><span class="pill pass">COMPLETED</span></td><td>0ms</td></tr>
+            <tr class="ok"><td class="num">41</td><td><code>assertConditionCommand</code></td><td class="target">visible id: ${triggerId}</td><td><span class="pill pass">COMPLETED</span></td><td>229ms</td></tr>
+            <tr class="ok"><td class="num">42</td><td><code>tapOnElement</code></td><td class="target">id: ${triggerId}</td><td><span class="pill pass">COMPLETED</span></td><td>3.5s</td></tr>
+            <tr class="ok"><td class="num">43</td><td><code>assertConditionCommand</code></td><td class="target">visible id: scanner-manual-entry-button</td><td><span class="pill pass">COMPLETED</span></td><td>819ms</td></tr>
+            <tr class="ok"><td class="num">44</td><td><code>tapOnElement</code></td><td class="target">id: scanner-manual-entry-button</td><td><span class="pill pass">COMPLETED</span></td><td>4.8s</td></tr>
+            <tr class="ok"><td class="num">45</td><td><code>assertConditionCommand</code></td><td class="target">visible id: scanner-manual-input</td><td><span class="pill pass">COMPLETED</span></td><td>102ms</td></tr>
+            <tr class="ok"><td class="num">46</td><td><code>tapOnElement</code></td><td class="target">id: scanner-manual-input</td><td><span class="pill pass">COMPLETED</span></td><td>3.9s</td></tr>
+            <tr class="ok"><td class="num">47</td><td><code>inputTextCommand</code></td><td class="target">&quot;${value}&quot;</td><td><span class="pill pass">COMPLETED</span></td><td>4.9s</td></tr>
+            <tr class="ok"><td class="num">48</td><td><code>tapOnElement</code></td><td class="target">id: scanner-manual-submit</td><td><span class="pill pass">COMPLETED</span></td><td>5.2s</td></tr>
+            <tr class="ok"><td class="num">49</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>2.0s</td></tr>
+            <tr class="ok"><td class="num">50</td><td><code>assertConditionCommand</code></td><td class="target">visible text: Select Work Order</td><td><span class="pill pass">COMPLETED</span></td><td>178ms</td></tr>
+            <tr class="ok"><td class="num">51</td><td><code>tapOnElement</code></td><td class="target">id: packing-wo-row-E2E-EXP-001 — Select work order E2E-EXP-001</td><td><span class="pill pass">COMPLETED</span></td><td>3.0s</td></tr>
+            <tr class="ok"><td class="num">52</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>6.8s</td></tr>
+            <tr class="ok"><td class="num">53</td><td><code>assertConditionCommand</code></td><td class="target">visible id: packing-qty-input</td><td><span class="pill pass">COMPLETED</span></td><td>544ms</td></tr>
+            <tr class="ok"><td class="num">54</td><td><code>tapOnElement</code></td><td class="target">id: packing-qty-input</td><td><span class="pill pass">COMPLETED</span></td><td>5.1s</td></tr>
+            <tr class="ok"><td class="num">55</td><td><code>inputTextCommand</code></td><td class="target">&quot;10&quot;</td><td><span class="pill pass">COMPLETED</span></td><td>1.1s</td></tr>
+            <tr class="ok"><td class="num">56</td><td><code>hideKeyboardCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>1.8s</td></tr>
+            <tr class="ok"><td class="num">57</td><td><code>scrollUntilVisible</code></td><td class="target">text: stop (DOWN)</td><td><span class="pill pass">COMPLETED</span></td><td>270ms</td></tr>
+            <tr class="ok"><td class="num">58</td><td><code>tapOnElement</code></td><td class="target">text: stop</td><td><span class="pill pass">COMPLETED</span></td><td>4.2s</td></tr>
+            <tr class="ok"><td class="num">59</td><td><code>assertConditionCommand</code></td><td class="target">visible text: END SESSION?</td><td><span class="pill pass">COMPLETED</span></td><td>123ms</td></tr>
+            <tr class="ok"><td class="num">60</td><td><code>tapOnElement</code></td><td class="target">id: packing-tray-qty-input</td><td><span class="pill pass">COMPLETED</span></td><td>3.8s</td></tr>
+            <tr class="ok"><td class="num">61</td><td><code>inputTextCommand</code></td><td class="target">&quot;10&quot;</td><td><span class="pill pass">COMPLETED</span></td><td>1.1s</td></tr>
+            <tr class="ok"><td class="num">62</td><td><code>hideKeyboardCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>1.2s</td></tr>
+            <tr class="ok"><td class="num">63</td><td><code>tapOnElement</code></td><td class="target">text: confirm — Confirm end of session</td><td><span class="pill pass">COMPLETED</span></td><td>2.4s</td></tr>
+            <tr class="ok"><td class="num">64</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>1.0s</td></tr>
+            <tr class="ok"><td class="num">65</td><td><code>assertConditionCommand</code></td><td class="target">visible text: Work Order Complete!</td><td><span class="pill pass">COMPLETED</span></td><td>989ms</td></tr>
+          </tbody>
+        </table>
+      </td></tr>
+      <tr class="flow clickable"><td class="chev">&#9656;</td><td>picking-flow</td><td><span class="pill pass">PASSED</span></td><td>108</td><td>3m 25s</td><td><a href="./picking-flow.html">Summary</a></td></tr>
+      <tr class="details"><td colspan="6">
+        <div class="summary">Result: <span class="pill pass">PASSED</span> &middot; Steps: 108 &middot; Duration: 3m 25s &middot; Started: 2026-08-26 14:09:43</div>
+        <table>
+          <thead>
+            <tr><th>#</th><th>Command</th><th>Target</th><th>Status</th><th>Duration</th></tr>
+          </thead>
+          <tbody>
+            <tr class="ok"><td class="num">1</td><td><code>defineVariablesCommand</code></td><td class="target">{&quot;MAESTRO_FILENAME&quot;:&quot;picking-flow&quot;}</td><td><span class="pill pass">COMPLETED</span></td><td>3ms</td></tr>
+            <tr class="ok"><td class="num">2</td><td><code>applyConfigurationCommand</code></td><td class="target">{&quot;appId&quot;:&quot;com.flowmobile&quot;,&quot;tags&quot;:[&quot;picking&quot;,&quot;operations&quot;,&quot;smoke&quot;,&quot;e2e&quot;]}</td><td><span class="pill pass">COMPLETED</span></td><td>0ms</td></tr>
+            <tr class="ok"><td class="num">3</td><td><code>clearStateCommand</code></td><td class="target">com.flowmobile</td><td><span class="pill pass">COMPLETED</span></td><td>11.1s</td></tr>
+            <tr class="ok"><td class="num">4</td><td><code>launchAppCommand</code></td><td class="target">com.flowmobile</td><td><span class="pill pass">COMPLETED</span></td><td>9.6s</td></tr>
+            <tr class="ok"><td class="num">5</td><td><code>runFlowCommand</code></td><td class="target">flows/shared-login.yaml</td><td><span class="pill pass">COMPLETED</span></td><td>35.5s</td></tr>
+            <tr class="ok"><td class="num">6</td><td><code>defineVariablesCommand</code></td><td class="target">{&quot;TEST_USERNAME&quot;:&quot;neato-tester-local&quot;,&quot;TEST_PASSWORD&quot;:&quot;Test1234!&quot;,&quot;DEFAULT_WAREHOUSE&quot;:&quot;NEATOLV1&quot;}</td><td><span class="pill pass">COMPLETED</span></td><td>1ms</td></tr>
+            <tr class="ok"><td class="num">7</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>2.7s</td></tr>
+            <tr class="ok"><td class="num">8</td><td><code>applyConfigurationCommand</code></td><td class="target">{&quot;appId&quot;:&quot;com.flowmobile&quot;}</td><td><span class="pill pass">COMPLETED</span></td><td>0ms</td></tr>
+            <tr class="skip"><td class="num">9</td><td><code>tapOnElement</code></td><td class="target">text: Later</td><td><span class="pill skip">WARNED</span></td><td>—</td></tr>
+            <tr class="ok"><td class="num">10</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>653ms</td></tr>
+            <tr class="ok"><td class="num">11</td><td><code>assertConditionCommand</code></td><td class="target">visible id: login-username-input</td><td><span class="pill pass">COMPLETED</span></td><td>510ms</td></tr>
+            <tr class="ok"><td class="num">12</td><td><code>tapOnElement</code></td><td class="target">id: login-username-input</td><td><span class="pill pass">COMPLETED</span></td><td>3.6s</td></tr>
+            <tr class="ok"><td class="num">13</td><td><code>inputTextCommand</code></td><td class="target">&quot;neato-tester-local&quot;</td><td><span class="pill pass">COMPLETED</span></td><td>3.8s</td></tr>
+            <tr class="ok"><td class="num">14</td><td><code>tapOnElement</code></td><td class="target">id: login-password-input</td><td><span class="pill pass">COMPLETED</span></td><td>3.6s</td></tr>
+            <tr class="ok"><td class="num">15</td><td><code>inputTextCommand</code></td><td class="target">&quot;Test1234!&quot;</td><td><span class="pill pass">COMPLETED</span></td><td>2.3s</td></tr>
+            <tr class="ok"><td class="num">16</td><td><code>hideKeyboardCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>1.3s</td></tr>
+            <tr class="ok"><td class="num">17</td><td><code>tapOnElement</code></td><td class="target">id: login-submit-button</td><td><span class="pill pass">COMPLETED</span></td><td>3.6s</td></tr>
+            <tr class="ok"><td class="num">18</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>976ms</td></tr>
+            <tr class="ok"><td class="num">19</td><td><code>assertConditionCommand</code></td><td class="target">visible text: NEATOLV1</td><td><span class="pill pass">COMPLETED</span></td><td>766ms</td></tr>
+            <tr class="ok"><td class="num">20</td><td><code>tapOnElement</code></td><td class="target">text: NEATOLV1</td><td><span class="pill pass">COMPLETED</span></td><td>3.1s</td></tr>
+            <tr class="ok"><td class="num">21</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>780ms</td></tr>
+            <tr class="ok"><td class="num">22</td><td><code>assertConditionCommand</code></td><td class="target">visible id: dashboard-operations-button</td><td><span class="pill pass">COMPLETED</span></td><td>306ms</td></tr>
+            <tr class="ok"><td class="num">23</td><td><code>assertConditionCommand</code></td><td class="target">visible id: dashboard-operations-button</td><td><span class="pill pass">COMPLETED</span></td><td>294ms</td></tr>
+            <tr class="ok"><td class="num">24</td><td><code>applyConfigurationCommand</code></td><td class="target">{&quot;appId&quot;:&quot;com.flowmobile&quot;}</td><td><span class="pill pass">COMPLETED</span></td><td>0ms</td></tr>
+            <tr class="ok"><td class="num">25</td><td><code>runFlowCommand</code></td><td class="target">flows/navigate-to-operation.yaml</td><td><span class="pill pass">COMPLETED</span></td><td>11.3s</td></tr>
+            <tr class="ok"><td class="num">26</td><td><code>assertConditionCommand</code></td><td class="target">visible text: DASHBOARD</td><td><span class="pill pass">COMPLETED</span></td><td>270ms</td></tr>
+            <tr class="ok"><td class="num">27</td><td><code>defineVariablesCommand</code></td><td class="target">{&quot;operation&quot;:&quot;picking&quot;}</td><td><span class="pill pass">COMPLETED</span></td><td>0ms</td></tr>
+            <tr class="ok"><td class="num">28</td><td><code>tapOnElement</code></td><td class="target">id: dashboard-operations-button</td><td><span class="pill pass">COMPLETED</span></td><td>3.7s</td></tr>
+            <tr class="ok"><td class="num">29</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>801ms</td></tr>
+            <tr class="ok"><td class="num">30</td><td><code>assertConditionCommand</code></td><td class="target">visible text: OPERATIONS</td><td><span class="pill pass">COMPLETED</span></td><td>921ms</td></tr>
+            <tr class="ok"><td class="num">31</td><td><code>scrollCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>1.3s</td></tr>
+            <tr class="ok"><td class="num">32</td><td><code>tapOnElement</code></td><td class="target">id: operations-${operation}-button</td><td><span class="pill pass">COMPLETED</span></td><td>3.5s</td></tr>
+            <tr class="ok"><td class="num">33</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>833ms</td></tr>
+            <tr class="ok"><td class="num">34</td><td><code>assertConditionCommand</code></td><td class="target">visible text: Pick Product</td><td><span class="pill pass">COMPLETED</span></td><td>211ms</td></tr>
+            <tr class="ok"><td class="num">35</td><td><code>tapOnElement</code></td><td class="target">text: Pick Product</td><td><span class="pill pass">COMPLETED</span></td><td>3.0s</td></tr>
+            <tr class="ok"><td class="num">36</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>664ms</td></tr>
+            <tr class="ok"><td class="num">37</td><td><code>assertConditionCommand</code></td><td class="target">visible text: Select Shipment</td><td><span class="pill pass">COMPLETED</span></td><td>2.2s</td></tr>
+            <tr class="ok"><td class="num">38</td><td><code>tapOnElement</code></td><td class="target">id: picking-shipment-search-input</td><td><span class="pill pass">COMPLETED</span></td><td>4.5s</td></tr>
+            <tr class="ok"><td class="num">39</td><td><code>inputTextCommand</code></td><td class="target">&quot;TEST-PICK-P1&quot;</td><td><span class="pill pass">COMPLETED</span></td><td>3.1s</td></tr>
+            <tr class="ok"><td class="num">40</td><td><code>hideKeyboardCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>1.3s</td></tr>
+            <tr class="ok"><td class="num">41</td><td><code>assertConditionCommand</code></td><td class="target">visible id: picking-shipment-row-TEST-PICK-P1</td><td><span class="pill pass">COMPLETED</span></td><td>200ms</td></tr>
+            <tr class="ok"><td class="num">42</td><td><code>tapOnElement</code></td><td class="target">id: picking-shipment-row-TEST-PICK-P1 — Select shipment TEST-PICK-P1</td><td><span class="pill pass">COMPLETED</span></td><td>3.3s</td></tr>
+            <tr class="ok"><td class="num">43</td><td><code>assertConditionCommand</code></td><td class="target">visible text: Select Destination</td><td><span class="pill pass">COMPLETED</span></td><td>175ms</td></tr>
+            <tr class="ok"><td class="num">44</td><td><code>assertConditionCommand</code></td><td class="target">visible id: picking-destination-row-TEST-PICK-P1-Dest-B</td><td><span class="pill pass">COMPLETED</span></td><td>181ms</td></tr>
+            <tr class="ok"><td class="num">45</td><td><code>tapOnElement</code></td><td class="target">id: picking-destination-row-TEST-PICK-P1-Dest-B — Select destination Dest B</td><td><span class="pill pass">COMPLETED</span></td><td>4.0s</td></tr>
+            <tr class="ok"><td class="num">46</td><td><code>assertConditionCommand</code></td><td class="target">visible text: Select Line</td><td><span class="pill pass">COMPLETED</span></td><td>168ms</td></tr>
+            <tr class="ok"><td class="num">47</td><td><code>tapOnElement</code></td><td class="target">text: Production Line 1</td><td><span class="pill pass">COMPLETED</span></td><td>3.7s</td></tr>
+            <tr class="ok"><td class="num">48</td><td><code>assertConditionCommand</code></td><td class="target">visible text: Pick by Line</td><td><span class="pill pass">COMPLETED</span></td><td>200ms</td></tr>
+            <tr class="ok"><td class="num">49</td><td><code>assertConditionCommand</code></td><td class="target">visible id: picking-wo-row-Demo-Pallet-WO-1</td><td><span class="pill pass">COMPLETED</span></td><td>194ms</td></tr>
+            <tr class="ok"><td class="num">50</td><td><code>tapOnElement</code></td><td class="target">id: picking-wo-row-Demo-Pallet-WO-1 — Select work order Demo Pallet WO-1</td><td><span class="pill pass">COMPLETED</span></td><td>4.9s</td></tr>
+            <tr class="ok"><td class="num">51</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>948ms</td></tr>
+            <tr class="ok"><td class="num">52</td><td><code>assertConditionCommand</code></td><td class="target">visible id: pick-component-card-DEMO-PALL-WO-1-WSKU</td><td><span class="pill pass">COMPLETED</span></td><td>243ms</td></tr>
+            <tr class="ok"><td class="num">53</td><td><code>tapOnElement</code></td><td class="target">id: pick-component-card-DEMO-PALL-WO-1-WSKU — Open component DEMO-PALL-WO-1-WSKU</td><td><span class="pill pass">COMPLETED</span></td><td>4.0s</td></tr>
+            <tr class="ok"><td class="num">54</td><td><code>assertConditionCommand</code></td><td class="target">visible id: pick-start-picking-button</td><td><span class="pill pass">COMPLETED</span></td><td>202ms</td></tr>
+            <tr class="ok"><td class="num">55</td><td><code>tapOnElement</code></td><td class="target">id: pick-start-picking-button</td><td><span class="pill pass">COMPLETED</span></td><td>3.0s</td></tr>
+            <tr class="ok"><td class="num">56</td><td><code>runFlowCommand</code></td><td class="target">flows/manual-scan.yaml — Confirm location A-01-01-01</td><td><span class="pill pass">COMPLETED</span></td><td>25.8s</td></tr>
+            <tr class="ok"><td class="num">57</td><td><code>defineVariablesCommand</code></td><td class="target">{&quot;triggerId&quot;:&quot;confirm-location-button&quot;,&quot;value&quot;:&quot;A-01-01-01&quot;}</td><td><span class="pill pass">COMPLETED</span></td><td>1ms</td></tr>
+            <tr class="ok"><td class="num">58</td><td><code>assertConditionCommand</code></td><td class="target">visible id: ${triggerId}</td><td><span class="pill pass">COMPLETED</span></td><td>271ms</td></tr>
+            <tr class="ok"><td class="num">59</td><td><code>applyConfigurationCommand</code></td><td class="target">{&quot;appId&quot;:&quot;com.flowmobile&quot;}</td><td><span class="pill pass">COMPLETED</span></td><td>0ms</td></tr>
+            <tr class="ok"><td class="num">60</td><td><code>tapOnElement</code></td><td class="target">id: ${triggerId}</td><td><span class="pill pass">COMPLETED</span></td><td>3.7s</td></tr>
+            <tr class="ok"><td class="num">61</td><td><code>assertConditionCommand</code></td><td class="target">visible id: scanner-manual-entry-button</td><td><span class="pill pass">COMPLETED</span></td><td>120ms</td></tr>
+            <tr class="ok"><td class="num">62</td><td><code>tapOnElement</code></td><td class="target">id: scanner-manual-entry-button</td><td><span class="pill pass">COMPLETED</span></td><td>5.5s</td></tr>
+            <tr class="ok"><td class="num">63</td><td><code>assertConditionCommand</code></td><td class="target">visible id: scanner-manual-input</td><td><span class="pill pass">COMPLETED</span></td><td>150ms</td></tr>
+            <tr class="ok"><td class="num">64</td><td><code>tapOnElement</code></td><td class="target">id: scanner-manual-input</td><td><span class="pill pass">COMPLETED</span></td><td>3.9s</td></tr>
+            <tr class="ok"><td class="num">65</td><td><code>inputTextCommand</code></td><td class="target">&quot;${value}&quot;</td><td><span class="pill pass">COMPLETED</span></td><td>5.5s</td></tr>
+            <tr class="ok"><td class="num">66</td><td><code>tapOnElement</code></td><td class="target">id: scanner-manual-submit</td><td><span class="pill pass">COMPLETED</span></td><td>5.8s</td></tr>
+            <tr class="ok"><td class="num">67</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>889ms</td></tr>
+            <tr class="ok"><td class="num">68</td><td><code>runFlowCommand</code></td><td class="target">flows/manual-scan.yaml — Confirm UPC 111222333001</td><td><span class="pill pass">COMPLETED</span></td><td>23.9s</td></tr>
+            <tr class="ok"><td class="num">69</td><td><code>defineVariablesCommand</code></td><td class="target">{&quot;triggerId&quot;:&quot;confirm-upc-button&quot;,&quot;value&quot;:&quot;111222333001&quot;}</td><td><span class="pill pass">COMPLETED</span></td><td>0ms</td></tr>
+            <tr class="ok"><td class="num">70</td><td><code>assertConditionCommand</code></td><td class="target">visible id: ${triggerId}</td><td><span class="pill pass">COMPLETED</span></td><td>290ms</td></tr>
+            <tr class="ok"><td class="num">71</td><td><code>applyConfigurationCommand</code></td><td class="target">{&quot;appId&quot;:&quot;com.flowmobile&quot;}</td><td><span class="pill pass">COMPLETED</span></td><td>0ms</td></tr>
+            <tr class="ok"><td class="num">72</td><td><code>tapOnElement</code></td><td class="target">id: ${triggerId}</td><td><span class="pill pass">COMPLETED</span></td><td>5.7s</td></tr>
+            <tr class="ok"><td class="num">73</td><td><code>assertConditionCommand</code></td><td class="target">visible id: scanner-manual-entry-button</td><td><span class="pill pass">COMPLETED</span></td><td>95ms</td></tr>
+            <tr class="ok"><td class="num">74</td><td><code>tapOnElement</code></td><td class="target">id: scanner-manual-entry-button</td><td><span class="pill pass">COMPLETED</span></td><td>4.0s</td></tr>
+            <tr class="ok"><td class="num">75</td><td><code>assertConditionCommand</code></td><td class="target">visible id: scanner-manual-input</td><td><span class="pill pass">COMPLETED</span></td><td>142ms</td></tr>
+            <tr class="ok"><td class="num">76</td><td><code>tapOnElement</code></td><td class="target">id: scanner-manual-input</td><td><span class="pill pass">COMPLETED</span></td><td>3.4s</td></tr>
+            <tr class="ok"><td class="num">77</td><td><code>inputTextCommand</code></td><td class="target">&quot;${value}&quot;</td><td><span class="pill pass">COMPLETED</span></td><td>3.2s</td></tr>
+            <tr class="ok"><td class="num">78</td><td><code>tapOnElement</code></td><td class="target">id: scanner-manual-submit</td><td><span class="pill pass">COMPLETED</span></td><td>6.1s</td></tr>
+            <tr class="ok"><td class="num">79</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>918ms</td></tr>
+            <tr class="ok"><td class="num">80</td><td><code>scrollUntilVisible</code></td><td class="target">id: pick-units-input (DOWN)</td><td><span class="pill pass">COMPLETED</span></td><td>295ms</td></tr>
+            <tr class="ok"><td class="num">81</td><td><code>tapOnElement</code></td><td class="target">id: pick-units-input</td><td><span class="pill pass">COMPLETED</span></td><td>4.4s</td></tr>
+            <tr class="ok"><td class="num">82</td><td><code>inputTextCommand</code></td><td class="target">&quot;10&quot;</td><td><span class="pill pass">COMPLETED</span></td><td>1.5s</td></tr>
+            <tr class="ok"><td class="num">83</td><td><code>hideKeyboardCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>1.5s</td></tr>
+            <tr class="ok"><td class="num">84</td><td><code>scrollUntilVisible</code></td><td class="target">id: confirm-qty-button (DOWN)</td><td><span class="pill pass">COMPLETED</span></td><td>301ms</td></tr>
+            <tr class="ok"><td class="num">85</td><td><code>tapOnElement</code></td><td class="target">id: confirm-qty-button</td><td><span class="pill pass">COMPLETED</span></td><td>4.1s</td></tr>
+            <tr class="ok"><td class="num">86</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>835ms</td></tr>
+            <tr class="ok"><td class="num">87</td><td><code>assertConditionCommand</code></td><td class="target">visible text: CONFIRM</td><td><span class="pill pass">COMPLETED</span></td><td>131ms</td></tr>
+            <tr class="ok"><td class="num">88</td><td><code>tapOnElement</code></td><td class="target">text: CONFIRM</td><td><span class="pill pass">COMPLETED</span></td><td>3.5s</td></tr>
+            <tr class="ok"><td class="num">89</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>841ms</td></tr>
+            <tr class="ok"><td class="num">90</td><td><code>defineVariablesCommand</code></td><td class="target">{&quot;triggerId&quot;:&quot;confirm-pallet-button&quot;,&quot;value&quot;:&quot;TEST-PICK-SHARED-PALLET&quot;}</td><td><span class="pill pass">COMPLETED</span></td><td>0ms</td></tr>
+            <tr class="ok"><td class="num">91</td><td><code>assertConditionCommand</code></td><td class="target">visible id: ${triggerId}</td><td><span class="pill pass">COMPLETED</span></td><td>285ms</td></tr>
+            <tr class="ok"><td class="num">92</td><td><code>applyConfigurationCommand</code></td><td class="target">{&quot;appId&quot;:&quot;com.flowmobile&quot;}</td><td><span class="pill pass">COMPLETED</span></td><td>0ms</td></tr>
+            <tr class="ok"><td class="num">93</td><td><code>runFlowCommand</code></td><td class="target">flows/manual-scan.yaml — Confirm destination pallet TEST-PICK-SHARED-PALLET</td><td><span class="pill pass">COMPLETED</span></td><td>27.6s</td></tr>
+            <tr class="ok"><td class="num">94</td><td><code>tapOnElement</code></td><td class="target">id: ${triggerId}</td><td><span class="pill pass">COMPLETED</span></td><td>6.5s</td></tr>
+            <tr class="ok"><td class="num">95</td><td><code>assertConditionCommand</code></td><td class="target">visible id: scanner-manual-entry-button</td><td><span class="pill pass">COMPLETED</span></td><td>102ms</td></tr>
+            <tr class="ok"><td class="num">96</td><td><code>tapOnElement</code></td><td class="target">id: scanner-manual-entry-button</td><td><span class="pill pass">COMPLETED</span></td><td>4.0s</td></tr>
+            <tr class="ok"><td class="num">97</td><td><code>assertConditionCommand</code></td><td class="target">visible id: scanner-manual-input</td><td><span class="pill pass">COMPLETED</span></td><td>127ms</td></tr>
+            <tr class="ok"><td class="num">98</td><td><code>tapOnElement</code></td><td class="target">id: scanner-manual-input</td><td><span class="pill pass">COMPLETED</span></td><td>3.3s</td></tr>
+            <tr class="ok"><td class="num">99</td><td><code>inputTextCommand</code></td><td class="target">&quot;${value}&quot;</td><td><span class="pill pass">COMPLETED</span></td><td>5.1s</td></tr>
+            <tr class="ok"><td class="num">100</td><td><code>tapOnElement</code></td><td class="target">id: scanner-manual-submit</td><td><span class="pill pass">COMPLETED</span></td><td>4.3s</td></tr>
+            <tr class="ok"><td class="num">101</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>3.8s</td></tr>
+            <tr class="ok"><td class="num">102</td><td><code>assertConditionCommand</code></td><td class="target">visible text: Complete Work Order</td><td><span class="pill pass">COMPLETED</span></td><td>233ms</td></tr>
+            <tr class="ok"><td class="num">103</td><td><code>tapOnElement</code></td><td class="target">text: Complete Work Order — Complete work order</td><td><span class="pill pass">COMPLETED</span></td><td>3.9s</td></tr>
+            <tr class="ok"><td class="num">104</td><td><code>assertConditionCommand</code></td><td class="target">visible text: COMPLETE</td><td><span class="pill pass">COMPLETED</span></td><td>147ms</td></tr>
+            <tr class="ok"><td class="num">105</td><td><code>tapOnElement</code></td><td class="target">text: COMPLETE</td><td><span class="pill pass">COMPLETED</span></td><td>3.6s</td></tr>
+            <tr class="ok"><td class="num">106</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>951ms</td></tr>
+            <tr class="ok"><td class="num">107</td><td><code>assertConditionCommand</code></td><td class="target">visible text: Work order case completed successfully!</td><td><span class="pill pass">COMPLETED</span></td><td>88ms</td></tr>
+            <tr class="ok"><td class="num">108</td><td><code>assertConditionCommand</code></td><td class="target">notVisible id: confirm-location-button</td><td><span class="pill pass">COMPLETED</span></td><td>662ms</td></tr>
+          </tbody>
+        </table>
+      </td></tr>
+      <tr class="flow clickable"><td class="chev">&#9656;</td><td>qc-flow</td><td><span class="pill pass">PASSED</span></td><td>70</td><td>2m 20s</td><td><a href="./qc-flow.html">Summary</a></td></tr>
+      <tr class="details"><td colspan="6">
+        <div class="summary">Result: <span class="pill pass">PASSED</span> &middot; Steps: 70 &middot; Duration: 2m 20s &middot; Started: 2026-08-26 14:15:55</div>
+        <table>
+          <thead>
+            <tr><th>#</th><th>Command</th><th>Target</th><th>Status</th><th>Duration</th></tr>
+          </thead>
+          <tbody>
+            <tr class="ok"><td class="num">1</td><td><code>defineVariablesCommand</code></td><td class="target">{&quot;MAESTRO_FILENAME&quot;:&quot;qc-flow&quot;}</td><td><span class="pill pass">COMPLETED</span></td><td>1ms</td></tr>
+            <tr class="ok"><td class="num">2</td><td><code>applyConfigurationCommand</code></td><td class="target">{&quot;appId&quot;:&quot;com.flowmobile&quot;,&quot;tags&quot;:[&quot;qc&quot;,&quot;e2e&quot;,&quot;production&quot;]}</td><td><span class="pill pass">COMPLETED</span></td><td>0ms</td></tr>
+            <tr class="ok"><td class="num">3</td><td><code>clearStateCommand</code></td><td class="target">com.flowmobile</td><td><span class="pill pass">COMPLETED</span></td><td>10.6s</td></tr>
+            <tr class="ok"><td class="num">4</td><td><code>launchAppCommand</code></td><td class="target">com.flowmobile</td><td><span class="pill pass">COMPLETED</span></td><td>11.4s</td></tr>
+            <tr class="ok"><td class="num">5</td><td><code>runFlowCommand</code></td><td class="target">flows/shared-login.yaml</td><td><span class="pill pass">COMPLETED</span></td><td>37.0s</td></tr>
+            <tr class="ok"><td class="num">6</td><td><code>defineVariablesCommand</code></td><td class="target">{&quot;TEST_USERNAME&quot;:&quot;neato-tester-local&quot;,&quot;TEST_PASSWORD&quot;:&quot;Test1234!&quot;,&quot;DEFAULT_WAREHOUSE&quot;:&quot;NEATOLV1&quot;}</td><td><span class="pill pass">COMPLETED</span></td><td>1ms</td></tr>
+            <tr class="ok"><td class="num">7</td><td><code>applyConfigurationCommand</code></td><td class="target">{&quot;appId&quot;:&quot;com.flowmobile&quot;}</td><td><span class="pill pass">COMPLETED</span></td><td>1ms</td></tr>
+            <tr class="ok"><td class="num">8</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>1.9s</td></tr>
+            <tr class="skip"><td class="num">9</td><td><code>tapOnElement</code></td><td class="target">text: Later</td><td><span class="pill skip">WARNED</span></td><td>—</td></tr>
+            <tr class="ok"><td class="num">10</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>755ms</td></tr>
+            <tr class="ok"><td class="num">11</td><td><code>assertConditionCommand</code></td><td class="target">visible id: login-username-input</td><td><span class="pill pass">COMPLETED</span></td><td>761ms</td></tr>
+            <tr class="ok"><td class="num">12</td><td><code>tapOnElement</code></td><td class="target">id: login-username-input</td><td><span class="pill pass">COMPLETED</span></td><td>4.5s</td></tr>
+            <tr class="ok"><td class="num">13</td><td><code>inputTextCommand</code></td><td class="target">&quot;neato-tester-local&quot;</td><td><span class="pill pass">COMPLETED</span></td><td>3.6s</td></tr>
+            <tr class="ok"><td class="num">14</td><td><code>tapOnElement</code></td><td class="target">id: login-password-input</td><td><span class="pill pass">COMPLETED</span></td><td>3.5s</td></tr>
+            <tr class="ok"><td class="num">15</td><td><code>inputTextCommand</code></td><td class="target">&quot;Test1234!&quot;</td><td><span class="pill pass">COMPLETED</span></td><td>2.8s</td></tr>
+            <tr class="ok"><td class="num">16</td><td><code>hideKeyboardCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>1.2s</td></tr>
+            <tr class="ok"><td class="num">17</td><td><code>tapOnElement</code></td><td class="target">id: login-submit-button</td><td><span class="pill pass">COMPLETED</span></td><td>3.3s</td></tr>
+            <tr class="ok"><td class="num">18</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>1.0s</td></tr>
+            <tr class="ok"><td class="num">19</td><td><code>assertConditionCommand</code></td><td class="target">visible text: NEATOLV1</td><td><span class="pill pass">COMPLETED</span></td><td>1.2s</td></tr>
+            <tr class="ok"><td class="num">20</td><td><code>tapOnElement</code></td><td class="target">text: NEATOLV1</td><td><span class="pill pass">COMPLETED</span></td><td>3.9s</td></tr>
+            <tr class="ok"><td class="num">21</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>783ms</td></tr>
+            <tr class="ok"><td class="num">22</td><td><code>assertConditionCommand</code></td><td class="target">visible id: dashboard-operations-button</td><td><span class="pill pass">COMPLETED</span></td><td>277ms</td></tr>
+            <tr class="ok"><td class="num">23</td><td><code>assertConditionCommand</code></td><td class="target">visible id: dashboard-operations-button</td><td><span class="pill pass">COMPLETED</span></td><td>248ms</td></tr>
+            <tr class="ok"><td class="num">24</td><td><code>defineVariablesCommand</code></td><td class="target">{&quot;operation&quot;:&quot;qc&quot;}</td><td><span class="pill pass">COMPLETED</span></td><td>0ms</td></tr>
+            <tr class="ok"><td class="num">25</td><td><code>runFlowCommand</code></td><td class="target">flows/navigate-to-operation.yaml</td><td><span class="pill pass">COMPLETED</span></td><td>11.6s</td></tr>
+            <tr class="ok"><td class="num">26</td><td><code>applyConfigurationCommand</code></td><td class="target">{&quot;appId&quot;:&quot;com.flowmobile&quot;}</td><td><span class="pill pass">COMPLETED</span></td><td>0ms</td></tr>
+            <tr class="ok"><td class="num">27</td><td><code>assertConditionCommand</code></td><td class="target">visible text: DASHBOARD</td><td><span class="pill pass">COMPLETED</span></td><td>208ms</td></tr>
+            <tr class="ok"><td class="num">28</td><td><code>tapOnElement</code></td><td class="target">id: dashboard-operations-button</td><td><span class="pill pass">COMPLETED</span></td><td>3.4s</td></tr>
+            <tr class="ok"><td class="num">29</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>700ms</td></tr>
+            <tr class="ok"><td class="num">30</td><td><code>assertConditionCommand</code></td><td class="target">visible text: OPERATIONS</td><td><span class="pill pass">COMPLETED</span></td><td>628ms</td></tr>
+            <tr class="ok"><td class="num">31</td><td><code>scrollCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>1.5s</td></tr>
+            <tr class="ok"><td class="num">32</td><td><code>tapOnElement</code></td><td class="target">id: operations-${operation}-button</td><td><span class="pill pass">COMPLETED</span></td><td>4.5s</td></tr>
+            <tr class="ok"><td class="num">33</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>766ms</td></tr>
+            <tr class="ok"><td class="num">34</td><td><code>assertConditionCommand</code></td><td class="target">visible text: Select Line</td><td><span class="pill pass">COMPLETED</span></td><td>2.5s</td></tr>
+            <tr class="ok"><td class="num">35</td><td><code>runFlowCommand</code></td><td class="target">flows/manual-scan.yaml — Scan work order WO-134</td><td><span class="pill pass">COMPLETED</span></td><td>26.9s</td></tr>
+            <tr class="ok"><td class="num">36</td><td><code>applyConfigurationCommand</code></td><td class="target">{&quot;appId&quot;:&quot;com.flowmobile&quot;}</td><td><span class="pill pass">COMPLETED</span></td><td>1ms</td></tr>
+            <tr class="ok"><td class="num">37</td><td><code>defineVariablesCommand</code></td><td class="target">{&quot;triggerId&quot;:&quot;qc-scan-work-order-button&quot;,&quot;value&quot;:&quot;WO-134&quot;}</td><td><span class="pill pass">COMPLETED</span></td><td>0ms</td></tr>
+            <tr class="ok"><td class="num">38</td><td><code>assertConditionCommand</code></td><td class="target">visible id: ${triggerId}</td><td><span class="pill pass">COMPLETED</span></td><td>218ms</td></tr>
+            <tr class="ok"><td class="num">39</td><td><code>tapOnElement</code></td><td class="target">id: ${triggerId}</td><td><span class="pill pass">COMPLETED</span></td><td>4.9s</td></tr>
+            <tr class="ok"><td class="num">40</td><td><code>assertConditionCommand</code></td><td class="target">visible id: scanner-manual-entry-button</td><td><span class="pill pass">COMPLETED</span></td><td>91ms</td></tr>
+            <tr class="ok"><td class="num">41</td><td><code>tapOnElement</code></td><td class="target">id: scanner-manual-entry-button</td><td><span class="pill pass">COMPLETED</span></td><td>4.1s</td></tr>
+            <tr class="ok"><td class="num">42</td><td><code>assertConditionCommand</code></td><td class="target">visible id: scanner-manual-input</td><td><span class="pill pass">COMPLETED</span></td><td>135ms</td></tr>
+            <tr class="ok"><td class="num">43</td><td><code>tapOnElement</code></td><td class="target">id: scanner-manual-input</td><td><span class="pill pass">COMPLETED</span></td><td>4.4s</td></tr>
+            <tr class="ok"><td class="num">44</td><td><code>inputTextCommand</code></td><td class="target">&quot;${value}&quot;</td><td><span class="pill pass">COMPLETED</span></td><td>2.3s</td></tr>
+            <tr class="ok"><td class="num">45</td><td><code>tapOnElement</code></td><td class="target">id: scanner-manual-submit</td><td><span class="pill pass">COMPLETED</span></td><td>7.2s</td></tr>
+            <tr class="ok"><td class="num">46</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>3.4s</td></tr>
+            <tr class="ok"><td class="num">47</td><td><code>assertConditionCommand</code></td><td class="target">visible text: Scan GTIN to confirm</td><td><span class="pill pass">COMPLETED</span></td><td>138ms</td></tr>
+            <tr class="ok"><td class="num">48</td><td><code>runFlowCommand</code></td><td class="target">flows/manual-scan.yaml — Confirm GTIN 10999888777005</td><td><span class="pill pass">COMPLETED</span></td><td>29.3s</td></tr>
+            <tr class="ok"><td class="num">49</td><td><code>defineVariablesCommand</code></td><td class="target">{&quot;triggerId&quot;:&quot;qc-gtin-scan-camera-button&quot;,&quot;value&quot;:&quot;10999888777005&quot;}</td><td><span class="pill pass">COMPLETED</span></td><td>0ms</td></tr>
+            <tr class="ok"><td class="num">50</td><td><code>applyConfigurationCommand</code></td><td class="target">{&quot;appId&quot;:&quot;com.flowmobile&quot;}</td><td><span class="pill pass">COMPLETED</span></td><td>0ms</td></tr>
+            <tr class="ok"><td class="num">51</td><td><code>assertConditionCommand</code></td><td class="target">visible id: ${triggerId}</td><td><span class="pill pass">COMPLETED</span></td><td>130ms</td></tr>
+            <tr class="ok"><td class="num">52</td><td><code>tapOnElement</code></td><td class="target">id: ${triggerId}</td><td><span class="pill pass">COMPLETED</span></td><td>3.1s</td></tr>
+            <tr class="ok"><td class="num">53</td><td><code>assertConditionCommand</code></td><td class="target">visible id: scanner-manual-entry-button</td><td><span class="pill pass">COMPLETED</span></td><td>728ms</td></tr>
+            <tr class="ok"><td class="num">54</td><td><code>tapOnElement</code></td><td class="target">id: scanner-manual-entry-button</td><td><span class="pill pass">COMPLETED</span></td><td>7.9s</td></tr>
+            <tr class="ok"><td class="num">55</td><td><code>assertConditionCommand</code></td><td class="target">visible id: scanner-manual-input</td><td><span class="pill pass">COMPLETED</span></td><td>163ms</td></tr>
+            <tr class="ok"><td class="num">56</td><td><code>tapOnElement</code></td><td class="target">id: scanner-manual-input</td><td><span class="pill pass">COMPLETED</span></td><td>4.4s</td></tr>
+            <tr class="ok"><td class="num">57</td><td><code>inputTextCommand</code></td><td class="target">&quot;${value}&quot;</td><td><span class="pill pass">COMPLETED</span></td><td>4.4s</td></tr>
+            <tr class="ok"><td class="num">58</td><td><code>tapOnElement</code></td><td class="target">id: scanner-manual-submit</td><td><span class="pill pass">COMPLETED</span></td><td>7.8s</td></tr>
+            <tr class="ok"><td class="num">59</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>672ms</td></tr>
+            <tr class="ok"><td class="num">60</td><td><code>assertConditionCommand</code></td><td class="target">visible text: Quality Control</td><td><span class="pill pass">COMPLETED</span></td><td>118ms</td></tr>
+            <tr class="ok"><td class="num">61</td><td><code>scrollUntilVisible</code></td><td class="target">text: stop (DOWN)</td><td><span class="pill pass">COMPLETED</span></td><td>3.0s</td></tr>
+            <tr class="ok"><td class="num">62</td><td><code>tapOnElement</code></td><td class="target">text: stop</td><td><span class="pill pass">COMPLETED</span></td><td>4.1s</td></tr>
+            <tr class="ok"><td class="num">63</td><td><code>assertConditionCommand</code></td><td class="target">visible text: END SESSION?</td><td><span class="pill pass">COMPLETED</span></td><td>113ms</td></tr>
+            <tr class="ok"><td class="num">64</td><td><code>tapOnElement</code></td><td class="target">id: packing-tray-qty-input</td><td><span class="pill pass">COMPLETED</span></td><td>3.2s</td></tr>
+            <tr class="ok"><td class="num">65</td><td><code>inputTextCommand</code></td><td class="target">&quot;4&quot;</td><td><span class="pill pass">COMPLETED</span></td><td>1.2s</td></tr>
+            <tr class="ok"><td class="num">66</td><td><code>hideKeyboardCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>1.2s</td></tr>
+            <tr class="ok"><td class="num">67</td><td><code>tapOnElement</code></td><td class="target">text: confirm</td><td><span class="pill pass">COMPLETED</span></td><td>2.7s</td></tr>
+            <tr class="ok"><td class="num">68</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>949ms</td></tr>
+            <tr class="ok"><td class="num">69</td><td><code>assertConditionCommand</code></td><td class="target">visible text: QC Summary</td><td><span class="pill pass">COMPLETED</span></td><td>731ms</td></tr>
+            <tr class="ok"><td class="num">70</td><td><code>assertConditionCommand</code></td><td class="target">notVisible text: Scan GTIN to confirm</td><td><span class="pill pass">COMPLETED</span></td><td>869ms</td></tr>
+          </tbody>
+        </table>
+      </td></tr>
+      <tr class="flow clickable"><td class="chev">&#9656;</td><td>receiving-fast-box-scan-flow</td><td><span class="pill pass">PASSED</span></td><td>90</td><td>3m 11s</td><td><a href="./receiving-fast-box-scan-flow.html">Summary</a></td></tr>
+      <tr class="details"><td colspan="6">
+        <div class="summary">Result: <span class="pill pass">PASSED</span> &middot; Steps: 90 &middot; Duration: 3m 11s &middot; Started: 2026-08-26 14:06:02</div>
+        <table>
+          <thead>
+            <tr><th>#</th><th>Command</th><th>Target</th><th>Status</th><th>Duration</th></tr>
+          </thead>
+          <tbody>
+            <tr class="ok"><td class="num">1</td><td><code>defineVariablesCommand</code></td><td class="target">{&quot;MAESTRO_FILENAME&quot;:&quot;receiving-fast-box-scan-flow&quot;}</td><td><span class="pill pass">COMPLETED</span></td><td>3ms</td></tr>
+            <tr class="ok"><td class="num">2</td><td><code>applyConfigurationCommand</code></td><td class="target">{&quot;appId&quot;:&quot;com.flowmobile&quot;,&quot;tags&quot;:[&quot;receiving&quot;,&quot;fast-box-scan&quot;,&quot;smoke&quot;,&quot;e2e&quot;]}</td><td><span class="pill pass">COMPLETED</span></td><td>0ms</td></tr>
+            <tr class="ok"><td class="num">3</td><td><code>clearStateCommand</code></td><td class="target">com.flowmobile</td><td><span class="pill pass">COMPLETED</span></td><td>10.6s</td></tr>
+            <tr class="ok"><td class="num">4</td><td><code>launchAppCommand</code></td><td class="target">com.flowmobile</td><td><span class="pill pass">COMPLETED</span></td><td>11.5s</td></tr>
+            <tr class="ok"><td class="num">5</td><td><code>runFlowCommand</code></td><td class="target">flows/shared-login.yaml</td><td><span class="pill pass">COMPLETED</span></td><td>37.0s</td></tr>
+            <tr class="ok"><td class="num">6</td><td><code>defineVariablesCommand</code></td><td class="target">{&quot;TEST_USERNAME&quot;:&quot;neato-tester-local&quot;,&quot;TEST_PASSWORD&quot;:&quot;Test1234!&quot;,&quot;DEFAULT_WAREHOUSE&quot;:&quot;NEATOLV1&quot;}</td><td><span class="pill pass">COMPLETED</span></td><td>0ms</td></tr>
+            <tr class="ok"><td class="num">7</td><td><code>applyConfigurationCommand</code></td><td class="target">{&quot;appId&quot;:&quot;com.flowmobile&quot;}</td><td><span class="pill pass">COMPLETED</span></td><td>0ms</td></tr>
+            <tr class="ok"><td class="num">8</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>2.0s</td></tr>
+            <tr class="skip"><td class="num">9</td><td><code>tapOnElement</code></td><td class="target">text: Later</td><td><span class="pill skip">WARNED</span></td><td>—</td></tr>
+            <tr class="ok"><td class="num">10</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>837ms</td></tr>
+            <tr class="ok"><td class="num">11</td><td><code>assertConditionCommand</code></td><td class="target">visible id: login-username-input</td><td><span class="pill pass">COMPLETED</span></td><td>753ms</td></tr>
+            <tr class="ok"><td class="num">12</td><td><code>tapOnElement</code></td><td class="target">id: login-username-input</td><td><span class="pill pass">COMPLETED</span></td><td>3.9s</td></tr>
+            <tr class="ok"><td class="num">13</td><td><code>inputTextCommand</code></td><td class="target">&quot;neato-tester-local&quot;</td><td><span class="pill pass">COMPLETED</span></td><td>3.7s</td></tr>
+            <tr class="ok"><td class="num">14</td><td><code>tapOnElement</code></td><td class="target">id: login-password-input</td><td><span class="pill pass">COMPLETED</span></td><td>4.0s</td></tr>
+            <tr class="ok"><td class="num">15</td><td><code>inputTextCommand</code></td><td class="target">&quot;Test1234!&quot;</td><td><span class="pill pass">COMPLETED</span></td><td>2.2s</td></tr>
+            <tr class="ok"><td class="num">16</td><td><code>hideKeyboardCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>2.1s</td></tr>
+            <tr class="ok"><td class="num">17</td><td><code>tapOnElement</code></td><td class="target">id: login-submit-button</td><td><span class="pill pass">COMPLETED</span></td><td>3.2s</td></tr>
+            <tr class="ok"><td class="num">18</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>1.2s</td></tr>
+            <tr class="ok"><td class="num">19</td><td><code>assertConditionCommand</code></td><td class="target">visible text: NEATOLV1</td><td><span class="pill pass">COMPLETED</span></td><td>664ms</td></tr>
+            <tr class="ok"><td class="num">20</td><td><code>tapOnElement</code></td><td class="target">text: NEATOLV1</td><td><span class="pill pass">COMPLETED</span></td><td>3.5s</td></tr>
+            <tr class="ok"><td class="num">21</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>912ms</td></tr>
+            <tr class="ok"><td class="num">22</td><td><code>assertConditionCommand</code></td><td class="target">visible id: dashboard-operations-button</td><td><span class="pill pass">COMPLETED</span></td><td>263ms</td></tr>
+            <tr class="ok"><td class="num">23</td><td><code>assertConditionCommand</code></td><td class="target">visible id: dashboard-operations-button</td><td><span class="pill pass">COMPLETED</span></td><td>730ms</td></tr>
+            <tr class="ok"><td class="num">24</td><td><code>tapOnElement</code></td><td class="target">id: dashboard-operations-button</td><td><span class="pill pass">COMPLETED</span></td><td>3.4s</td></tr>
+            <tr class="ok"><td class="num">25</td><td><code>assertConditionCommand</code></td><td class="target">visible id: operations-receiving-button</td><td><span class="pill pass">COMPLETED</span></td><td>296ms</td></tr>
+            <tr class="ok"><td class="num">26</td><td><code>tapOnElement</code></td><td class="target">id: operations-receiving-button</td><td><span class="pill pass">COMPLETED</span></td><td>4.0s</td></tr>
+            <tr class="ok"><td class="num">27</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>864ms</td></tr>
+            <tr class="ok"><td class="num">28</td><td><code>assertConditionCommand</code></td><td class="target">visible text: Fast Box Scan</td><td><span class="pill pass">COMPLETED</span></td><td>334ms</td></tr>
+            <tr class="ok"><td class="num">29</td><td><code>tapOnElement</code></td><td class="target">text: Fast Box Scan</td><td><span class="pill pass">COMPLETED</span></td><td>4.2s</td></tr>
+            <tr class="ok"><td class="num">30</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>2.6s</td></tr>
+            <tr class="ok"><td class="num">31</td><td><code>tapOnElement</code></td><td class="target">id: fbs-po-search-input</td><td><span class="pill pass">COMPLETED</span></td><td>4.8s</td></tr>
+            <tr class="ok"><td class="num">32</td><td><code>inputTextCommand</code></td><td class="target">&quot;000666&quot;</td><td><span class="pill pass">COMPLETED</span></td><td>2.1s</td></tr>
+            <tr class="ok"><td class="num">33</td><td><code>hideKeyboardCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>1.5s</td></tr>
+            <tr class="ok"><td class="num">34</td><td><code>assertConditionCommand</code></td><td class="target">visible id: fbs-po-row-000666</td><td><span class="pill pass">COMPLETED</span></td><td>174ms</td></tr>
+            <tr class="ok"><td class="num">35</td><td><code>tapOnElement</code></td><td class="target">id: fbs-po-row-000666</td><td><span class="pill pass">COMPLETED</span></td><td>2.6s</td></tr>
+            <tr class="ok"><td class="num">36</td><td><code>assertConditionCommand</code></td><td class="target">visible text: Docking</td><td><span class="pill pass">COMPLETED</span></td><td>3.5s</td></tr>
+            <tr class="ok"><td class="num">37</td><td><code>assertConditionCommand</code></td><td class="target">notVisible text: Loading locations…</td><td><span class="pill pass">COMPLETED</span></td><td>727ms</td></tr>
+            <tr class="ok"><td class="num">38</td><td><code>scrollUntilVisible</code></td><td class="target">id: docking-scan-button (DOWN)</td><td><span class="pill pass">COMPLETED</span></td><td>4.3s</td></tr>
+            <tr class="ok"><td class="num">39</td><td><code>runFlowCommand</code></td><td class="target">flows/manual-scan.yaml — Scan dock location 2DOCKDOOR1</td><td><span class="pill pass">COMPLETED</span></td><td>24.9s</td></tr>
+            <tr class="ok"><td class="num">40</td><td><code>defineVariablesCommand</code></td><td class="target">{&quot;triggerId&quot;:&quot;docking-scan-button&quot;,&quot;value&quot;:&quot;2DOCKDOOR1&quot;}</td><td><span class="pill pass">COMPLETED</span></td><td>0ms</td></tr>
+            <tr class="ok"><td class="num">41</td><td><code>applyConfigurationCommand</code></td><td class="target">{&quot;appId&quot;:&quot;com.flowmobile&quot;}</td><td><span class="pill pass">COMPLETED</span></td><td>0ms</td></tr>
+            <tr class="ok"><td class="num">42</td><td><code>assertConditionCommand</code></td><td class="target">visible id: ${triggerId}</td><td><span class="pill pass">COMPLETED</span></td><td>713ms</td></tr>
+            <tr class="ok"><td class="num">43</td><td><code>tapOnElement</code></td><td class="target">id: ${triggerId}</td><td><span class="pill pass">COMPLETED</span></td><td>3.7s</td></tr>
+            <tr class="ok"><td class="num">44</td><td><code>assertConditionCommand</code></td><td class="target">visible id: scanner-manual-entry-button</td><td><span class="pill pass">COMPLETED</span></td><td>92ms</td></tr>
+            <tr class="ok"><td class="num">45</td><td><code>tapOnElement</code></td><td class="target">id: scanner-manual-entry-button</td><td><span class="pill pass">COMPLETED</span></td><td>6.1s</td></tr>
+            <tr class="ok"><td class="num">46</td><td><code>assertConditionCommand</code></td><td class="target">visible id: scanner-manual-input</td><td><span class="pill pass">COMPLETED</span></td><td>668ms</td></tr>
+            <tr class="ok"><td class="num">47</td><td><code>tapOnElement</code></td><td class="target">id: scanner-manual-input</td><td><span class="pill pass">COMPLETED</span></td><td>3.6s</td></tr>
+            <tr class="ok"><td class="num">48</td><td><code>inputTextCommand</code></td><td class="target">&quot;${value}&quot;</td><td><span class="pill pass">COMPLETED</span></td><td>2.9s</td></tr>
+            <tr class="ok"><td class="num">49</td><td><code>tapOnElement</code></td><td class="target">id: scanner-manual-submit</td><td><span class="pill pass">COMPLETED</span></td><td>6.2s</td></tr>
+            <tr class="ok"><td class="num">50</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>1.0s</td></tr>
+            <tr class="ok"><td class="num">51</td><td><code>scrollUntilVisible</code></td><td class="target">id: docking-submit-button (DOWN)</td><td><span class="pill pass">COMPLETED</span></td><td>290ms</td></tr>
+            <tr class="ok"><td class="num">52</td><td><code>tapOnElement</code></td><td class="target">id: docking-submit-button — Complete docking at 2DOCKDOOR1</td><td><span class="pill pass">COMPLETED</span></td><td>4.0s</td></tr>
+            <tr class="ok"><td class="num">53</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>952ms</td></tr>
+            <tr class="ok"><td class="num">54</td><td><code>assertConditionCommand</code></td><td class="target">visible text: Docking complete</td><td><span class="pill pass">COMPLETED</span></td><td>140ms</td></tr>
+            <tr class="ok"><td class="num">55</td><td><code>tapOnElement</code></td><td class="target">text: OK</td><td><span class="pill pass">COMPLETED</span></td><td>3.4s</td></tr>
+            <tr class="ok"><td class="num">56</td><td><code>assertConditionCommand</code></td><td class="target">visible text: Fast Box Scan</td><td><span class="pill pass">COMPLETED</span></td><td>333ms</td></tr>
+            <tr class="ok"><td class="num">57</td><td><code>tapOnElement</code></td><td class="target">text: Fast Box Scan</td><td><span class="pill pass">COMPLETED</span></td><td>4.3s</td></tr>
+            <tr class="ok"><td class="num">58</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>2.2s</td></tr>
+            <tr class="ok"><td class="num">59</td><td><code>tapOnElement</code></td><td class="target">id: fbs-po-search-input</td><td><span class="pill pass">COMPLETED</span></td><td>4.1s</td></tr>
+            <tr class="ok"><td class="num">60</td><td><code>inputTextCommand</code></td><td class="target">&quot;000666&quot;</td><td><span class="pill pass">COMPLETED</span></td><td>2.6s</td></tr>
+            <tr class="ok"><td class="num">61</td><td><code>hideKeyboardCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>1.3s</td></tr>
+            <tr class="ok"><td class="num">62</td><td><code>assertConditionCommand</code></td><td class="target">visible id: fbs-po-row-000666</td><td><span class="pill pass">COMPLETED</span></td><td>199ms</td></tr>
+            <tr class="ok"><td class="num">63</td><td><code>tapOnElement</code></td><td class="target">id: fbs-po-row-000666</td><td><span class="pill pass">COMPLETED</span></td><td>4.5s</td></tr>
+            <tr class="ok"><td class="num">64</td><td><code>assertConditionCommand</code></td><td class="target">visible id: fbs-scan-box-upc-button</td><td><span class="pill pass">COMPLETED</span></td><td>151ms</td></tr>
+            <tr class="ok"><td class="num">65</td><td><code>applyConfigurationCommand</code></td><td class="target">{&quot;appId&quot;:&quot;com.flowmobile&quot;}</td><td><span class="pill pass">COMPLETED</span></td><td>1ms</td></tr>
+            <tr class="ok"><td class="num">66</td><td><code>defineVariablesCommand</code></td><td class="target">{&quot;triggerId&quot;:&quot;fbs-scan-box-upc-button&quot;,&quot;value&quot;:&quot;999888777002&quot;}</td><td><span class="pill pass">COMPLETED</span></td><td>0ms</td></tr>
+            <tr class="ok"><td class="num">67</td><td><code>runFlowCommand</code></td><td class="target">flows/manual-scan.yaml — Scan box UPC 999888777002</td><td><span class="pill pass">COMPLETED</span></td><td>26.7s</td></tr>
+            <tr class="ok"><td class="num">68</td><td><code>assertConditionCommand</code></td><td class="target">visible id: ${triggerId}</td><td><span class="pill pass">COMPLETED</span></td><td>168ms</td></tr>
+            <tr class="ok"><td class="num">69</td><td><code>tapOnElement</code></td><td class="target">id: ${triggerId}</td><td><span class="pill pass">COMPLETED</span></td><td>4.8s</td></tr>
+            <tr class="ok"><td class="num">70</td><td><code>assertConditionCommand</code></td><td class="target">visible id: scanner-manual-entry-button</td><td><span class="pill pass">COMPLETED</span></td><td>38ms</td></tr>
+            <tr class="ok"><td class="num">71</td><td><code>tapOnElement</code></td><td class="target">id: scanner-manual-entry-button</td><td><span class="pill pass">COMPLETED</span></td><td>4.0s</td></tr>
+            <tr class="ok"><td class="num">72</td><td><code>assertConditionCommand</code></td><td class="target">visible id: scanner-manual-input</td><td><span class="pill pass">COMPLETED</span></td><td>131ms</td></tr>
+            <tr class="ok"><td class="num">73</td><td><code>tapOnElement</code></td><td class="target">id: scanner-manual-input</td><td><span class="pill pass">COMPLETED</span></td><td>5.7s</td></tr>
+            <tr class="ok"><td class="num">74</td><td><code>inputTextCommand</code></td><td class="target">&quot;${value}&quot;</td><td><span class="pill pass">COMPLETED</span></td><td>3.3s</td></tr>
+            <tr class="ok"><td class="num">75</td><td><code>tapOnElement</code></td><td class="target">id: scanner-manual-submit</td><td><span class="pill pass">COMPLETED</span></td><td>7.6s</td></tr>
+            <tr class="ok"><td class="num">76</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>1.0s</td></tr>
+            <tr class="ok"><td class="num">77</td><td><code>assertConditionCommand</code></td><td class="target">visible id: wsku-confirmed-badge</td><td><span class="pill pass">COMPLETED</span></td><td>196ms</td></tr>
+            <tr class="ok"><td class="num">78</td><td><code>scrollUntilVisible</code></td><td class="target">id: fbs-box-count-input (DOWN)</td><td><span class="pill pass">COMPLETED</span></td><td>2.6s</td></tr>
+            <tr class="ok"><td class="num">79</td><td><code>tapOnElement</code></td><td class="target">id: fbs-box-count-input</td><td><span class="pill pass">COMPLETED</span></td><td>4.4s</td></tr>
+            <tr class="ok"><td class="num">80</td><td><code>inputTextCommand</code></td><td class="target">&quot;1&quot;</td><td><span class="pill pass">COMPLETED</span></td><td>1.3s</td></tr>
+            <tr class="ok"><td class="num">81</td><td><code>hideKeyboardCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>1.3s</td></tr>
+            <tr class="ok"><td class="num">82</td><td><code>tapOnElement</code></td><td class="target">text: Check lot</td><td><span class="pill pass">COMPLETED</span></td><td>6.8s</td></tr>
+            <tr class="ok"><td class="num">83</td><td><code>waitForAnimationToEndCommand</code></td><td class="target">—</td><td><span class="pill pass">COMPLETED</span></td><td>1.1s</td></tr>
+            <tr class="skip"><td class="num">84</td><td><code>scrollUntilVisible</code></td><td class="target">text: Create separate lot instead (DOWN)</td><td><span class="pill skip">WARNED</span></td><td>—</td></tr>
+            <tr class="skip"><td class="num">85</td><td><code>tapOnElement</code></td><td class="target">text: Create separate lot instead</td><td><span class="pill skip">WARNED</span></td><td>—</td></tr>
+            <tr class="skip"><td class="num">86</td><td><code>tapOnElement</code></td><td class="target">text: CREATE SEPARATE</td><td><span class="pill skip">WARNED</span></td><td>—</td></tr>
+            <tr class="ok"><td class="num">87</td><td><code>tapOnElement</code></td><td class="target">text: Create new lot</td><td><span class="pill pass">COMPLETED</span></td><td>3.8s</td></tr>
+            <tr class="ok"><td class="num">88</td><td><code>assertConditionCommand</code></td><td class="target">visible text: Lot created</td><td><span class="pill pass">COMPLETED</span></td><td>841ms</td></tr>
+            <tr class="ok"><td class="num">89</td><td><code>assertConditionCommand</code></td><td class="target">visible text: Print pallet tag</td><td><span class="pill pass">COMPLETED</span></td><td>556ms</td></tr>
+            <tr class="ok"><td class="num">90</td><td><code>assertConditionCommand</code></td><td class="target">notVisible text: Docking</td><td><span class="pill pass">COMPLETED</span></td><td>1.0s</td></tr>
+          </tbody>
+        </table>
+      </td></tr>
+  </tbody>
+</table>
+<p class="meta">Click a flow to expand its steps.</p>
+<script>
+  // Rows with a chevron have a details row right after them; everything else
+  // (SKIPPED flows) is inert. Links inside the row still navigate.
+  document.querySelectorAll('tr.flow.clickable').forEach(function (row) {
+    row.addEventListener('click', function (event) {
+      if (event.target.closest('a')) { return; }
+      var open = row.classList.toggle('open');
+      var chev = row.querySelector('.chev');
+      if (chev) { chev.textContent = open ? '\u25be' : '\u25b8'; }
+    });
+  });
+</script>
+</body>
+</html>
