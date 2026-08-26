@@ -2,186 +2,83 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Flow-Mobile Maestro Reports</title>
 <style>
-  :root {
-    --bg: #ffffff;
-    --surface: #f9fafb;
-    --border: #e5e7eb;
-    --text: #111827;
-    --muted: #6b7280;
-    --pass: #15803d;
-    --fail: #dc2626;
-    --skip: #6b7280;
-    --link: #2563eb;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #0a0a0a;
-      --surface: #141414;
-      --border: #2a2a2a;
-      --text: #f5f5f5;
-      --muted: #a0a0a0;
-      --pass: #4ade80;
-      --fail: #f87171;
-      --skip: #666666;
-      --link: #60a5fa;
-    }
-  }
-
-  /* No wrapper element is emitted, so the page frame lives on html/body:
-     html paints the whole viewport, body is the centred column. */
-  html { background: var(--bg); }
-  body {
-    max-width: 960px; margin: 2rem auto; padding: 0 1.5rem;
-    background: var(--bg); color: var(--text);
-    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    font-size: 14px; line-height: 1.5;
-    -webkit-font-smoothing: antialiased;
-  }
-  h1 { font-weight: 600; font-size: 1.5rem; margin: 0 0 0.5rem; }
-  a { color: var(--link); text-decoration: none; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; max-width: 800px; margin: 2rem auto; padding: 0 1rem; color: #222; }
+  h1 { border-bottom: 1px solid #eee; padding-bottom: 0.5rem; }
+  ul { list-style: none; padding: 0; }
+  li { padding: 0.75rem; border-bottom: 1px solid #f0f0f0; }
+  li:hover { background: #fafafa; }
+  a { color: #0366d6; text-decoration: none; }
   a:hover { text-decoration: underline; }
-  code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.85rem; word-break: break-word; }
-  .meta { color: var(--muted); font-size: 0.75rem; margin-top: 0.25rem; }
-
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 1.5rem;
-    margin-bottom: 1rem;
-  }
-
-  table { width: 100%; border-collapse: collapse; }
-  th {
-    text-align: left; padding: 0.75rem 1rem;
-    font-size: 0.75rem; font-weight: 600;
-    text-transform: uppercase; letter-spacing: 0.05em;
-    color: var(--muted);
-    border-bottom: 1px solid var(--border);
-  }
-  td { padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); vertical-align: top; }
-
-  /* Status badges: PASSED / FAILED / everything else. */
-  .pill {
-    display: inline-flex; align-items: center; gap: 0.375rem;
-    padding: 0.125rem 0.625rem; border-radius: 9999px;
-    font-size: 0.6875rem; font-weight: 600;
-    text-transform: uppercase; letter-spacing: 0.04em;
-    white-space: nowrap;
-  }
-  .pill::before { content: ""; width: 6px; height: 6px; border-radius: 50%; }
-  .pill.pass { color: var(--pass); background: color-mix(in oklab, var(--pass) 15%, transparent); }
-  .pill.pass::before { background: var(--pass); }
-  .pill.fail { color: var(--fail); background: color-mix(in oklab, var(--fail) 15%, transparent); }
-  .pill.fail::before { background: var(--fail); }
-  .pill.skip { color: var(--skip); background: color-mix(in oklab, var(--skip) 15%, transparent); }
-  .pill.skip::before { background: var(--skip); }
-  ul { list-style: none; padding: 0; margin: 1.5rem 0 0; }
-  li { padding: 1rem 1.25rem; }
-  .intro { color: var(--muted); }
-
-  /* Trend strip: one block per recent run, oldest to newest, left to right.
-     Plain <a> elements in a flex row — no canvas, no chart library. */
-  .trend { margin-top: 1.5rem; padding: 1.25rem 1.5rem; }
-  .trend-label { color: var(--muted); font-size: 0.75rem; margin-bottom: 0.625rem; }
-  .trend-strip { display: flex; flex-wrap: wrap; gap: 4px; }
-  .trend-strip a { display: block; width: 24px; height: 40px; border-radius: 2px; }
-  .trend-strip a:hover { text-decoration: none; outline: 2px solid var(--text); outline-offset: 2px; }
-  .trend-strip a.pass { background: var(--pass); }
-  .trend-strip a.fail { background: var(--fail); }
-  .trend-strip a.skip { background: var(--skip); }
-
-  /* Run row: timestamp left, status badge + counts pushed to the right edge. */
-  .run-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
-  .run-stats { display: flex; align-items: center; gap: 0.625rem; color: var(--muted); font-size: 0.75rem; }
-  .flow-links { margin-top: 0.5rem; font-size: 0.75rem; color: var(--muted); }
-  .flow-links a { color: var(--muted); }
-  .flow-links .sep { color: var(--border); }
+  .flow-links { margin-top: 0.25rem; font-size: 0.85rem; color: #666; }
+  .flow-links a { margin-right: 0.75rem; }
+  .meta { color: #999; font-size: 0.85rem; margin-top: 0.25rem; }
 </style>
 </head>
 <body>
 <h1>Flow-Mobile Maestro Reports</h1>
-<p class="intro">Automated HTML reports from <code>scripts/maestro-full.sh</code>. Last 30 runs retained.</p>
-<div class="card trend">
-  <div class="trend-label">Recent runs (pass rate: 75%)</div>
-  <div class="trend-strip">
-    <a class="fail" href="./2026-08-25-1407/" title="2026-08-25-1407 &middot; 0 of 6 passed"></a>
-    <a class="pass" href="./2026-08-25-1418/" title="2026-08-25-1418 &middot; 6 of 6 passed"></a>
-    <a class="pass" href="./2026-08-25-1506/" title="2026-08-25-1506 &middot; 6 of 6 passed"></a>
-    <a class="pass" href="./2026-08-25-1709/" title="2026-08-25-1709 &middot; 6 of 6 passed"></a>
-  </div>
-</div>
+<p>Automated HTML reports from <code>scripts/maestro-full.sh</code>. Last 30 runs retained.</p>
 <ul>
-  <li class="card">
-    <div class="run-head">
-      <strong><a href="./2026-08-25-1709/">2026-08-25-1709</a></strong>
-      <div class="run-stats">
-        <span class="pill pass">PASSED</span>
-        <span>6/6 flows &middot; 22m 0s</span>
-      </div>
+  <li>
+    <strong><a href="./2026-08-26-0803/">2026-08-26-0803</a></strong>
+    <div class="flow-links">
+      <a href="./2026-08-26-0803/logout-flow.html">logout</a>
+      <a href="./2026-08-26-0803/outbound-pallet-create-flow.html">outbound-pallet-create</a>
+      <a href="./2026-08-26-0803/packing-flow.html">packing</a>
+      <a href="./2026-08-26-0803/picking-flow.html">picking</a>
+      <a href="./2026-08-26-0803/qc-flow.html">qc</a>
+      <a href="./2026-08-26-0803/receiving-fast-box-scan-flow.html">receiving-fast-box-scan</a>
     </div>
+    <div class="meta">2026-08-26 08:03 &middot; 6 flow report(s)</div>
+  </li>
+  <li>
+    <strong><a href="./2026-08-25-1709/">2026-08-25-1709</a></strong>
     <div class="flow-links">
       <a href="./2026-08-25-1709/logout-flow.html">logout</a>
-      <span class="sep">&middot;</span><a href="./2026-08-25-1709/outbound-pallet-create-flow.html">outbound-pallet-create</a>
-      <span class="sep">&middot;</span><a href="./2026-08-25-1709/packing-flow.html">packing</a>
-      <span class="sep">&middot;</span><a href="./2026-08-25-1709/picking-flow.html">picking</a>
-      <span class="sep">&middot;</span><a href="./2026-08-25-1709/qc-flow.html">qc</a>
-      <span class="sep">&middot;</span><a href="./2026-08-25-1709/receiving-fast-box-scan-flow.html">receiving-fast-box-scan</a>
+      <a href="./2026-08-25-1709/outbound-pallet-create-flow.html">outbound-pallet-create</a>
+      <a href="./2026-08-25-1709/packing-flow.html">packing</a>
+      <a href="./2026-08-25-1709/picking-flow.html">picking</a>
+      <a href="./2026-08-25-1709/qc-flow.html">qc</a>
+      <a href="./2026-08-25-1709/receiving-fast-box-scan-flow.html">receiving-fast-box-scan</a>
     </div>
+    <div class="meta">2026-08-25 17:09 &middot; 6 flow report(s)</div>
   </li>
-  <li class="card">
-    <div class="run-head">
-      <strong><a href="./2026-08-25-1506/">2026-08-25-1506</a></strong>
-      <div class="run-stats">
-        <span class="pill pass">PASSED</span>
-        <span>6/6 flows &middot; 21m 44s</span>
-      </div>
-    </div>
+  <li>
+    <strong><a href="./2026-08-25-1506/">2026-08-25-1506</a></strong>
     <div class="flow-links">
       <a href="./2026-08-25-1506/logout-flow.html">logout</a>
-      <span class="sep">&middot;</span><a href="./2026-08-25-1506/outbound-pallet-create-flow.html">outbound-pallet-create</a>
-      <span class="sep">&middot;</span><a href="./2026-08-25-1506/packing-flow.html">packing</a>
-      <span class="sep">&middot;</span><a href="./2026-08-25-1506/picking-flow.html">picking</a>
-      <span class="sep">&middot;</span><a href="./2026-08-25-1506/qc-flow.html">qc</a>
-      <span class="sep">&middot;</span><a href="./2026-08-25-1506/receiving-fast-box-scan-flow.html">receiving-fast-box-scan</a>
+      <a href="./2026-08-25-1506/outbound-pallet-create-flow.html">outbound-pallet-create</a>
+      <a href="./2026-08-25-1506/packing-flow.html">packing</a>
+      <a href="./2026-08-25-1506/picking-flow.html">picking</a>
+      <a href="./2026-08-25-1506/qc-flow.html">qc</a>
+      <a href="./2026-08-25-1506/receiving-fast-box-scan-flow.html">receiving-fast-box-scan</a>
     </div>
+    <div class="meta">2026-08-25 15:06 &middot; 6 flow report(s)</div>
   </li>
-  <li class="card">
-    <div class="run-head">
-      <strong><a href="./2026-08-25-1418/">2026-08-25-1418</a></strong>
-      <div class="run-stats">
-        <span class="pill pass">PASSED</span>
-        <span>6/6 flows &middot; 22m 1s</span>
-      </div>
-    </div>
+  <li>
+    <strong><a href="./2026-08-25-1418/">2026-08-25-1418</a></strong>
     <div class="flow-links">
       <a href="./2026-08-25-1418/logout-flow.html">logout</a>
-      <span class="sep">&middot;</span><a href="./2026-08-25-1418/outbound-pallet-create-flow.html">outbound-pallet-create</a>
-      <span class="sep">&middot;</span><a href="./2026-08-25-1418/packing-flow.html">packing</a>
-      <span class="sep">&middot;</span><a href="./2026-08-25-1418/picking-flow.html">picking</a>
-      <span class="sep">&middot;</span><a href="./2026-08-25-1418/qc-flow.html">qc</a>
-      <span class="sep">&middot;</span><a href="./2026-08-25-1418/receiving-fast-box-scan-flow.html">receiving-fast-box-scan</a>
+      <a href="./2026-08-25-1418/outbound-pallet-create-flow.html">outbound-pallet-create</a>
+      <a href="./2026-08-25-1418/packing-flow.html">packing</a>
+      <a href="./2026-08-25-1418/picking-flow.html">picking</a>
+      <a href="./2026-08-25-1418/qc-flow.html">qc</a>
+      <a href="./2026-08-25-1418/receiving-fast-box-scan-flow.html">receiving-fast-box-scan</a>
     </div>
+    <div class="meta">2026-08-25 14:18 &middot; 6 flow report(s)</div>
   </li>
-  <li class="card">
-    <div class="run-head">
-      <strong><a href="./2026-08-25-1407/">2026-08-25-1407</a></strong>
-      <div class="run-stats">
-        <span class="pill fail">FAILED</span>
-        <span>0/6 flows &middot; 9m 6s</span>
-      </div>
-    </div>
+  <li>
+    <strong><a href="./2026-08-25-1407/">2026-08-25-1407</a></strong>
     <div class="flow-links">
       <a href="./2026-08-25-1407/logout-flow.html">logout</a>
-      <span class="sep">&middot;</span><a href="./2026-08-25-1407/outbound-pallet-create-flow.html">outbound-pallet-create</a>
-      <span class="sep">&middot;</span><a href="./2026-08-25-1407/packing-flow.html">packing</a>
-      <span class="sep">&middot;</span><a href="./2026-08-25-1407/picking-flow.html">picking</a>
-      <span class="sep">&middot;</span><a href="./2026-08-25-1407/qc-flow.html">qc</a>
-      <span class="sep">&middot;</span><a href="./2026-08-25-1407/receiving-fast-box-scan-flow.html">receiving-fast-box-scan</a>
+      <a href="./2026-08-25-1407/outbound-pallet-create-flow.html">outbound-pallet-create</a>
+      <a href="./2026-08-25-1407/packing-flow.html">packing</a>
+      <a href="./2026-08-25-1407/picking-flow.html">picking</a>
+      <a href="./2026-08-25-1407/qc-flow.html">qc</a>
+      <a href="./2026-08-25-1407/receiving-fast-box-scan-flow.html">receiving-fast-box-scan</a>
     </div>
+    <div class="meta">2026-08-25 14:07 &middot; 6 flow report(s)</div>
   </li>
 </ul>
 </body>
