@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Maestro run — 2026-08-28-0955</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --surface: #f9fafb;
+    --border: #e5e7eb;
+    --text: #111827;
+    --muted: #6b7280;
+    --pass: #15803d;
+    --fail: #dc2626;
+    --skip: #6b7280;
+    --link: #2563eb;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0a0a0a;
+      --surface: #141414;
+      --border: #2a2a2a;
+      --text: #f5f5f5;
+      --muted: #a0a0a0;
+      --pass: #4ade80;
+      --fail: #f87171;
+      --skip: #666666;
+      --link: #60a5fa;
+    }
+  }
+
+  /* No wrapper element is emitted, so the page frame lives on html/body:
+     html paints the whole viewport, body is the centred column. */
+  html { background: var(--bg); }
+  body {
+    max-width: 960px; margin: 2rem auto; padding: 0 1.5rem;
+    background: var(--bg); color: var(--text);
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 14px; line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1 { font-weight: 600; font-size: 1.5rem; margin: 0 0 0.5rem; }
+  a { color: var(--link); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.85rem; word-break: break-word; }
+  .meta { color: var(--muted); font-size: 0.75rem; margin-top: 0.25rem; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  table { width: 100%; border-collapse: collapse; }
+  th {
+    text-align: left; padding: 0.75rem 1rem;
+    font-size: 0.75rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.05em;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+  }
+  td { padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+
+  /* Status badges: PASSED / FAILED / everything else. */
+  .pill {
+    display: inline-flex; align-items: center; gap: 0.375rem;
+    padding: 0.125rem 0.625rem; border-radius: 9999px;
+    font-size: 0.6875rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+  .pill::before { content: ""; width: 6px; height: 6px; border-radius: 50%; }
+  .pill.pass { color: var(--pass); background: color-mix(in oklab, var(--pass) 15%, transparent); }
+  .pill.pass::before { background: var(--pass); }
+  .pill.fail { color: var(--fail); background: color-mix(in oklab, var(--fail) 15%, transparent); }
+  .pill.fail::before { background: var(--fail); }
+  .pill.skip { color: var(--skip); background: color-mix(in oklab, var(--skip) 15%, transparent); }
+  .pill.skip::before { background: var(--skip); }
+  td.num { color: var(--muted); text-align: right; width: 2.5rem; }
+  td.target { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.85rem; word-break: break-word; }
+  /* Inline status text (the totals headline count); badges use .pill. */
+  .pass { color: var(--pass); font-weight: 600; }
+  .fail { color: var(--fail); font-weight: 600; }
+  .skipped { color: var(--skip); font-weight: 600; }
+  tr:hover td { background: var(--surface); }
+  tr.skip td { color: var(--muted); }
+  .summary { color: var(--muted); margin: 1rem 0; }
+  /* Run totals: CSS-only pie beside the headline numbers. */
+  .totals { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.5rem; }
+  .pie { width: 120px; height: 120px; border-radius: 50%; flex-shrink: 0; }
+  .totals-text { line-height: 1.7; }
+  .totals-text .count { font-weight: 600; font-size: 1.05rem; }
+  /* Accordion: a flow row plus the details row that follows it. */
+  tr.flow.clickable { cursor: pointer; }
+  td.chev { width: 1.5rem; color: var(--muted); user-select: none; }
+  tr.flow.open td.chev { color: var(--text); }
+  tr.details { display: none; }
+  tr.flow.open + tr.details { display: table-row; }
+  /* The panel keeps its own tint on hover — only flow rows react to the pointer. */
+  tr.details > td, tr.details:hover > td { background: var(--surface); padding: 0.75rem 1rem 1.25rem 2rem; }
+  tr.details .summary { margin: 0 0 0.75rem; }
+  tr.details table { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; }
+  tr.details th, tr.details td { padding: 0.5rem 0.75rem; }
+  tr.details tbody tr:last-child td { border-bottom: none; }
+
+  /* Screenshot strip (NEA-2746): a horizontal gallery under a flow's step
+     table, in step order. A sixth thumbnail column in the table itself was
+     the alternative — rejected because only ~15 of a flow's ~80 steps carry
+     a screenshot, so it would have been a mostly-empty column that tripled
+     every row's height. The strip leaves the table exactly as it was. */
+  .shots-label { color: var(--muted); font-size: 0.75rem; margin: 1rem 0 0.5rem; }
+  .shots { display: flex; gap: 0.75rem; overflow-x: auto; padding-bottom: 0.5rem; }
+  .shots figure { margin: 0; flex: 0 0 auto; width: 120px; }
+  .shots img {
+    display: block; width: 120px; height: 213px;
+    object-fit: cover; object-position: top;
+    background: var(--bg);
+    border: 1px solid var(--border); border-radius: 6px;
+  }
+  .shots a:hover img { border-color: var(--link); }
+  .shots figcaption {
+    font-size: 0.6875rem; color: var(--muted);
+    margin-top: 0.375rem; line-height: 1.3; word-break: break-word;
+  }
+  /* Failure captures are the ones you came to the report for — red frame
+     plus an explicit label, so they never read as one more checkpoint. */
+  .shots .shot-fail img { border: 2px solid var(--fail); }
+  .shots .shot-fail figcaption { color: var(--fail); font-weight: 600; }
+
+  /* Click-to-expand overlay. Hidden until a thumbnail is clicked; with JS
+     off, the thumbnail's href still opens the PNG on its own. */
+  .lightbox {
+    position: fixed; inset: 0; z-index: 50; display: none;
+    align-items: center; justify-content: center;
+    background: rgba(0, 0, 0, 0.85); padding: 2rem; cursor: zoom-out;
+  }
+  .lightbox.open { display: flex; }
+  .lightbox img { max-width: 100%; max-height: 100%; border-radius: 4px; }
+</style>
+</head>
+<body>
+<h1>Maestro run — 2026-08-28-0955</h1>
+<p><a href="../">← All runs</a></p>
+<div class="card totals">
+  <div class="pie" style="background: var(--skip);"></div>
+  <div class="totals-text">
+    <div class="count"><span class="skipped">0</span> of 9 flows passed</div>
+    <div>Total: 0s</div>
+  </div>
+</div>
+<table>
+  <thead>
+    <tr><th></th><th>Flow</th><th>Result</th><th>Steps</th><th>Duration</th><th>Report</th></tr>
+  </thead>
+  <tbody>
+      <tr class="flow"><td class="chev"></td><td>check-status-flow</td><td><span class="pill skip">SKIPPED</span></td><td>—</td><td>—</td><td>—</td></tr>
+      <tr class="flow"><td class="chev"></td><td>downtime-flow</td><td><span class="pill skip">SKIPPED</span></td><td>—</td><td>—</td><td>—</td></tr>
+      <tr class="flow"><td class="chev"></td><td>invalid-login-flow</td><td><span class="pill skip">SKIPPED</span></td><td>—</td><td>—</td><td>—</td></tr>
+      <tr class="flow"><td class="chev"></td><td>logout-flow</td><td><span class="pill skip">SKIPPED</span></td><td>—</td><td>—</td><td>—</td></tr>
+      <tr class="flow"><td class="chev"></td><td>outbound-pallet-create-flow</td><td><span class="pill skip">SKIPPED</span></td><td>—</td><td>—</td><td>—</td></tr>
+      <tr class="flow"><td class="chev"></td><td>packing-flow</td><td><span class="pill skip">SKIPPED</span></td><td>—</td><td>—</td><td>—</td></tr>
+      <tr class="flow"><td class="chev"></td><td>picking-flow</td><td><span class="pill skip">SKIPPED</span></td><td>—</td><td>—</td><td>—</td></tr>
+      <tr class="flow"><td class="chev"></td><td>qc-flow</td><td><span class="pill skip">SKIPPED</span></td><td>—</td><td>—</td><td>—</td></tr>
+      <tr class="flow"><td class="chev"></td><td>receiving-fast-box-scan-flow</td><td><span class="pill skip">SKIPPED</span></td><td>—</td><td>—</td><td>—</td></tr>
+  </tbody>
+</table>
+<p class="meta">Click a flow to expand its steps.</p>
+<div class="lightbox" id="lightbox"><img alt=""></div>
+<script>
+  // Rows with a chevron have a details row right after them; everything else
+  // (SKIPPED flows) is inert. Links inside the row still navigate.
+  document.querySelectorAll('tr.flow.clickable').forEach(function (row) {
+    row.addEventListener('click', function (event) {
+      if (event.target.closest('a')) { return; }
+      var open = row.classList.toggle('open');
+      var chev = row.querySelector('.chev');
+      if (chev) { chev.textContent = open ? '\u25be' : '\u25b8'; }
+    });
+  });
+</script>
+<script>
+  (function () {
+    var box = document.getElementById('lightbox');
+    if (!box) { return; }
+    var full = box.querySelector('img');
+    function close() { box.classList.remove('open'); full.removeAttribute('src'); }
+    document.querySelectorAll('a.shot').forEach(function (link) {
+      link.addEventListener('click', function (event) {
+        event.preventDefault();
+        full.src = link.getAttribute('href');
+        full.alt = link.getAttribute('data-caption') || '';
+        box.classList.add('open');
+      });
+    });
+    box.addEventListener('click', close);
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape') { close(); }
+    });
+  })();
+</script>
+</body>
+</html>
