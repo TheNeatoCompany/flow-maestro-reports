@@ -1,0 +1,4328 @@
+[ {
+  "command" : {
+    "defineVariablesCommand" : {
+      "env" : {
+        "MAESTRO_FILENAME" : "picking-flow",
+        "MAESTRO_DEVICE_UDID" : "R5CY42WFYEL",
+        "MAESTRO_SHARD_ID" : "1",
+        "MAESTRO_SHARD_INDEX" : "0"
+      },
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188285504,
+    "duration" : 13,
+    "sequenceNumber" : 0,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "defineVariablesCommand" : {
+        "env" : {
+          "MAESTRO_FILENAME" : "picking-flow",
+          "MAESTRO_DEVICE_UDID" : "R5CY42WFYEL",
+          "MAESTRO_SHARD_ID" : "1",
+          "MAESTRO_SHARD_INDEX" : "0"
+        },
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "applyConfigurationCommand" : {
+      "config" : {
+        "appId" : "com.flowmobile",
+        "tags" : [ "picking", "operations", "smoke", "e2e" ]
+      },
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188285520,
+    "duration" : 0,
+    "sequenceNumber" : 1,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "applyConfigurationCommand" : {
+        "config" : {
+          "appId" : "com.flowmobile",
+          "tags" : [ "picking", "operations", "smoke", "e2e" ]
+        },
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "launchAppCommand" : {
+      "appId" : "com.flowmobile",
+      "clearState" : true,
+      "permissions" : {
+        "all" : "allow"
+      },
+      "launchArguments" : {
+        "MAESTRO_TEST_MODE" : true,
+        "MAESTRO_API_URL" : "http://192.168.0.138:8000"
+      },
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188285521,
+    "duration" : 10206,
+    "sequenceNumber" : 2,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "launchAppCommand" : {
+        "appId" : "com.flowmobile",
+        "clearState" : true,
+        "permissions" : {
+          "all" : "allow"
+        },
+        "launchArguments" : {
+          "MAESTRO_TEST_MODE" : true,
+          "MAESTRO_API_URL" : "http://192.168.0.138:8000"
+        },
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "takeScreenshotCommand" : {
+      "path" : "start",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188295728,
+    "duration" : 361,
+    "sequenceNumber" : 3,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "takeScreenshotCommand" : {
+        "path" : "start",
+        "optional" : false
+      }
+    },
+    "artifacts" : [ {
+      "type" : "TAKE_SCREENSHOT",
+      "path" : "takeScreenshot/start.png"
+    } ]
+  }
+}, {
+  "command" : {
+    "runFlowCommand" : {
+      "commands" : [ {
+        "defineVariablesCommand" : {
+          "env" : {
+            "TEST_USERNAME" : "neato-tester-local",
+            "TEST_PASSWORD" : "Test1234!",
+            "DEFAULT_WAREHOUSE" : "NEATOLV1"
+          },
+          "optional" : false
+        }
+      }, {
+        "applyConfigurationCommand" : {
+          "config" : {
+            "appId" : "com.flowmobile"
+          },
+          "optional" : false
+        }
+      }, {
+        "tapOnElement" : {
+          "selector" : {
+            "textRegex" : "Later",
+            "optional" : true
+          },
+          "retryIfNoChange" : false,
+          "waitUntilVisible" : false,
+          "longPress" : false,
+          "optional" : true
+        }
+      }, {
+        "assertConditionCommand" : {
+          "condition" : {
+            "visible" : {
+              "idRegex" : "login-username-input",
+              "optional" : false
+            }
+          },
+          "timeout" : "20000",
+          "optional" : false
+        }
+      }, {
+        "takeScreenshotCommand" : {
+          "path" : "login-screen",
+          "optional" : false
+        }
+      }, {
+        "tapOnElement" : {
+          "selector" : {
+            "idRegex" : "login-username-input",
+            "optional" : false
+          },
+          "retryIfNoChange" : false,
+          "waitUntilVisible" : false,
+          "longPress" : false,
+          "optional" : false
+        }
+      }, {
+        "inputTextCommand" : {
+          "text" : "${TEST_USERNAME}¬",
+          "optional" : false
+        }
+      }, {
+        "eraseTextCommand" : {
+          "charactersToErase" : 1,
+          "optional" : false
+        }
+      }, {
+        "tapOnElement" : {
+          "selector" : {
+            "idRegex" : "login-password-input",
+            "optional" : false
+          },
+          "retryIfNoChange" : false,
+          "waitUntilVisible" : false,
+          "longPress" : false,
+          "optional" : false
+        }
+      }, {
+        "inputTextCommand" : {
+          "text" : "${TEST_PASSWORD}¬",
+          "optional" : false
+        }
+      }, {
+        "eraseTextCommand" : {
+          "charactersToErase" : 1,
+          "optional" : false
+        }
+      }, {
+        "hideKeyboardCommand" : {
+          "optional" : false
+        }
+      }, {
+        "tapOnElement" : {
+          "selector" : {
+            "idRegex" : "login-submit-button",
+            "optional" : false
+          },
+          "retryIfNoChange" : false,
+          "waitUntilVisible" : false,
+          "longPress" : false,
+          "optional" : false
+        }
+      }, {
+        "assertConditionCommand" : {
+          "condition" : {
+            "visible" : {
+              "idRegex" : "dashboard-operations-button",
+              "optional" : false
+            }
+          },
+          "timeout" : "20000",
+          "optional" : false
+        }
+      }, {
+        "assertConditionCommand" : {
+          "condition" : {
+            "visible" : {
+              "idRegex" : "dashboard-operations-button",
+              "optional" : false
+            }
+          },
+          "optional" : false
+        }
+      }, {
+        "takeScreenshotCommand" : {
+          "path" : "dashboard",
+          "optional" : false
+        }
+      } ],
+      "sourceDescription" : "flows/shared-login.yaml",
+      "config" : {
+        "appId" : "com.flowmobile"
+      },
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188296090,
+    "duration" : 30081,
+    "sequenceNumber" : 4,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "runFlowCommand" : {
+        "commands" : [ {
+          "defineVariablesCommand" : {
+            "env" : {
+              "TEST_USERNAME" : "neato-tester-local",
+              "TEST_PASSWORD" : "Test1234!",
+              "DEFAULT_WAREHOUSE" : "NEATOLV1"
+            },
+            "optional" : false
+          }
+        }, {
+          "applyConfigurationCommand" : {
+            "config" : {
+              "appId" : "com.flowmobile"
+            },
+            "optional" : false
+          }
+        }, {
+          "tapOnElement" : {
+            "selector" : {
+              "textRegex" : "Later",
+              "optional" : true
+            },
+            "retryIfNoChange" : false,
+            "waitUntilVisible" : false,
+            "longPress" : false,
+            "optional" : true
+          }
+        }, {
+          "assertConditionCommand" : {
+            "condition" : {
+              "visible" : {
+                "idRegex" : "login-username-input",
+                "optional" : false
+              }
+            },
+            "timeout" : "20000",
+            "optional" : false
+          }
+        }, {
+          "takeScreenshotCommand" : {
+            "path" : "login-screen",
+            "optional" : false
+          }
+        }, {
+          "tapOnElement" : {
+            "selector" : {
+              "idRegex" : "login-username-input",
+              "optional" : false
+            },
+            "retryIfNoChange" : false,
+            "waitUntilVisible" : false,
+            "longPress" : false,
+            "optional" : false
+          }
+        }, {
+          "inputTextCommand" : {
+            "text" : "${TEST_USERNAME}¬",
+            "optional" : false
+          }
+        }, {
+          "eraseTextCommand" : {
+            "charactersToErase" : 1,
+            "optional" : false
+          }
+        }, {
+          "tapOnElement" : {
+            "selector" : {
+              "idRegex" : "login-password-input",
+              "optional" : false
+            },
+            "retryIfNoChange" : false,
+            "waitUntilVisible" : false,
+            "longPress" : false,
+            "optional" : false
+          }
+        }, {
+          "inputTextCommand" : {
+            "text" : "${TEST_PASSWORD}¬",
+            "optional" : false
+          }
+        }, {
+          "eraseTextCommand" : {
+            "charactersToErase" : 1,
+            "optional" : false
+          }
+        }, {
+          "hideKeyboardCommand" : {
+            "optional" : false
+          }
+        }, {
+          "tapOnElement" : {
+            "selector" : {
+              "idRegex" : "login-submit-button",
+              "optional" : false
+            },
+            "retryIfNoChange" : false,
+            "waitUntilVisible" : false,
+            "longPress" : false,
+            "optional" : false
+          }
+        }, {
+          "assertConditionCommand" : {
+            "condition" : {
+              "visible" : {
+                "idRegex" : "dashboard-operations-button",
+                "optional" : false
+              }
+            },
+            "timeout" : "20000",
+            "optional" : false
+          }
+        }, {
+          "assertConditionCommand" : {
+            "condition" : {
+              "visible" : {
+                "idRegex" : "dashboard-operations-button",
+                "optional" : false
+              }
+            },
+            "optional" : false
+          }
+        }, {
+          "takeScreenshotCommand" : {
+            "path" : "dashboard",
+            "optional" : false
+          }
+        } ],
+        "sourceDescription" : "flows/shared-login.yaml",
+        "config" : {
+          "appId" : "com.flowmobile"
+        },
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "defineVariablesCommand" : {
+      "env" : {
+        "TEST_USERNAME" : "neato-tester-local",
+        "TEST_PASSWORD" : "Test1234!",
+        "DEFAULT_WAREHOUSE" : "NEATOLV1"
+      },
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188296092,
+    "duration" : 0,
+    "sequenceNumber" : 5,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "defineVariablesCommand" : {
+        "env" : {
+          "TEST_USERNAME" : "neato-tester-local",
+          "TEST_PASSWORD" : "Test1234!",
+          "DEFAULT_WAREHOUSE" : "NEATOLV1"
+        },
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "applyConfigurationCommand" : {
+      "config" : {
+        "appId" : "com.flowmobile"
+      },
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188296093,
+    "duration" : 0,
+    "sequenceNumber" : 6,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "applyConfigurationCommand" : {
+        "config" : {
+          "appId" : "com.flowmobile"
+        },
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "tapOnElement" : {
+      "selector" : {
+        "textRegex" : "Later",
+        "optional" : true
+      },
+      "retryIfNoChange" : false,
+      "waitUntilVisible" : false,
+      "longPress" : false,
+      "optional" : true
+    }
+  },
+  "metadata" : {
+    "status" : "WARNED",
+    "timestamp" : 1788188296093,
+    "duration" : 6938,
+    "sequenceNumber" : 7,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "tapOnElement" : {
+        "selector" : {
+          "textRegex" : "Later",
+          "optional" : true
+        },
+        "retryIfNoChange" : false,
+        "waitUntilVisible" : false,
+        "longPress" : false,
+        "optional" : true
+      }
+    },
+    "artifacts" : [ {
+      "type" : "SCREEN_HIERARCHY",
+      "path" : "screen-hierarchy/step-008-tapOnElement-Later.json"
+    }, {
+      "type" : "SCREENSHOT",
+      "path" : "screenshots/step-008-tapOnElement-Later.png"
+    } ]
+  }
+}, {
+  "command" : {
+    "assertConditionCommand" : {
+      "condition" : {
+        "visible" : {
+          "idRegex" : "login-username-input",
+          "optional" : false
+        }
+      },
+      "timeout" : "20000",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188303396,
+    "duration" : 1121,
+    "sequenceNumber" : 8,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "assertConditionCommand" : {
+        "condition" : {
+          "visible" : {
+            "idRegex" : "login-username-input",
+            "optional" : false
+          }
+        },
+        "timeout" : "20000",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "takeScreenshotCommand" : {
+      "path" : "login-screen",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188304518,
+    "duration" : 190,
+    "sequenceNumber" : 9,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "takeScreenshotCommand" : {
+        "path" : "login-screen",
+        "optional" : false
+      }
+    },
+    "artifacts" : [ {
+      "type" : "TAKE_SCREENSHOT",
+      "path" : "takeScreenshot/login-screen.png"
+    } ]
+  }
+}, {
+  "command" : {
+    "tapOnElement" : {
+      "selector" : {
+        "idRegex" : "login-username-input",
+        "optional" : false
+      },
+      "retryIfNoChange" : false,
+      "waitUntilVisible" : false,
+      "longPress" : false,
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188304708,
+    "duration" : 3442,
+    "sequenceNumber" : 10,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "tapOnElement" : {
+        "selector" : {
+          "idRegex" : "login-username-input",
+          "optional" : false
+        },
+        "retryIfNoChange" : false,
+        "waitUntilVisible" : false,
+        "longPress" : false,
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "inputTextCommand" : {
+      "text" : "${TEST_USERNAME}¬",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188308150,
+    "duration" : 3014,
+    "sequenceNumber" : 11,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "inputTextCommand" : {
+        "text" : "neato-tester-local¬",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "eraseTextCommand" : {
+      "charactersToErase" : 1,
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188311165,
+    "duration" : 1275,
+    "sequenceNumber" : 12,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "eraseTextCommand" : {
+        "charactersToErase" : 1,
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "tapOnElement" : {
+      "selector" : {
+        "idRegex" : "login-password-input",
+        "optional" : false
+      },
+      "retryIfNoChange" : false,
+      "waitUntilVisible" : false,
+      "longPress" : false,
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188312443,
+    "duration" : 3464,
+    "sequenceNumber" : 13,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "tapOnElement" : {
+        "selector" : {
+          "idRegex" : "login-password-input",
+          "optional" : false
+        },
+        "retryIfNoChange" : false,
+        "waitUntilVisible" : false,
+        "longPress" : false,
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "inputTextCommand" : {
+      "text" : "${TEST_PASSWORD}¬",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188315907,
+    "duration" : 2463,
+    "sequenceNumber" : 14,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "inputTextCommand" : {
+        "text" : "Test1234!¬",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "eraseTextCommand" : {
+      "charactersToErase" : 1,
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188318375,
+    "duration" : 1248,
+    "sequenceNumber" : 15,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "eraseTextCommand" : {
+        "charactersToErase" : 1,
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "hideKeyboardCommand" : {
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188319624,
+    "duration" : 1552,
+    "sequenceNumber" : 16,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "hideKeyboardCommand" : {
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "tapOnElement" : {
+      "selector" : {
+        "idRegex" : "login-submit-button",
+        "optional" : false
+      },
+      "retryIfNoChange" : false,
+      "waitUntilVisible" : false,
+      "longPress" : false,
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188321178,
+    "duration" : 2485,
+    "sequenceNumber" : 17,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "tapOnElement" : {
+        "selector" : {
+          "idRegex" : "login-submit-button",
+          "optional" : false
+        },
+        "retryIfNoChange" : false,
+        "waitUntilVisible" : false,
+        "longPress" : false,
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "assertConditionCommand" : {
+      "condition" : {
+        "visible" : {
+          "idRegex" : "dashboard-operations-button",
+          "optional" : false
+        }
+      },
+      "timeout" : "20000",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188323664,
+    "duration" : 1691,
+    "sequenceNumber" : 18,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "assertConditionCommand" : {
+        "condition" : {
+          "visible" : {
+            "idRegex" : "dashboard-operations-button",
+            "optional" : false
+          }
+        },
+        "timeout" : "20000",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "assertConditionCommand" : {
+      "condition" : {
+        "visible" : {
+          "idRegex" : "dashboard-operations-button",
+          "optional" : false
+        }
+      },
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188325356,
+    "duration" : 550,
+    "sequenceNumber" : 19,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "assertConditionCommand" : {
+        "condition" : {
+          "visible" : {
+            "idRegex" : "dashboard-operations-button",
+            "optional" : false
+          }
+        },
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "takeScreenshotCommand" : {
+      "path" : "dashboard",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188325907,
+    "duration" : 264,
+    "sequenceNumber" : 20,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "takeScreenshotCommand" : {
+        "path" : "dashboard",
+        "optional" : false
+      }
+    },
+    "artifacts" : [ {
+      "type" : "TAKE_SCREENSHOT",
+      "path" : "takeScreenshot/dashboard.png"
+    } ]
+  }
+}, {
+  "command" : {
+    "runFlowCommand" : {
+      "commands" : [ {
+        "defineVariablesCommand" : {
+          "env" : {
+            "operation" : "picking"
+          },
+          "optional" : false
+        }
+      }, {
+        "applyConfigurationCommand" : {
+          "config" : {
+            "appId" : "com.flowmobile"
+          },
+          "optional" : false
+        }
+      }, {
+        "assertConditionCommand" : {
+          "condition" : {
+            "visible" : {
+              "textRegex" : "DASHBOARD",
+              "optional" : false
+            }
+          },
+          "optional" : false
+        }
+      }, {
+        "tapOnElement" : {
+          "selector" : {
+            "idRegex" : "dashboard-operations-button",
+            "optional" : false
+          },
+          "retryIfNoChange" : false,
+          "waitUntilVisible" : false,
+          "longPress" : false,
+          "optional" : false
+        }
+      }, {
+        "assertConditionCommand" : {
+          "condition" : {
+            "visible" : {
+              "textRegex" : "OPERATIONS",
+              "optional" : false
+            }
+          },
+          "optional" : false
+        }
+      }, {
+        "takeScreenshotCommand" : {
+          "path" : "operations-landing",
+          "optional" : false
+        }
+      }, {
+        "scrollCommand" : {
+          "optional" : true
+        }
+      }, {
+        "tapOnElement" : {
+          "selector" : {
+            "idRegex" : "operations-${operation}-button",
+            "optional" : false
+          },
+          "retryIfNoChange" : false,
+          "waitUntilVisible" : false,
+          "longPress" : false,
+          "optional" : false
+        }
+      }, {
+        "waitForAnimationToEndCommand" : {
+          "optional" : false
+        }
+      }, {
+        "takeScreenshotCommand" : {
+          "path" : "operation-${operation}",
+          "optional" : false
+        }
+      } ],
+      "sourceDescription" : "flows/navigate-to-operation.yaml",
+      "config" : {
+        "appId" : "com.flowmobile"
+      },
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188326172,
+    "duration" : 10175,
+    "sequenceNumber" : 21,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "runFlowCommand" : {
+        "commands" : [ {
+          "defineVariablesCommand" : {
+            "env" : {
+              "operation" : "picking"
+            },
+            "optional" : false
+          }
+        }, {
+          "applyConfigurationCommand" : {
+            "config" : {
+              "appId" : "com.flowmobile"
+            },
+            "optional" : false
+          }
+        }, {
+          "assertConditionCommand" : {
+            "condition" : {
+              "visible" : {
+                "textRegex" : "DASHBOARD",
+                "optional" : false
+              }
+            },
+            "optional" : false
+          }
+        }, {
+          "tapOnElement" : {
+            "selector" : {
+              "idRegex" : "dashboard-operations-button",
+              "optional" : false
+            },
+            "retryIfNoChange" : false,
+            "waitUntilVisible" : false,
+            "longPress" : false,
+            "optional" : false
+          }
+        }, {
+          "assertConditionCommand" : {
+            "condition" : {
+              "visible" : {
+                "textRegex" : "OPERATIONS",
+                "optional" : false
+              }
+            },
+            "optional" : false
+          }
+        }, {
+          "takeScreenshotCommand" : {
+            "path" : "operations-landing",
+            "optional" : false
+          }
+        }, {
+          "scrollCommand" : {
+            "optional" : true
+          }
+        }, {
+          "tapOnElement" : {
+            "selector" : {
+              "idRegex" : "operations-${operation}-button",
+              "optional" : false
+            },
+            "retryIfNoChange" : false,
+            "waitUntilVisible" : false,
+            "longPress" : false,
+            "optional" : false
+          }
+        }, {
+          "waitForAnimationToEndCommand" : {
+            "optional" : false
+          }
+        }, {
+          "takeScreenshotCommand" : {
+            "path" : "operation-${operation}",
+            "optional" : false
+          }
+        } ],
+        "sourceDescription" : "flows/navigate-to-operation.yaml",
+        "config" : {
+          "appId" : "com.flowmobile"
+        },
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "defineVariablesCommand" : {
+      "env" : {
+        "operation" : "picking"
+      },
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188326172,
+    "duration" : 0,
+    "sequenceNumber" : 22,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "defineVariablesCommand" : {
+        "env" : {
+          "operation" : "picking"
+        },
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "applyConfigurationCommand" : {
+      "config" : {
+        "appId" : "com.flowmobile"
+      },
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188326172,
+    "duration" : 1,
+    "sequenceNumber" : 23,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "applyConfigurationCommand" : {
+        "config" : {
+          "appId" : "com.flowmobile"
+        },
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "assertConditionCommand" : {
+      "condition" : {
+        "visible" : {
+          "textRegex" : "DASHBOARD",
+          "optional" : false
+        }
+      },
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188326173,
+    "duration" : 334,
+    "sequenceNumber" : 24,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "assertConditionCommand" : {
+        "condition" : {
+          "visible" : {
+            "textRegex" : "DASHBOARD",
+            "optional" : false
+          }
+        },
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "tapOnElement" : {
+      "selector" : {
+        "idRegex" : "dashboard-operations-button",
+        "optional" : false
+      },
+      "retryIfNoChange" : false,
+      "waitUntilVisible" : false,
+      "longPress" : false,
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188326507,
+    "duration" : 3500,
+    "sequenceNumber" : 25,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "tapOnElement" : {
+        "selector" : {
+          "idRegex" : "dashboard-operations-button",
+          "optional" : false
+        },
+        "retryIfNoChange" : false,
+        "waitUntilVisible" : false,
+        "longPress" : false,
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "assertConditionCommand" : {
+      "condition" : {
+        "visible" : {
+          "textRegex" : "OPERATIONS",
+          "optional" : false
+        }
+      },
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188330007,
+    "duration" : 332,
+    "sequenceNumber" : 26,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "assertConditionCommand" : {
+        "condition" : {
+          "visible" : {
+            "textRegex" : "OPERATIONS",
+            "optional" : false
+          }
+        },
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "takeScreenshotCommand" : {
+      "path" : "operations-landing",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188330339,
+    "duration" : 252,
+    "sequenceNumber" : 27,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "takeScreenshotCommand" : {
+        "path" : "operations-landing",
+        "optional" : false
+      }
+    },
+    "artifacts" : [ {
+      "type" : "TAKE_SCREENSHOT",
+      "path" : "takeScreenshot/operations-landing.png"
+    } ]
+  }
+}, {
+  "command" : {
+    "scrollCommand" : {
+      "optional" : true
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188330591,
+    "duration" : 1324,
+    "sequenceNumber" : 28,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "scrollCommand" : {
+        "optional" : true
+      }
+    }
+  }
+}, {
+  "command" : {
+    "tapOnElement" : {
+      "selector" : {
+        "idRegex" : "operations-${operation}-button",
+        "optional" : false
+      },
+      "retryIfNoChange" : false,
+      "waitUntilVisible" : false,
+      "longPress" : false,
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188331915,
+    "duration" : 3349,
+    "sequenceNumber" : 29,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "tapOnElement" : {
+        "selector" : {
+          "idRegex" : "operations-picking-button",
+          "optional" : false
+        },
+        "retryIfNoChange" : false,
+        "waitUntilVisible" : false,
+        "longPress" : false,
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "waitForAnimationToEndCommand" : {
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188335266,
+    "duration" : 823,
+    "sequenceNumber" : 30,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "waitForAnimationToEndCommand" : {
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "takeScreenshotCommand" : {
+      "path" : "operation-${operation}",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188336090,
+    "duration" : 257,
+    "sequenceNumber" : 31,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "takeScreenshotCommand" : {
+        "path" : "operation-picking",
+        "optional" : false
+      }
+    },
+    "artifacts" : [ {
+      "type" : "TAKE_SCREENSHOT",
+      "path" : "takeScreenshot/operation-picking.png"
+    } ]
+  }
+}, {
+  "command" : {
+    "assertConditionCommand" : {
+      "condition" : {
+        "visible" : {
+          "textRegex" : "Pick Product",
+          "optional" : false
+        }
+      },
+      "timeout" : "10000",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188336348,
+    "duration" : 247,
+    "sequenceNumber" : 32,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "assertConditionCommand" : {
+        "condition" : {
+          "visible" : {
+            "textRegex" : "Pick Product",
+            "optional" : false
+          }
+        },
+        "timeout" : "10000",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "takeScreenshotCommand" : {
+      "path" : "picking-landing",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188336595,
+    "duration" : 211,
+    "sequenceNumber" : 33,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "takeScreenshotCommand" : {
+        "path" : "picking-landing",
+        "optional" : false
+      }
+    },
+    "artifacts" : [ {
+      "type" : "TAKE_SCREENSHOT",
+      "path" : "takeScreenshot/picking-landing.png"
+    } ]
+  }
+}, {
+  "command" : {
+    "tapOnElement" : {
+      "selector" : {
+        "textRegex" : "Pick Product",
+        "optional" : false
+      },
+      "retryIfNoChange" : false,
+      "waitUntilVisible" : false,
+      "longPress" : false,
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188336807,
+    "duration" : 2665,
+    "sequenceNumber" : 34,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "tapOnElement" : {
+        "selector" : {
+          "textRegex" : "Pick Product",
+          "optional" : false
+        },
+        "retryIfNoChange" : false,
+        "waitUntilVisible" : false,
+        "longPress" : false,
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "assertConditionCommand" : {
+      "condition" : {
+        "visible" : {
+          "textRegex" : "Select Shipment",
+          "optional" : false
+        }
+      },
+      "timeout" : "15000",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188339479,
+    "duration" : 1866,
+    "sequenceNumber" : 35,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "assertConditionCommand" : {
+        "condition" : {
+          "visible" : {
+            "textRegex" : "Select Shipment",
+            "optional" : false
+          }
+        },
+        "timeout" : "15000",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "takeScreenshotCommand" : {
+      "path" : "select-shipment",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188341352,
+    "duration" : 315,
+    "sequenceNumber" : 36,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "takeScreenshotCommand" : {
+        "path" : "select-shipment",
+        "optional" : false
+      }
+    },
+    "artifacts" : [ {
+      "type" : "TAKE_SCREENSHOT",
+      "path" : "takeScreenshot/select-shipment.png"
+    } ]
+  }
+}, {
+  "command" : {
+    "tapOnElement" : {
+      "selector" : {
+        "idRegex" : "picking-shipment-search-input",
+        "optional" : false
+      },
+      "retryIfNoChange" : false,
+      "waitUntilVisible" : false,
+      "longPress" : false,
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188341667,
+    "duration" : 4663,
+    "sequenceNumber" : 37,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "tapOnElement" : {
+        "selector" : {
+          "idRegex" : "picking-shipment-search-input",
+          "optional" : false
+        },
+        "retryIfNoChange" : false,
+        "waitUntilVisible" : false,
+        "longPress" : false,
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "inputTextCommand" : {
+      "text" : "TEST-PICK-P1¬",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188346330,
+    "duration" : 2847,
+    "sequenceNumber" : 38,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "inputTextCommand" : {
+        "text" : "TEST-PICK-P1¬",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "eraseTextCommand" : {
+      "charactersToErase" : 1,
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188349181,
+    "duration" : 1487,
+    "sequenceNumber" : 39,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "eraseTextCommand" : {
+        "charactersToErase" : 1,
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "hideKeyboardCommand" : {
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188350672,
+    "duration" : 1582,
+    "sequenceNumber" : 40,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "hideKeyboardCommand" : {
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "assertConditionCommand" : {
+      "condition" : {
+        "visible" : {
+          "idRegex" : "picking-shipment-row-TEST-PICK-P1",
+          "optional" : false
+        }
+      },
+      "timeout" : "10000",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188352255,
+    "duration" : 241,
+    "sequenceNumber" : 41,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "assertConditionCommand" : {
+        "condition" : {
+          "visible" : {
+            "idRegex" : "picking-shipment-row-TEST-PICK-P1",
+            "optional" : false
+          }
+        },
+        "timeout" : "10000",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "tapOnElement" : {
+      "selector" : {
+        "idRegex" : "picking-shipment-row-TEST-PICK-P1",
+        "optional" : false
+      },
+      "retryIfNoChange" : false,
+      "waitUntilVisible" : false,
+      "longPress" : false,
+      "label" : "Select shipment TEST-PICK-P1",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188352497,
+    "duration" : 4048,
+    "sequenceNumber" : 42,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "tapOnElement" : {
+        "selector" : {
+          "idRegex" : "picking-shipment-row-TEST-PICK-P1",
+          "optional" : false
+        },
+        "retryIfNoChange" : false,
+        "waitUntilVisible" : false,
+        "longPress" : false,
+        "label" : "Select shipment TEST-PICK-P1",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "assertConditionCommand" : {
+      "condition" : {
+        "visible" : {
+          "textRegex" : "Select Destination",
+          "optional" : false
+        }
+      },
+      "timeout" : "15000",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188356546,
+    "duration" : 220,
+    "sequenceNumber" : 43,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "assertConditionCommand" : {
+        "condition" : {
+          "visible" : {
+            "textRegex" : "Select Destination",
+            "optional" : false
+          }
+        },
+        "timeout" : "15000",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "takeScreenshotCommand" : {
+      "path" : "select-destination",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188356767,
+    "duration" : 265,
+    "sequenceNumber" : 44,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "takeScreenshotCommand" : {
+        "path" : "select-destination",
+        "optional" : false
+      }
+    },
+    "artifacts" : [ {
+      "type" : "TAKE_SCREENSHOT",
+      "path" : "takeScreenshot/select-destination.png"
+    } ]
+  }
+}, {
+  "command" : {
+    "assertConditionCommand" : {
+      "condition" : {
+        "visible" : {
+          "idRegex" : "picking-destination-row-TEST-PICK-P1-Dest-B",
+          "optional" : false
+        }
+      },
+      "timeout" : "10000",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188357032,
+    "duration" : 221,
+    "sequenceNumber" : 45,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "assertConditionCommand" : {
+        "condition" : {
+          "visible" : {
+            "idRegex" : "picking-destination-row-TEST-PICK-P1-Dest-B",
+            "optional" : false
+          }
+        },
+        "timeout" : "10000",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "tapOnElement" : {
+      "selector" : {
+        "idRegex" : "picking-destination-row-TEST-PICK-P1-Dest-B",
+        "optional" : false
+      },
+      "retryIfNoChange" : false,
+      "waitUntilVisible" : false,
+      "longPress" : false,
+      "label" : "Select destination Dest B",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188357253,
+    "duration" : 3139,
+    "sequenceNumber" : 46,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "tapOnElement" : {
+        "selector" : {
+          "idRegex" : "picking-destination-row-TEST-PICK-P1-Dest-B",
+          "optional" : false
+        },
+        "retryIfNoChange" : false,
+        "waitUntilVisible" : false,
+        "longPress" : false,
+        "label" : "Select destination Dest B",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "assertConditionCommand" : {
+      "condition" : {
+        "visible" : {
+          "textRegex" : "Select Line",
+          "optional" : false
+        }
+      },
+      "timeout" : "15000",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188360392,
+    "duration" : 208,
+    "sequenceNumber" : 47,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "assertConditionCommand" : {
+        "condition" : {
+          "visible" : {
+            "textRegex" : "Select Line",
+            "optional" : false
+          }
+        },
+        "timeout" : "15000",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "takeScreenshotCommand" : {
+      "path" : "select-line",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188360600,
+    "duration" : 292,
+    "sequenceNumber" : 48,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "takeScreenshotCommand" : {
+        "path" : "select-line",
+        "optional" : false
+      }
+    },
+    "artifacts" : [ {
+      "type" : "TAKE_SCREENSHOT",
+      "path" : "takeScreenshot/select-line.png"
+    } ]
+  }
+}, {
+  "command" : {
+    "tapOnElement" : {
+      "selector" : {
+        "textRegex" : "Production Line 1",
+        "optional" : false
+      },
+      "retryIfNoChange" : false,
+      "waitUntilVisible" : false,
+      "longPress" : false,
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188360892,
+    "duration" : 3766,
+    "sequenceNumber" : 49,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "tapOnElement" : {
+        "selector" : {
+          "textRegex" : "Production Line 1",
+          "optional" : false
+        },
+        "retryIfNoChange" : false,
+        "waitUntilVisible" : false,
+        "longPress" : false,
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "assertConditionCommand" : {
+      "condition" : {
+        "visible" : {
+          "textRegex" : "Pick by Line",
+          "optional" : false
+        }
+      },
+      "timeout" : "15000",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188364659,
+    "duration" : 261,
+    "sequenceNumber" : 50,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "assertConditionCommand" : {
+        "condition" : {
+          "visible" : {
+            "textRegex" : "Pick by Line",
+            "optional" : false
+          }
+        },
+        "timeout" : "15000",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "takeScreenshotCommand" : {
+      "path" : "select-work-order",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188364920,
+    "duration" : 247,
+    "sequenceNumber" : 51,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "takeScreenshotCommand" : {
+        "path" : "select-work-order",
+        "optional" : false
+      }
+    },
+    "artifacts" : [ {
+      "type" : "TAKE_SCREENSHOT",
+      "path" : "takeScreenshot/select-work-order.png"
+    } ]
+  }
+}, {
+  "command" : {
+    "assertConditionCommand" : {
+      "condition" : {
+        "visible" : {
+          "idRegex" : "picking-wo-row-Demo-Pallet-WO-1",
+          "optional" : false
+        }
+      },
+      "timeout" : "10000",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188365168,
+    "duration" : 293,
+    "sequenceNumber" : 52,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "assertConditionCommand" : {
+        "condition" : {
+          "visible" : {
+            "idRegex" : "picking-wo-row-Demo-Pallet-WO-1",
+            "optional" : false
+          }
+        },
+        "timeout" : "10000",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "tapOnElement" : {
+      "selector" : {
+        "idRegex" : "picking-wo-row-Demo-Pallet-WO-1",
+        "optional" : false
+      },
+      "retryIfNoChange" : false,
+      "waitUntilVisible" : false,
+      "longPress" : false,
+      "label" : "Select work order Demo Pallet WO-1",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188365461,
+    "duration" : 3360,
+    "sequenceNumber" : 53,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "tapOnElement" : {
+        "selector" : {
+          "idRegex" : "picking-wo-row-Demo-Pallet-WO-1",
+          "optional" : false
+        },
+        "retryIfNoChange" : false,
+        "waitUntilVisible" : false,
+        "longPress" : false,
+        "label" : "Select work order Demo Pallet WO-1",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "assertConditionCommand" : {
+      "condition" : {
+        "visible" : {
+          "idRegex" : "pick-component-card-DEMO-PALL-WO-1-WSKU",
+          "optional" : false
+        }
+      },
+      "timeout" : "10000",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188368821,
+    "duration" : 817,
+    "sequenceNumber" : 54,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "assertConditionCommand" : {
+        "condition" : {
+          "visible" : {
+            "idRegex" : "pick-component-card-DEMO-PALL-WO-1-WSKU",
+            "optional" : false
+          }
+        },
+        "timeout" : "10000",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "takeScreenshotCommand" : {
+      "path" : "work-order-details",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188369638,
+    "duration" : 246,
+    "sequenceNumber" : 55,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "takeScreenshotCommand" : {
+        "path" : "work-order-details",
+        "optional" : false
+      }
+    },
+    "artifacts" : [ {
+      "type" : "TAKE_SCREENSHOT",
+      "path" : "takeScreenshot/work-order-details.png"
+    } ]
+  }
+}, {
+  "command" : {
+    "tapOnElement" : {
+      "selector" : {
+        "idRegex" : "pick-component-card-DEMO-PALL-WO-1-WSKU",
+        "optional" : false
+      },
+      "retryIfNoChange" : false,
+      "waitUntilVisible" : false,
+      "longPress" : false,
+      "label" : "Open component DEMO-PALL-WO-1-WSKU",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188369884,
+    "duration" : 4260,
+    "sequenceNumber" : 56,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "tapOnElement" : {
+        "selector" : {
+          "idRegex" : "pick-component-card-DEMO-PALL-WO-1-WSKU",
+          "optional" : false
+        },
+        "retryIfNoChange" : false,
+        "waitUntilVisible" : false,
+        "longPress" : false,
+        "label" : "Open component DEMO-PALL-WO-1-WSKU",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "assertConditionCommand" : {
+      "condition" : {
+        "visible" : {
+          "idRegex" : "pick-start-picking-button",
+          "optional" : false
+        }
+      },
+      "timeout" : "10000",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188374145,
+    "duration" : 217,
+    "sequenceNumber" : 57,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "assertConditionCommand" : {
+        "condition" : {
+          "visible" : {
+            "idRegex" : "pick-start-picking-button",
+            "optional" : false
+          }
+        },
+        "timeout" : "10000",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "takeScreenshotCommand" : {
+      "path" : "pick-component",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188374363,
+    "duration" : 274,
+    "sequenceNumber" : 58,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "takeScreenshotCommand" : {
+        "path" : "pick-component",
+        "optional" : false
+      }
+    },
+    "artifacts" : [ {
+      "type" : "TAKE_SCREENSHOT",
+      "path" : "takeScreenshot/pick-component.png"
+    } ]
+  }
+}, {
+  "command" : {
+    "tapOnElement" : {
+      "selector" : {
+        "idRegex" : "pick-start-picking-button",
+        "optional" : false
+      },
+      "retryIfNoChange" : false,
+      "waitUntilVisible" : false,
+      "longPress" : false,
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188374638,
+    "duration" : 3403,
+    "sequenceNumber" : 59,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "tapOnElement" : {
+        "selector" : {
+          "idRegex" : "pick-start-picking-button",
+          "optional" : false
+        },
+        "retryIfNoChange" : false,
+        "waitUntilVisible" : false,
+        "longPress" : false,
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "runFlowCommand" : {
+      "commands" : [ {
+        "defineVariablesCommand" : {
+          "env" : {
+            "triggerId" : "confirm-location-button",
+            "value" : "A-01-01-01"
+          },
+          "optional" : false
+        }
+      }, {
+        "applyConfigurationCommand" : {
+          "config" : {
+            "appId" : "com.flowmobile"
+          },
+          "optional" : false
+        }
+      }, {
+        "assertConditionCommand" : {
+          "condition" : {
+            "visible" : {
+              "idRegex" : "${triggerId}",
+              "optional" : false
+            }
+          },
+          "timeout" : "15000",
+          "optional" : false
+        }
+      }, {
+        "tapOnElement" : {
+          "selector" : {
+            "idRegex" : "${triggerId}",
+            "optional" : false
+          },
+          "retryIfNoChange" : false,
+          "waitUntilVisible" : false,
+          "longPress" : false,
+          "optional" : false
+        }
+      }, {
+        "assertConditionCommand" : {
+          "condition" : {
+            "visible" : {
+              "idRegex" : "scanner-manual-entry-button",
+              "optional" : false
+            }
+          },
+          "timeout" : "10000",
+          "optional" : false
+        }
+      }, {
+        "tapOnElement" : {
+          "selector" : {
+            "idRegex" : "scanner-manual-entry-button",
+            "optional" : false
+          },
+          "retryIfNoChange" : false,
+          "waitUntilVisible" : false,
+          "longPress" : false,
+          "optional" : false
+        }
+      }, {
+        "assertConditionCommand" : {
+          "condition" : {
+            "visible" : {
+              "idRegex" : "scanner-manual-input",
+              "optional" : false
+            }
+          },
+          "timeout" : "5000",
+          "optional" : false
+        }
+      }, {
+        "tapOnElement" : {
+          "selector" : {
+            "idRegex" : "scanner-manual-input",
+            "optional" : false
+          },
+          "retryIfNoChange" : false,
+          "waitUntilVisible" : false,
+          "longPress" : false,
+          "optional" : false
+        }
+      }, {
+        "inputTextCommand" : {
+          "text" : "${value}",
+          "optional" : false
+        }
+      }, {
+        "tapOnElement" : {
+          "selector" : {
+            "idRegex" : "scanner-manual-submit",
+            "optional" : false
+          },
+          "retryIfNoChange" : false,
+          "waitUntilVisible" : false,
+          "longPress" : false,
+          "optional" : false
+        }
+      }, {
+        "waitForAnimationToEndCommand" : {
+          "optional" : false
+        }
+      }, {
+        "takeScreenshotCommand" : {
+          "path" : "after-scan-${value}",
+          "optional" : false
+        }
+      } ],
+      "sourceDescription" : "flows/manual-scan.yaml",
+      "config" : {
+        "appId" : "com.flowmobile"
+      },
+      "label" : "Confirm location A-01-01-01",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188378041,
+    "duration" : 20356,
+    "sequenceNumber" : 60,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "runFlowCommand" : {
+        "commands" : [ {
+          "defineVariablesCommand" : {
+            "env" : {
+              "triggerId" : "confirm-location-button",
+              "value" : "A-01-01-01"
+            },
+            "optional" : false
+          }
+        }, {
+          "applyConfigurationCommand" : {
+            "config" : {
+              "appId" : "com.flowmobile"
+            },
+            "optional" : false
+          }
+        }, {
+          "assertConditionCommand" : {
+            "condition" : {
+              "visible" : {
+                "idRegex" : "${triggerId}",
+                "optional" : false
+              }
+            },
+            "timeout" : "15000",
+            "optional" : false
+          }
+        }, {
+          "tapOnElement" : {
+            "selector" : {
+              "idRegex" : "${triggerId}",
+              "optional" : false
+            },
+            "retryIfNoChange" : false,
+            "waitUntilVisible" : false,
+            "longPress" : false,
+            "optional" : false
+          }
+        }, {
+          "assertConditionCommand" : {
+            "condition" : {
+              "visible" : {
+                "idRegex" : "scanner-manual-entry-button",
+                "optional" : false
+              }
+            },
+            "timeout" : "10000",
+            "optional" : false
+          }
+        }, {
+          "tapOnElement" : {
+            "selector" : {
+              "idRegex" : "scanner-manual-entry-button",
+              "optional" : false
+            },
+            "retryIfNoChange" : false,
+            "waitUntilVisible" : false,
+            "longPress" : false,
+            "optional" : false
+          }
+        }, {
+          "assertConditionCommand" : {
+            "condition" : {
+              "visible" : {
+                "idRegex" : "scanner-manual-input",
+                "optional" : false
+              }
+            },
+            "timeout" : "5000",
+            "optional" : false
+          }
+        }, {
+          "tapOnElement" : {
+            "selector" : {
+              "idRegex" : "scanner-manual-input",
+              "optional" : false
+            },
+            "retryIfNoChange" : false,
+            "waitUntilVisible" : false,
+            "longPress" : false,
+            "optional" : false
+          }
+        }, {
+          "inputTextCommand" : {
+            "text" : "${value}",
+            "optional" : false
+          }
+        }, {
+          "tapOnElement" : {
+            "selector" : {
+              "idRegex" : "scanner-manual-submit",
+              "optional" : false
+            },
+            "retryIfNoChange" : false,
+            "waitUntilVisible" : false,
+            "longPress" : false,
+            "optional" : false
+          }
+        }, {
+          "waitForAnimationToEndCommand" : {
+            "optional" : false
+          }
+        }, {
+          "takeScreenshotCommand" : {
+            "path" : "after-scan-${value}",
+            "optional" : false
+          }
+        } ],
+        "sourceDescription" : "flows/manual-scan.yaml",
+        "config" : {
+          "appId" : "com.flowmobile"
+        },
+        "label" : "Confirm location A-01-01-01",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "defineVariablesCommand" : {
+      "env" : {
+        "triggerId" : "confirm-location-button",
+        "value" : "A-01-01-01"
+      },
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188378042,
+    "duration" : 0,
+    "sequenceNumber" : 61,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "defineVariablesCommand" : {
+        "env" : {
+          "triggerId" : "confirm-location-button",
+          "value" : "A-01-01-01"
+        },
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "applyConfigurationCommand" : {
+      "config" : {
+        "appId" : "com.flowmobile"
+      },
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188378042,
+    "duration" : 1,
+    "sequenceNumber" : 62,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "applyConfigurationCommand" : {
+        "config" : {
+          "appId" : "com.flowmobile"
+        },
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "assertConditionCommand" : {
+      "condition" : {
+        "visible" : {
+          "idRegex" : "${triggerId}",
+          "optional" : false
+        }
+      },
+      "timeout" : "15000",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188378043,
+    "duration" : 314,
+    "sequenceNumber" : 63,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "assertConditionCommand" : {
+        "condition" : {
+          "visible" : {
+            "idRegex" : "confirm-location-button",
+            "optional" : false
+          }
+        },
+        "timeout" : "15000",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "tapOnElement" : {
+      "selector" : {
+        "idRegex" : "${triggerId}",
+        "optional" : false
+      },
+      "retryIfNoChange" : false,
+      "waitUntilVisible" : false,
+      "longPress" : false,
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188378357,
+    "duration" : 4759,
+    "sequenceNumber" : 64,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "tapOnElement" : {
+        "selector" : {
+          "idRegex" : "confirm-location-button",
+          "optional" : false
+        },
+        "retryIfNoChange" : false,
+        "waitUntilVisible" : false,
+        "longPress" : false,
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "assertConditionCommand" : {
+      "condition" : {
+        "visible" : {
+          "idRegex" : "scanner-manual-entry-button",
+          "optional" : false
+        }
+      },
+      "timeout" : "10000",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188383117,
+    "duration" : 129,
+    "sequenceNumber" : 65,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "assertConditionCommand" : {
+        "condition" : {
+          "visible" : {
+            "idRegex" : "scanner-manual-entry-button",
+            "optional" : false
+          }
+        },
+        "timeout" : "10000",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "tapOnElement" : {
+      "selector" : {
+        "idRegex" : "scanner-manual-entry-button",
+        "optional" : false
+      },
+      "retryIfNoChange" : false,
+      "waitUntilVisible" : false,
+      "longPress" : false,
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188383247,
+    "duration" : 3333,
+    "sequenceNumber" : 66,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "tapOnElement" : {
+        "selector" : {
+          "idRegex" : "scanner-manual-entry-button",
+          "optional" : false
+        },
+        "retryIfNoChange" : false,
+        "waitUntilVisible" : false,
+        "longPress" : false,
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "assertConditionCommand" : {
+      "condition" : {
+        "visible" : {
+          "idRegex" : "scanner-manual-input",
+          "optional" : false
+        }
+      },
+      "timeout" : "5000",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188386580,
+    "duration" : 98,
+    "sequenceNumber" : 67,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "assertConditionCommand" : {
+        "condition" : {
+          "visible" : {
+            "idRegex" : "scanner-manual-input",
+            "optional" : false
+          }
+        },
+        "timeout" : "5000",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "tapOnElement" : {
+      "selector" : {
+        "idRegex" : "scanner-manual-input",
+        "optional" : false
+      },
+      "retryIfNoChange" : false,
+      "waitUntilVisible" : false,
+      "longPress" : false,
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188386678,
+    "duration" : 3074,
+    "sequenceNumber" : 68,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "tapOnElement" : {
+        "selector" : {
+          "idRegex" : "scanner-manual-input",
+          "optional" : false
+        },
+        "retryIfNoChange" : false,
+        "waitUntilVisible" : false,
+        "longPress" : false,
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "inputTextCommand" : {
+      "text" : "${value}",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188389753,
+    "duration" : 2969,
+    "sequenceNumber" : 69,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "inputTextCommand" : {
+        "text" : "A-01-01-01",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "tapOnElement" : {
+      "selector" : {
+        "idRegex" : "scanner-manual-submit",
+        "optional" : false
+      },
+      "retryIfNoChange" : false,
+      "waitUntilVisible" : false,
+      "longPress" : false,
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188392723,
+    "duration" : 4761,
+    "sequenceNumber" : 70,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "tapOnElement" : {
+        "selector" : {
+          "idRegex" : "scanner-manual-submit",
+          "optional" : false
+        },
+        "retryIfNoChange" : false,
+        "waitUntilVisible" : false,
+        "longPress" : false,
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "waitForAnimationToEndCommand" : {
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188397484,
+    "duration" : 701,
+    "sequenceNumber" : 71,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "waitForAnimationToEndCommand" : {
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "takeScreenshotCommand" : {
+      "path" : "after-scan-${value}",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188398186,
+    "duration" : 210,
+    "sequenceNumber" : 72,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "takeScreenshotCommand" : {
+        "path" : "after-scan-A-01-01-01",
+        "optional" : false
+      }
+    },
+    "artifacts" : [ {
+      "type" : "TAKE_SCREENSHOT",
+      "path" : "takeScreenshot/after-scan-A-01-01-01.png"
+    } ]
+  }
+}, {
+  "command" : {
+    "runFlowCommand" : {
+      "commands" : [ {
+        "defineVariablesCommand" : {
+          "env" : {
+            "triggerId" : "confirm-upc-button",
+            "value" : "111222333001"
+          },
+          "optional" : false
+        }
+      }, {
+        "applyConfigurationCommand" : {
+          "config" : {
+            "appId" : "com.flowmobile"
+          },
+          "optional" : false
+        }
+      }, {
+        "assertConditionCommand" : {
+          "condition" : {
+            "visible" : {
+              "idRegex" : "${triggerId}",
+              "optional" : false
+            }
+          },
+          "timeout" : "15000",
+          "optional" : false
+        }
+      }, {
+        "tapOnElement" : {
+          "selector" : {
+            "idRegex" : "${triggerId}",
+            "optional" : false
+          },
+          "retryIfNoChange" : false,
+          "waitUntilVisible" : false,
+          "longPress" : false,
+          "optional" : false
+        }
+      }, {
+        "assertConditionCommand" : {
+          "condition" : {
+            "visible" : {
+              "idRegex" : "scanner-manual-entry-button",
+              "optional" : false
+            }
+          },
+          "timeout" : "10000",
+          "optional" : false
+        }
+      }, {
+        "tapOnElement" : {
+          "selector" : {
+            "idRegex" : "scanner-manual-entry-button",
+            "optional" : false
+          },
+          "retryIfNoChange" : false,
+          "waitUntilVisible" : false,
+          "longPress" : false,
+          "optional" : false
+        }
+      }, {
+        "assertConditionCommand" : {
+          "condition" : {
+            "visible" : {
+              "idRegex" : "scanner-manual-input",
+              "optional" : false
+            }
+          },
+          "timeout" : "5000",
+          "optional" : false
+        }
+      }, {
+        "tapOnElement" : {
+          "selector" : {
+            "idRegex" : "scanner-manual-input",
+            "optional" : false
+          },
+          "retryIfNoChange" : false,
+          "waitUntilVisible" : false,
+          "longPress" : false,
+          "optional" : false
+        }
+      }, {
+        "inputTextCommand" : {
+          "text" : "${value}",
+          "optional" : false
+        }
+      }, {
+        "tapOnElement" : {
+          "selector" : {
+            "idRegex" : "scanner-manual-submit",
+            "optional" : false
+          },
+          "retryIfNoChange" : false,
+          "waitUntilVisible" : false,
+          "longPress" : false,
+          "optional" : false
+        }
+      }, {
+        "waitForAnimationToEndCommand" : {
+          "optional" : false
+        }
+      }, {
+        "takeScreenshotCommand" : {
+          "path" : "after-scan-${value}",
+          "optional" : false
+        }
+      } ],
+      "sourceDescription" : "flows/manual-scan.yaml",
+      "config" : {
+        "appId" : "com.flowmobile"
+      },
+      "label" : "Confirm UPC 111222333001",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188398397,
+    "duration" : 23779,
+    "sequenceNumber" : 73,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "runFlowCommand" : {
+        "commands" : [ {
+          "defineVariablesCommand" : {
+            "env" : {
+              "triggerId" : "confirm-upc-button",
+              "value" : "111222333001"
+            },
+            "optional" : false
+          }
+        }, {
+          "applyConfigurationCommand" : {
+            "config" : {
+              "appId" : "com.flowmobile"
+            },
+            "optional" : false
+          }
+        }, {
+          "assertConditionCommand" : {
+            "condition" : {
+              "visible" : {
+                "idRegex" : "${triggerId}",
+                "optional" : false
+              }
+            },
+            "timeout" : "15000",
+            "optional" : false
+          }
+        }, {
+          "tapOnElement" : {
+            "selector" : {
+              "idRegex" : "${triggerId}",
+              "optional" : false
+            },
+            "retryIfNoChange" : false,
+            "waitUntilVisible" : false,
+            "longPress" : false,
+            "optional" : false
+          }
+        }, {
+          "assertConditionCommand" : {
+            "condition" : {
+              "visible" : {
+                "idRegex" : "scanner-manual-entry-button",
+                "optional" : false
+              }
+            },
+            "timeout" : "10000",
+            "optional" : false
+          }
+        }, {
+          "tapOnElement" : {
+            "selector" : {
+              "idRegex" : "scanner-manual-entry-button",
+              "optional" : false
+            },
+            "retryIfNoChange" : false,
+            "waitUntilVisible" : false,
+            "longPress" : false,
+            "optional" : false
+          }
+        }, {
+          "assertConditionCommand" : {
+            "condition" : {
+              "visible" : {
+                "idRegex" : "scanner-manual-input",
+                "optional" : false
+              }
+            },
+            "timeout" : "5000",
+            "optional" : false
+          }
+        }, {
+          "tapOnElement" : {
+            "selector" : {
+              "idRegex" : "scanner-manual-input",
+              "optional" : false
+            },
+            "retryIfNoChange" : false,
+            "waitUntilVisible" : false,
+            "longPress" : false,
+            "optional" : false
+          }
+        }, {
+          "inputTextCommand" : {
+            "text" : "${value}",
+            "optional" : false
+          }
+        }, {
+          "tapOnElement" : {
+            "selector" : {
+              "idRegex" : "scanner-manual-submit",
+              "optional" : false
+            },
+            "retryIfNoChange" : false,
+            "waitUntilVisible" : false,
+            "longPress" : false,
+            "optional" : false
+          }
+        }, {
+          "waitForAnimationToEndCommand" : {
+            "optional" : false
+          }
+        }, {
+          "takeScreenshotCommand" : {
+            "path" : "after-scan-${value}",
+            "optional" : false
+          }
+        } ],
+        "sourceDescription" : "flows/manual-scan.yaml",
+        "config" : {
+          "appId" : "com.flowmobile"
+        },
+        "label" : "Confirm UPC 111222333001",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "defineVariablesCommand" : {
+      "env" : {
+        "triggerId" : "confirm-upc-button",
+        "value" : "111222333001"
+      },
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188398398,
+    "duration" : 0,
+    "sequenceNumber" : 74,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "defineVariablesCommand" : {
+        "env" : {
+          "triggerId" : "confirm-upc-button",
+          "value" : "111222333001"
+        },
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "applyConfigurationCommand" : {
+      "config" : {
+        "appId" : "com.flowmobile"
+      },
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188398398,
+    "duration" : 0,
+    "sequenceNumber" : 75,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "applyConfigurationCommand" : {
+        "config" : {
+          "appId" : "com.flowmobile"
+        },
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "assertConditionCommand" : {
+      "condition" : {
+        "visible" : {
+          "idRegex" : "${triggerId}",
+          "optional" : false
+        }
+      },
+      "timeout" : "15000",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188398398,
+    "duration" : 354,
+    "sequenceNumber" : 76,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "assertConditionCommand" : {
+        "condition" : {
+          "visible" : {
+            "idRegex" : "confirm-upc-button",
+            "optional" : false
+          }
+        },
+        "timeout" : "15000",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "tapOnElement" : {
+      "selector" : {
+        "idRegex" : "${triggerId}",
+        "optional" : false
+      },
+      "retryIfNoChange" : false,
+      "waitUntilVisible" : false,
+      "longPress" : false,
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188398752,
+    "duration" : 5661,
+    "sequenceNumber" : 77,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "tapOnElement" : {
+        "selector" : {
+          "idRegex" : "confirm-upc-button",
+          "optional" : false
+        },
+        "retryIfNoChange" : false,
+        "waitUntilVisible" : false,
+        "longPress" : false,
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "assertConditionCommand" : {
+      "condition" : {
+        "visible" : {
+          "idRegex" : "scanner-manual-entry-button",
+          "optional" : false
+        }
+      },
+      "timeout" : "10000",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188404414,
+    "duration" : 120,
+    "sequenceNumber" : 78,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "assertConditionCommand" : {
+        "condition" : {
+          "visible" : {
+            "idRegex" : "scanner-manual-entry-button",
+            "optional" : false
+          }
+        },
+        "timeout" : "10000",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "tapOnElement" : {
+      "selector" : {
+        "idRegex" : "scanner-manual-entry-button",
+        "optional" : false
+      },
+      "retryIfNoChange" : false,
+      "waitUntilVisible" : false,
+      "longPress" : false,
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188404534,
+    "duration" : 3297,
+    "sequenceNumber" : 79,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "tapOnElement" : {
+        "selector" : {
+          "idRegex" : "scanner-manual-entry-button",
+          "optional" : false
+        },
+        "retryIfNoChange" : false,
+        "waitUntilVisible" : false,
+        "longPress" : false,
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "assertConditionCommand" : {
+      "condition" : {
+        "visible" : {
+          "idRegex" : "scanner-manual-input",
+          "optional" : false
+        }
+      },
+      "timeout" : "5000",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188407831,
+    "duration" : 145,
+    "sequenceNumber" : 80,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "assertConditionCommand" : {
+        "condition" : {
+          "visible" : {
+            "idRegex" : "scanner-manual-input",
+            "optional" : false
+          }
+        },
+        "timeout" : "5000",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "tapOnElement" : {
+      "selector" : {
+        "idRegex" : "scanner-manual-input",
+        "optional" : false
+      },
+      "retryIfNoChange" : false,
+      "waitUntilVisible" : false,
+      "longPress" : false,
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188407976,
+    "duration" : 4030,
+    "sequenceNumber" : 81,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "tapOnElement" : {
+        "selector" : {
+          "idRegex" : "scanner-manual-input",
+          "optional" : false
+        },
+        "retryIfNoChange" : false,
+        "waitUntilVisible" : false,
+        "longPress" : false,
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "inputTextCommand" : {
+      "text" : "${value}",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188412006,
+    "duration" : 3719,
+    "sequenceNumber" : 82,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "inputTextCommand" : {
+        "text" : "111222333001",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "tapOnElement" : {
+      "selector" : {
+        "idRegex" : "scanner-manual-submit",
+        "optional" : false
+      },
+      "retryIfNoChange" : false,
+      "waitUntilVisible" : false,
+      "longPress" : false,
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188415729,
+    "duration" : 5463,
+    "sequenceNumber" : 83,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "tapOnElement" : {
+        "selector" : {
+          "idRegex" : "scanner-manual-submit",
+          "optional" : false
+        },
+        "retryIfNoChange" : false,
+        "waitUntilVisible" : false,
+        "longPress" : false,
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "waitForAnimationToEndCommand" : {
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188421192,
+    "duration" : 742,
+    "sequenceNumber" : 84,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "waitForAnimationToEndCommand" : {
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "takeScreenshotCommand" : {
+      "path" : "after-scan-${value}",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188421934,
+    "duration" : 241,
+    "sequenceNumber" : 85,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "takeScreenshotCommand" : {
+        "path" : "after-scan-111222333001",
+        "optional" : false
+      }
+    },
+    "artifacts" : [ {
+      "type" : "TAKE_SCREENSHOT",
+      "path" : "takeScreenshot/after-scan-111222333001.png"
+    } ]
+  }
+}, {
+  "command" : {
+    "scrollUntilVisible" : {
+      "selector" : {
+        "idRegex" : "pick-units-input",
+        "optional" : false
+      },
+      "direction" : "DOWN",
+      "scrollDuration" : "40",
+      "visibilityPercentage" : 100,
+      "timeout" : "10000",
+      "centerElement" : false,
+      "originalSpeedValue" : "40",
+      "optional" : false,
+      "visibilityPercentageNormalized" : 1.0
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188422176,
+    "duration" : 362,
+    "sequenceNumber" : 86,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "scrollUntilVisible" : {
+        "selector" : {
+          "idRegex" : "pick-units-input",
+          "optional" : false
+        },
+        "direction" : "DOWN",
+        "scrollDuration" : "601",
+        "visibilityPercentage" : 100,
+        "timeout" : "10000",
+        "centerElement" : false,
+        "originalSpeedValue" : "40",
+        "optional" : false,
+        "visibilityPercentageNormalized" : 1.0
+      }
+    }
+  }
+}, {
+  "command" : {
+    "tapOnElement" : {
+      "selector" : {
+        "idRegex" : "pick-units-input",
+        "optional" : false
+      },
+      "retryIfNoChange" : false,
+      "waitUntilVisible" : false,
+      "longPress" : false,
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188422538,
+    "duration" : 3933,
+    "sequenceNumber" : 87,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "tapOnElement" : {
+        "selector" : {
+          "idRegex" : "pick-units-input",
+          "optional" : false
+        },
+        "retryIfNoChange" : false,
+        "waitUntilVisible" : false,
+        "longPress" : false,
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "inputTextCommand" : {
+      "text" : "10",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188426471,
+    "duration" : 1429,
+    "sequenceNumber" : 88,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "inputTextCommand" : {
+        "text" : "10",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "hideKeyboardCommand" : {
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188427900,
+    "duration" : 1577,
+    "sequenceNumber" : 89,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "hideKeyboardCommand" : {
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "scrollUntilVisible" : {
+      "selector" : {
+        "idRegex" : "confirm-qty-button",
+        "optional" : false
+      },
+      "direction" : "DOWN",
+      "scrollDuration" : "40",
+      "visibilityPercentage" : 100,
+      "timeout" : "10000",
+      "centerElement" : false,
+      "originalSpeedValue" : "40",
+      "optional" : false,
+      "visibilityPercentageNormalized" : 1.0
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188429478,
+    "duration" : 347,
+    "sequenceNumber" : 90,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "scrollUntilVisible" : {
+        "selector" : {
+          "idRegex" : "confirm-qty-button",
+          "optional" : false
+        },
+        "direction" : "DOWN",
+        "scrollDuration" : "601",
+        "visibilityPercentage" : 100,
+        "timeout" : "10000",
+        "centerElement" : false,
+        "originalSpeedValue" : "40",
+        "optional" : false,
+        "visibilityPercentageNormalized" : 1.0
+      }
+    }
+  }
+}, {
+  "command" : {
+    "tapOnElement" : {
+      "selector" : {
+        "idRegex" : "confirm-qty-button",
+        "optional" : false
+      },
+      "retryIfNoChange" : false,
+      "waitUntilVisible" : false,
+      "longPress" : false,
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188429826,
+    "duration" : 2756,
+    "sequenceNumber" : 91,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "tapOnElement" : {
+        "selector" : {
+          "idRegex" : "confirm-qty-button",
+          "optional" : false
+        },
+        "retryIfNoChange" : false,
+        "waitUntilVisible" : false,
+        "longPress" : false,
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "assertConditionCommand" : {
+      "condition" : {
+        "visible" : {
+          "textRegex" : "CONFIRM",
+          "optional" : false
+        }
+      },
+      "timeout" : "10000",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188432583,
+    "duration" : 143,
+    "sequenceNumber" : 92,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "assertConditionCommand" : {
+        "condition" : {
+          "visible" : {
+            "textRegex" : "CONFIRM",
+            "optional" : false
+          }
+        },
+        "timeout" : "10000",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "tapOnElement" : {
+      "selector" : {
+        "textRegex" : "CONFIRM",
+        "optional" : false
+      },
+      "retryIfNoChange" : false,
+      "waitUntilVisible" : false,
+      "longPress" : false,
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188432726,
+    "duration" : 3297,
+    "sequenceNumber" : 93,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "tapOnElement" : {
+        "selector" : {
+          "textRegex" : "CONFIRM",
+          "optional" : false
+        },
+        "retryIfNoChange" : false,
+        "waitUntilVisible" : false,
+        "longPress" : false,
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "waitForAnimationToEndCommand" : {
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188436024,
+    "duration" : 695,
+    "sequenceNumber" : 94,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "waitForAnimationToEndCommand" : {
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "takeScreenshotCommand" : {
+      "path" : "qty-confirmed",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188436720,
+    "duration" : 205,
+    "sequenceNumber" : 95,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "takeScreenshotCommand" : {
+        "path" : "qty-confirmed",
+        "optional" : false
+      }
+    },
+    "artifacts" : [ {
+      "type" : "TAKE_SCREENSHOT",
+      "path" : "takeScreenshot/qty-confirmed.png"
+    } ]
+  }
+}, {
+  "command" : {
+    "runFlowCommand" : {
+      "commands" : [ {
+        "defineVariablesCommand" : {
+          "env" : {
+            "triggerId" : "confirm-pallet-button",
+            "value" : "TEST-PICK-SHARED-PALLET"
+          },
+          "optional" : false
+        }
+      }, {
+        "applyConfigurationCommand" : {
+          "config" : {
+            "appId" : "com.flowmobile"
+          },
+          "optional" : false
+        }
+      }, {
+        "assertConditionCommand" : {
+          "condition" : {
+            "visible" : {
+              "idRegex" : "${triggerId}",
+              "optional" : false
+            }
+          },
+          "timeout" : "15000",
+          "optional" : false
+        }
+      }, {
+        "tapOnElement" : {
+          "selector" : {
+            "idRegex" : "${triggerId}",
+            "optional" : false
+          },
+          "retryIfNoChange" : false,
+          "waitUntilVisible" : false,
+          "longPress" : false,
+          "optional" : false
+        }
+      }, {
+        "assertConditionCommand" : {
+          "condition" : {
+            "visible" : {
+              "idRegex" : "scanner-manual-entry-button",
+              "optional" : false
+            }
+          },
+          "timeout" : "10000",
+          "optional" : false
+        }
+      }, {
+        "tapOnElement" : {
+          "selector" : {
+            "idRegex" : "scanner-manual-entry-button",
+            "optional" : false
+          },
+          "retryIfNoChange" : false,
+          "waitUntilVisible" : false,
+          "longPress" : false,
+          "optional" : false
+        }
+      }, {
+        "assertConditionCommand" : {
+          "condition" : {
+            "visible" : {
+              "idRegex" : "scanner-manual-input",
+              "optional" : false
+            }
+          },
+          "timeout" : "5000",
+          "optional" : false
+        }
+      }, {
+        "tapOnElement" : {
+          "selector" : {
+            "idRegex" : "scanner-manual-input",
+            "optional" : false
+          },
+          "retryIfNoChange" : false,
+          "waitUntilVisible" : false,
+          "longPress" : false,
+          "optional" : false
+        }
+      }, {
+        "inputTextCommand" : {
+          "text" : "${value}",
+          "optional" : false
+        }
+      }, {
+        "tapOnElement" : {
+          "selector" : {
+            "idRegex" : "scanner-manual-submit",
+            "optional" : false
+          },
+          "retryIfNoChange" : false,
+          "waitUntilVisible" : false,
+          "longPress" : false,
+          "optional" : false
+        }
+      }, {
+        "waitForAnimationToEndCommand" : {
+          "optional" : false
+        }
+      }, {
+        "takeScreenshotCommand" : {
+          "path" : "after-scan-${value}",
+          "optional" : false
+        }
+      } ],
+      "sourceDescription" : "flows/manual-scan.yaml",
+      "config" : {
+        "appId" : "com.flowmobile"
+      },
+      "label" : "Confirm destination pallet TEST-PICK-SHARED-PALLET",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188436925,
+    "duration" : 26099,
+    "sequenceNumber" : 96,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "runFlowCommand" : {
+        "commands" : [ {
+          "defineVariablesCommand" : {
+            "env" : {
+              "triggerId" : "confirm-pallet-button",
+              "value" : "TEST-PICK-SHARED-PALLET"
+            },
+            "optional" : false
+          }
+        }, {
+          "applyConfigurationCommand" : {
+            "config" : {
+              "appId" : "com.flowmobile"
+            },
+            "optional" : false
+          }
+        }, {
+          "assertConditionCommand" : {
+            "condition" : {
+              "visible" : {
+                "idRegex" : "${triggerId}",
+                "optional" : false
+              }
+            },
+            "timeout" : "15000",
+            "optional" : false
+          }
+        }, {
+          "tapOnElement" : {
+            "selector" : {
+              "idRegex" : "${triggerId}",
+              "optional" : false
+            },
+            "retryIfNoChange" : false,
+            "waitUntilVisible" : false,
+            "longPress" : false,
+            "optional" : false
+          }
+        }, {
+          "assertConditionCommand" : {
+            "condition" : {
+              "visible" : {
+                "idRegex" : "scanner-manual-entry-button",
+                "optional" : false
+              }
+            },
+            "timeout" : "10000",
+            "optional" : false
+          }
+        }, {
+          "tapOnElement" : {
+            "selector" : {
+              "idRegex" : "scanner-manual-entry-button",
+              "optional" : false
+            },
+            "retryIfNoChange" : false,
+            "waitUntilVisible" : false,
+            "longPress" : false,
+            "optional" : false
+          }
+        }, {
+          "assertConditionCommand" : {
+            "condition" : {
+              "visible" : {
+                "idRegex" : "scanner-manual-input",
+                "optional" : false
+              }
+            },
+            "timeout" : "5000",
+            "optional" : false
+          }
+        }, {
+          "tapOnElement" : {
+            "selector" : {
+              "idRegex" : "scanner-manual-input",
+              "optional" : false
+            },
+            "retryIfNoChange" : false,
+            "waitUntilVisible" : false,
+            "longPress" : false,
+            "optional" : false
+          }
+        }, {
+          "inputTextCommand" : {
+            "text" : "${value}",
+            "optional" : false
+          }
+        }, {
+          "tapOnElement" : {
+            "selector" : {
+              "idRegex" : "scanner-manual-submit",
+              "optional" : false
+            },
+            "retryIfNoChange" : false,
+            "waitUntilVisible" : false,
+            "longPress" : false,
+            "optional" : false
+          }
+        }, {
+          "waitForAnimationToEndCommand" : {
+            "optional" : false
+          }
+        }, {
+          "takeScreenshotCommand" : {
+            "path" : "after-scan-${value}",
+            "optional" : false
+          }
+        } ],
+        "sourceDescription" : "flows/manual-scan.yaml",
+        "config" : {
+          "appId" : "com.flowmobile"
+        },
+        "label" : "Confirm destination pallet TEST-PICK-SHARED-PALLET",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "defineVariablesCommand" : {
+      "env" : {
+        "triggerId" : "confirm-pallet-button",
+        "value" : "TEST-PICK-SHARED-PALLET"
+      },
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188436926,
+    "duration" : 1,
+    "sequenceNumber" : 97,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "defineVariablesCommand" : {
+        "env" : {
+          "triggerId" : "confirm-pallet-button",
+          "value" : "TEST-PICK-SHARED-PALLET"
+        },
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "applyConfigurationCommand" : {
+      "config" : {
+        "appId" : "com.flowmobile"
+      },
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188436927,
+    "duration" : 1,
+    "sequenceNumber" : 98,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "applyConfigurationCommand" : {
+        "config" : {
+          "appId" : "com.flowmobile"
+        },
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "assertConditionCommand" : {
+      "condition" : {
+        "visible" : {
+          "idRegex" : "${triggerId}",
+          "optional" : false
+        }
+      },
+      "timeout" : "15000",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188436928,
+    "duration" : 315,
+    "sequenceNumber" : 99,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "assertConditionCommand" : {
+        "condition" : {
+          "visible" : {
+            "idRegex" : "confirm-pallet-button",
+            "optional" : false
+          }
+        },
+        "timeout" : "15000",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "tapOnElement" : {
+      "selector" : {
+        "idRegex" : "${triggerId}",
+        "optional" : false
+      },
+      "retryIfNoChange" : false,
+      "waitUntilVisible" : false,
+      "longPress" : false,
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188437244,
+    "duration" : 6321,
+    "sequenceNumber" : 100,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "tapOnElement" : {
+        "selector" : {
+          "idRegex" : "confirm-pallet-button",
+          "optional" : false
+        },
+        "retryIfNoChange" : false,
+        "waitUntilVisible" : false,
+        "longPress" : false,
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "assertConditionCommand" : {
+      "condition" : {
+        "visible" : {
+          "idRegex" : "scanner-manual-entry-button",
+          "optional" : false
+        }
+      },
+      "timeout" : "10000",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188443566,
+    "duration" : 119,
+    "sequenceNumber" : 101,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "assertConditionCommand" : {
+        "condition" : {
+          "visible" : {
+            "idRegex" : "scanner-manual-entry-button",
+            "optional" : false
+          }
+        },
+        "timeout" : "10000",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "tapOnElement" : {
+      "selector" : {
+        "idRegex" : "scanner-manual-entry-button",
+        "optional" : false
+      },
+      "retryIfNoChange" : false,
+      "waitUntilVisible" : false,
+      "longPress" : false,
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188443685,
+    "duration" : 3331,
+    "sequenceNumber" : 102,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "tapOnElement" : {
+        "selector" : {
+          "idRegex" : "scanner-manual-entry-button",
+          "optional" : false
+        },
+        "retryIfNoChange" : false,
+        "waitUntilVisible" : false,
+        "longPress" : false,
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "assertConditionCommand" : {
+      "condition" : {
+        "visible" : {
+          "idRegex" : "scanner-manual-input",
+          "optional" : false
+        }
+      },
+      "timeout" : "5000",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188447016,
+    "duration" : 129,
+    "sequenceNumber" : 103,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "assertConditionCommand" : {
+        "condition" : {
+          "visible" : {
+            "idRegex" : "scanner-manual-input",
+            "optional" : false
+          }
+        },
+        "timeout" : "5000",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "tapOnElement" : {
+      "selector" : {
+        "idRegex" : "scanner-manual-input",
+        "optional" : false
+      },
+      "retryIfNoChange" : false,
+      "waitUntilVisible" : false,
+      "longPress" : false,
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188447146,
+    "duration" : 3172,
+    "sequenceNumber" : 104,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "tapOnElement" : {
+        "selector" : {
+          "idRegex" : "scanner-manual-input",
+          "optional" : false
+        },
+        "retryIfNoChange" : false,
+        "waitUntilVisible" : false,
+        "longPress" : false,
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "inputTextCommand" : {
+      "text" : "${value}",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188450318,
+    "duration" : 6145,
+    "sequenceNumber" : 105,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "inputTextCommand" : {
+        "text" : "TEST-PICK-SHARED-PALLET",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "tapOnElement" : {
+      "selector" : {
+        "idRegex" : "scanner-manual-submit",
+        "optional" : false
+      },
+      "retryIfNoChange" : false,
+      "waitUntilVisible" : false,
+      "longPress" : false,
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188456465,
+    "duration" : 5625,
+    "sequenceNumber" : 106,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "tapOnElement" : {
+        "selector" : {
+          "idRegex" : "scanner-manual-submit",
+          "optional" : false
+        },
+        "retryIfNoChange" : false,
+        "waitUntilVisible" : false,
+        "longPress" : false,
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "waitForAnimationToEndCommand" : {
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188462091,
+    "duration" : 709,
+    "sequenceNumber" : 107,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "waitForAnimationToEndCommand" : {
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "takeScreenshotCommand" : {
+      "path" : "after-scan-${value}",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188462800,
+    "duration" : 223,
+    "sequenceNumber" : 108,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "takeScreenshotCommand" : {
+        "path" : "after-scan-TEST-PICK-SHARED-PALLET",
+        "optional" : false
+      }
+    },
+    "artifacts" : [ {
+      "type" : "TAKE_SCREENSHOT",
+      "path" : "takeScreenshot/after-scan-TEST-PICK-SHARED-PALLET.png"
+    } ]
+  }
+}, {
+  "command" : {
+    "assertConditionCommand" : {
+      "condition" : {
+        "visible" : {
+          "textRegex" : "Complete Work Order",
+          "optional" : false
+        }
+      },
+      "timeout" : "20000",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188463024,
+    "duration" : 147,
+    "sequenceNumber" : 109,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "assertConditionCommand" : {
+        "condition" : {
+          "visible" : {
+            "textRegex" : "Complete Work Order",
+            "optional" : false
+          }
+        },
+        "timeout" : "20000",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "takeScreenshotCommand" : {
+      "path" : "work-order-ready",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188463171,
+    "duration" : 198,
+    "sequenceNumber" : 110,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "takeScreenshotCommand" : {
+        "path" : "work-order-ready",
+        "optional" : false
+      }
+    },
+    "artifacts" : [ {
+      "type" : "TAKE_SCREENSHOT",
+      "path" : "takeScreenshot/work-order-ready.png"
+    } ]
+  }
+}, {
+  "command" : {
+    "tapOnElement" : {
+      "selector" : {
+        "textRegex" : "Complete Work Order",
+        "optional" : false
+      },
+      "retryIfNoChange" : false,
+      "waitUntilVisible" : false,
+      "longPress" : false,
+      "label" : "Complete work order",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188463370,
+    "duration" : 3657,
+    "sequenceNumber" : 111,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "tapOnElement" : {
+        "selector" : {
+          "textRegex" : "Complete Work Order",
+          "optional" : false
+        },
+        "retryIfNoChange" : false,
+        "waitUntilVisible" : false,
+        "longPress" : false,
+        "label" : "Complete work order",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "assertConditionCommand" : {
+      "condition" : {
+        "visible" : {
+          "textRegex" : "COMPLETE",
+          "optional" : false
+        }
+      },
+      "timeout" : "10000",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188467028,
+    "duration" : 131,
+    "sequenceNumber" : 112,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "assertConditionCommand" : {
+        "condition" : {
+          "visible" : {
+            "textRegex" : "COMPLETE",
+            "optional" : false
+          }
+        },
+        "timeout" : "10000",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "tapOnElement" : {
+      "selector" : {
+        "textRegex" : "COMPLETE",
+        "optional" : false
+      },
+      "retryIfNoChange" : false,
+      "waitUntilVisible" : false,
+      "longPress" : false,
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188467159,
+    "duration" : 3210,
+    "sequenceNumber" : 113,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "tapOnElement" : {
+        "selector" : {
+          "textRegex" : "COMPLETE",
+          "optional" : false
+        },
+        "retryIfNoChange" : false,
+        "waitUntilVisible" : false,
+        "longPress" : false,
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "assertConditionCommand" : {
+      "condition" : {
+        "visible" : {
+          "textRegex" : "Work order case completed successfully!",
+          "optional" : false
+        }
+      },
+      "timeout" : "20000",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188470370,
+    "duration" : 94,
+    "sequenceNumber" : 114,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "assertConditionCommand" : {
+        "condition" : {
+          "visible" : {
+            "textRegex" : "Work order case completed successfully!",
+            "optional" : false
+          }
+        },
+        "timeout" : "20000",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "takeScreenshotCommand" : {
+      "path" : "final-state",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188470464,
+    "duration" : 198,
+    "sequenceNumber" : 115,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "takeScreenshotCommand" : {
+        "path" : "final-state",
+        "optional" : false
+      }
+    },
+    "artifacts" : [ {
+      "type" : "TAKE_SCREENSHOT",
+      "path" : "takeScreenshot/final-state.png"
+    } ]
+  }
+}, {
+  "command" : {
+    "assertConditionCommand" : {
+      "condition" : {
+        "notVisible" : {
+          "idRegex" : "confirm-location-button",
+          "optional" : false
+        }
+      },
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1788188470663,
+    "duration" : 687,
+    "sequenceNumber" : 116,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "assertConditionCommand" : {
+        "condition" : {
+          "notVisible" : {
+            "idRegex" : "confirm-location-button",
+            "optional" : false
+          }
+        },
+        "optional" : false
+      }
+    }
+  }
+} ]

@@ -1,0 +1,132 @@
+08:08:57.361 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandStart: Define variables RUNNING
+08:08:57.363 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandFinished: Define variables COMPLETED
+08:08:57.364 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandStart: Apply configuration RUNNING
+08:08:57.364 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandFinished: Apply configuration COMPLETED
+08:08:57.364 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandStart: Launch app "com.flowmobile" with clear state (launch arguments: {MAESTRO_TEST_MODE=true, MAESTRO_API_URL=http://192.168.0.138:8000}) RUNNING
+08:08:57.365 [ INFO] maestro.Maestro.clearAppState$lambda$8: Clearing app state com.flowmobile
+08:09:07.948 [DEBUG] maestro.Maestro.setPermissionInternal: Failed to set permission android.hardware.usb.UsbAccessory for app com.flowmobile: shell command failed (exit -1): 
+Exception occurred while executing 'grant':
+java.lang.IllegalArgumentException: Unknown permission android.hardware.usb.UsbAccessory
+	at com.android.server.permission.access.permission.PermissionService.access$setRuntimePermissionGranted(qb/97281722 7c90224ff0d416aeb6cb4424c691e44226b4b42fba9bad6a8d455ec1073db6ed:47)
+	at com.android.server.permission.access.permission.PermissionService.setRuntimePermissionGranted$default(qb/97281722 7c90224ff0d416aeb6cb4424c691e44226b4b42fba9bad6a8d455ec1073db6ed:293)
+	at com.android.server.permission.access.permission.PermissionService.grantRuntimePermission(qb/97281722 7c90224ff0d416aeb6cb4424c691e44226b4b42fba9bad6a8d455ec1073db6ed:11)
+	at com.android.server.pm.permission.PermissionManagerService.grantRuntimePermission(qb/97281722 7c90224ff0d416aeb6cb4424c691e44226b4b42fba9bad6a8d455ec1073db6ed:3)
+	at android.permission.PermissionManager.grantRuntimePermissionInternal(PermissionManager.java:681)
+	at android.permission.PermissionManager.grantRuntimePermission(PermissionManager.java:644)
+	at com.android.server.pm.PackageManagerShellCommand.runGrantRevokePermission(qb/97281722 7c90224ff0d416aeb6cb4424c691e44226b4b42fba9bad6a8d455ec1073db6ed:258)
+	at com.android.server.pm.PackageManagerShellCommand.onCommand(qb/97281722 7c90224ff0d416aeb6cb4424c691e44226b4b42fba9bad6a8d455ec1073db6ed:1700)
+	at com.android.modules.utils.BasicShellCommandHandler.exec(BasicShellCommandHandler.java:97)
+	at android.os.ShellCommand.exec(ShellCommand.java:38)
+	at com.android.server.pm.PackageManagerService$IPackageManagerImpl.onShellCommand(qb/97281722 7c90224ff0d416aeb6cb4424c691e44226b4b42fba9bad6a8d455ec1073db6ed:23)
+	at android.os.Binder.shellCommand(Binder.java:1266)
+	at android.os.Binder.onTransact(Binder.java:1069)
+	at android.content.pm.IPackageManager$Stub.onTransact(IPackageManager.java:5172)
+	at com.android.server.pm.PackageManagerService$IPackageManagerImpl.onTransact(qb/97281722 7c90224ff0d416aeb6cb4424c691e44226b4b42fba9bad6a8d455ec1073db6ed:1)
+	at android.os.Binder.execTransactInternal(Binder.java:1541)
+	at android.os.Binder.execTransact(Binder.java:1480)
+
+08:09:08.165 [ INFO] maestro.Maestro.launchApp$lambda$5: Launching app com.flowmobile
+08:09:08.166 [ INFO] maestro.Maestro.launchApp$lambda$5: Stopping com.flowmobile app during launch
+08:09:08.393 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandFinished: Launch app "com.flowmobile" with clear state (launch arguments: {MAESTRO_TEST_MODE=true, MAESTRO_API_URL=http://192.168.0.138:8000}) COMPLETED
+08:09:08.394 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandStart: Take screenshot start RUNNING
+08:09:08.398 [ INFO] maestro.Maestro.takeScreenshot: Taking screenshot
+08:09:08.400 [TRACE] maestro.utils.ScreenshotUtils.takeScreenshot: Taking screenshot to output sink
+08:09:08.740 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandFinished: Take screenshot start COMPLETED
+08:09:08.740 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandStart: Run flows/shared-login.yaml RUNNING
+08:09:08.743 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandStart: Define variables RUNNING
+08:09:08.743 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandFinished: Define variables COMPLETED
+08:09:08.744 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandStart: Apply configuration RUNNING
+08:09:08.744 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandFinished: Apply configuration COMPLETED
+08:09:08.745 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandStart: Tap on (Optional) "Later" RUNNING
+08:09:15.654 [ INFO] maestro.orchestra.Orchestra.executeSubflowCommands: [Command execution subflow] CommandWarned: Element not found: Text matching regex: Later
+08:09:15.889 [ INFO] maestro.Maestro.takeScreenshot: Taking screenshot
+08:09:15.890 [TRACE] maestro.utils.ScreenshotUtils.takeScreenshot: Taking screenshot to output sink
+08:09:16.086 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandFinished: Tap on (Optional) "Later" WARNED
+08:09:16.087 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandStart: Assert that id: login-username-input is visible RUNNING
+08:09:16.981 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandFinished: Assert that id: login-username-input is visible COMPLETED
+08:09:16.981 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandStart: Take screenshot login-screen RUNNING
+08:09:16.982 [ INFO] maestro.Maestro.takeScreenshot: Taking screenshot
+08:09:16.982 [TRACE] maestro.utils.ScreenshotUtils.takeScreenshot: Taking screenshot to output sink
+08:09:17.162 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandFinished: Take screenshot login-screen COMPLETED
+08:09:17.162 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandStart: Tap on id: login-username-input RUNNING
+08:09:17.466 [ INFO] maestro.Maestro.tap-HgV9Ck0: Tapping on element:  UiElement(treeNode=TreeNode(attributes={text=, accessibilityText=, hintText=Enter your username, ignoreBoundsFiltering=false, resource-id=login-username-input, clickable=true, bounds=[110,889][970,1034], enabled=true, focused=false, checked=false, scrollable=false, selected=false, class=android.widget.EditText, important-for-accessibility=true, error=}, children=[], clickable=true, enabled=true, focused=false, checked=false, selected=false), bounds=Bounds(x=110, y=889, width=860, height=145))
+08:09:18.847 [ INFO] maestro.Maestro.tap-HgV9Ck0: Tap aimed via settled hierarchy
+08:09:18.851 [ INFO] maestro.Maestro.hierarchyBasedTap-ogj28Uc: Tapping at (540, 961) using hierarchy based logic for wait
+08:09:20.524 [ INFO] maestro.Maestro.hierarchyBasedTap-ogj28Uc: Something has changed in the UI judging by view hierarchy. Proceed.
+08:09:20.524 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandFinished: Tap on id: login-username-input COMPLETED
+08:09:20.524 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandStart: Input text ${TEST_USERNAME}¬ RUNNING
+08:09:20.911 [ INFO] maestro.Maestro.inputText: Inputting text: neato-tester-local¬
+08:09:23.540 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandFinished: Input text ${TEST_USERNAME}¬ COMPLETED
+08:09:23.541 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandStart: Erase 1 characters RUNNING
+08:09:23.543 [ INFO] maestro.Maestro.eraseText$lambda$52: Erasing 1 characters
+08:09:24.795 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandFinished: Erase 1 characters COMPLETED
+08:09:24.796 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandStart: Tap on id: login-password-input RUNNING
+08:09:25.133 [ INFO] maestro.Maestro.tap-HgV9Ck0: Tapping on element:  UiElement(treeNode=TreeNode(attributes={text=, accessibilityText=, hintText=Enter your password, ignoreBoundsFiltering=false, resource-id=login-password-input, clickable=true, bounds=[110,797][897,943], enabled=true, focused=false, checked=false, scrollable=false, selected=false, class=android.widget.EditText, important-for-accessibility=true, error=}, children=[], clickable=true, enabled=true, focused=false, checked=false, selected=false), bounds=Bounds(x=110, y=797, width=787, height=146))
+08:09:26.638 [ INFO] maestro.Maestro.tap-HgV9Ck0: Tap aimed via settled hierarchy
+08:09:26.641 [ INFO] maestro.Maestro.hierarchyBasedTap-ogj28Uc: Tapping at (503, 870) using hierarchy based logic for wait
+08:09:28.327 [ INFO] maestro.Maestro.hierarchyBasedTap-ogj28Uc: Something has changed in the UI judging by view hierarchy. Proceed.
+08:09:28.328 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandFinished: Tap on id: login-password-input COMPLETED
+08:09:28.328 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandStart: Input text ${TEST_PASSWORD}¬ RUNNING
+08:09:28.345 [ INFO] maestro.Maestro.inputText: Inputting text: Test1234!¬
+08:09:30.743 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandFinished: Input text ${TEST_PASSWORD}¬ COMPLETED
+08:09:30.744 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandStart: Erase 1 characters RUNNING
+08:09:30.744 [ INFO] maestro.Maestro.eraseText$lambda$52: Erasing 1 characters
+08:09:32.364 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandFinished: Erase 1 characters COMPLETED
+08:09:32.364 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandStart: Hide Keyboard RUNNING
+08:09:32.365 [ INFO] maestro.Maestro.hideKeyboard$lambda$12: Hiding Keyboard
+08:09:33.937 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandFinished: Hide Keyboard COMPLETED
+08:09:33.937 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandStart: Tap on id: login-submit-button RUNNING
+08:09:34.131 [ INFO] maestro.Maestro.tap-HgV9Ck0: Tapping on element:  UiElement(treeNode=TreeNode(attributes={text=, accessibilityText=Log in, hintText=, ignoreBoundsFiltering=false, resource-id=login-submit-button, clickable=true, bounds=[68,1366][1013,1512], enabled=true, focused=false, checked=false, scrollable=false, selected=false, class=android.widget.Button, important-for-accessibility=true, error=}, children=[TreeNode(attributes={text=Log in, accessibilityText=, hintText=, ignoreBoundsFiltering=false, resource-id=, clickable=false, bounds=[468,1408][614,1470], enabled=true, focused=false, checked=false, scrollable=false, selected=false, class=android.widget.TextView, important-for-accessibility=true, error=}, children=[], clickable=false, enabled=true, focused=false, checked=false, selected=false)], clickable=true, enabled=true, focused=false, checked=false, selected=false), bounds=Bounds(x=68, y=1366, width=945, height=146))
+08:09:35.521 [ INFO] maestro.Maestro.tap-HgV9Ck0: Tap aimed via settled hierarchy
+08:09:35.522 [ INFO] maestro.Maestro.hierarchyBasedTap-ogj28Uc: Tapping at (540, 1439) using hierarchy based logic for wait
+08:09:38.393 [ INFO] maestro.Maestro.hierarchyBasedTap-ogj28Uc: Something has changed in the UI judging by view hierarchy. Proceed.
+08:09:38.396 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandFinished: Tap on id: login-submit-button COMPLETED
+08:09:38.396 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandStart: Assert that id: dashboard-operations-button is visible RUNNING
+08:09:38.733 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandFinished: Assert that id: dashboard-operations-button is visible COMPLETED
+08:09:38.733 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandStart: Assert that id: dashboard-operations-button is visible RUNNING
+08:09:38.956 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandFinished: Assert that id: dashboard-operations-button is visible COMPLETED
+08:09:38.956 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandStart: Take screenshot dashboard RUNNING
+08:09:38.957 [ INFO] maestro.Maestro.takeScreenshot: Taking screenshot
+08:09:38.957 [TRACE] maestro.utils.ScreenshotUtils.takeScreenshot: Taking screenshot to output sink
+08:09:39.189 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandFinished: Take screenshot dashboard COMPLETED
+08:09:39.189 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandFinished: Run flows/shared-login.yaml COMPLETED
+08:09:39.189 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandStart: Assert that id: dashboard-downtime-button is visible RUNNING
+08:09:39.385 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandFinished: Assert that id: dashboard-downtime-button is visible COMPLETED
+08:09:39.386 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandStart: Start Downtime RUNNING
+08:09:39.599 [ INFO] maestro.Maestro.tap-HgV9Ck0: Tapping on element:  UiElement(treeNode=TreeNode(attributes={text=, accessibilityText=Start Downtime, Track and record downtime events, hintText=, ignoreBoundsFiltering=false, resource-id=dashboard-downtime-button, clickable=true, bounds=[56,1804][1024,2077], enabled=true, focused=false, checked=false, scrollable=false, selected=false, class=android.view.ViewGroup, important-for-accessibility=true, error=}, children=[TreeNode(attributes={text=, accessibilityText=, hintText=, ignoreBoundsFiltering=false, resource-id=, clickable=false, bounds=[98,1879][222,2003], enabled=true, focused=false, checked=false, scrollable=false, selected=false, class=android.view.ViewGroup, important-for-accessibility=false, error=}, children=[TreeNode(attributes={text=, accessibilityText=, hintText=, ignoreBoundsFiltering=false, resource-id=, clickable=false, bounds=[132,1913][188,1969], enabled=true, focused=false, checked=false, scrollable=false, selected=false, class=com.horcrux.svg.SvgView, important-for-accessibility=false, error=}, children=[TreeNode(attributes={text=, accessibilityText=, hintText=, ignoreBoundsFiltering=false, resource-id=, clickable=false, bounds=[138,1931][183,1962], enabled=true, focused=false, checked=false, scrollable=false, selected=false, class=com.horcrux.svg.GroupView, important-for-accessibility=false, error=}, children=[TreeNode(attributes={text=, accessibilityText=, hintText=, ignoreBoundsFiltering=false, resource-id=, clickable=false, bounds=[138,1931][183,1962], enabled=true, focused=false, checked=false, scrollable=false, selected=false, class=com.horcrux.svg.PathView, important-for-accessibility=false, error=}, children=[], clickable=false, enabled=true, focused=false, checked=false, selected=false)], clickable=false, enabled=true, focused=false, checked=false, selected=false)], clickable=false, enabled=true, focused=false, checked=false, selected=false)], clickable=false, enabled=true, focused=false, checked=false, selected=false), TreeNode(attributes={text=Start Downtime, accessibilityText=, hintText=, ignoreBoundsFiltering=false, resource-id=, clickable=false, bounds=[261,1846][930,1919], enabled=true, focused=false, checked=false, scrollable=false, selected=false, class=android.widget.TextView, important-for-accessibility=true, error=}, children=[], clickable=false, enabled=true, focused=false, checked=false, selected=false), TreeNode(attributes={text=Track and record downtime events, accessibilityText=, hintText=, ignoreBoundsFiltering=false, resource-id=, clickable=false, bounds=[261,1925][930,2035], enabled=true, focused=false, checked=false, scrollable=false, selected=false, class=android.widget.TextView, important-for-accessibility=true, error=}, children=[], clickable=false, enabled=true, focused=false, checked=false, selected=false), TreeNode(attributes={text=, accessibilityText=, hintText=, ignoreBoundsFiltering=false, resource-id=, clickable=false, bounds=[931,1915][982,1966], enabled=true, focused=false, checked=false, scrollable=false, selected=false, class=com.horcrux.svg.SvgView, important-for-accessibility=false, error=}, children=[TreeNode(attributes={text=, accessibilityText=, hintText=, ignoreBoundsFiltering=false, resource-id=, clickable=false, bounds=[950,1927][963,1953], enabled=true, focused=false, checked=false, scrollable=false, selected=false, class=com.horcrux.svg.GroupView, important-for-accessibility=false, error=}, children=[TreeNode(attributes={text=, accessibilityText=, hintText=, ignoreBoundsFiltering=false, resource-id=, clickable=false, bounds=[950,1927][963,1953], enabled=true, focused=false, checked=false, scrollable=false, selected=false, class=com.horcrux.svg.PathView, important-for-accessibility=false, error=}, children=[], clickable=false, enabled=true, focused=false, checked=false, selected=false)], clickable=false, enabled=true, focused=false, checked=false, selected=false)], clickable=false, enabled=true, focused=false, checked=false, selected=false)], clickable=true, enabled=true, focused=false, checked=false, selected=false), bounds=Bounds(x=56, y=1804, width=968, height=273))
+08:09:41.009 [ INFO] maestro.Maestro.tap-HgV9Ck0: Tap aimed via settled hierarchy
+08:09:41.010 [ INFO] maestro.Maestro.hierarchyBasedTap-ogj28Uc: Tapping at (540, 1940) using hierarchy based logic for wait
+08:09:42.426 [ INFO] maestro.Maestro.hierarchyBasedTap-ogj28Uc: Something has changed in the UI judging by view hierarchy. Proceed.
+08:09:42.426 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandFinished: Start Downtime COMPLETED
+08:09:42.426 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandStart: Assert that id: downtime-reason-lunch is visible RUNNING
+08:09:42.685 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandFinished: Assert that id: downtime-reason-lunch is visible COMPLETED
+08:09:42.685 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandStart: Take screenshot downtime-reasons RUNNING
+08:09:42.686 [ INFO] maestro.Maestro.takeScreenshot: Taking screenshot
+08:09:42.686 [TRACE] maestro.utils.ScreenshotUtils.takeScreenshot: Taking screenshot to output sink
+08:09:42.980 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandFinished: Take screenshot downtime-reasons COMPLETED
+08:09:42.981 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandStart: Pick reason Lunch RUNNING
+08:09:43.254 [ INFO] maestro.Maestro.tap-HgV9Ck0: Tapping on element:  UiElement(treeNode=TreeNode(attributes={text=, accessibilityText=Lunch, hintText=, ignoreBoundsFiltering=false, resource-id=downtime-reason-lunch, clickable=true, bounds=[56,772][360,1002], enabled=true, focused=false, checked=false, scrollable=false, selected=false, class=android.view.ViewGroup, important-for-accessibility=true, error=}, children=[TreeNode(attributes={text=, accessibilityText=, hintText=, ignoreBoundsFiltering=false, resource-id=, clickable=false, bounds=[171,848][244,921], enabled=true, focused=false, checked=false, scrollable=false, selected=false, class=android.widget.ImageView, important-for-accessibility=true, error=}, children=[], clickable=false, enabled=true, focused=false, checked=false, selected=false), TreeNode(attributes={text=Lunch, accessibilityText=, hintText=, ignoreBoundsFiltering=false, resource-id=, clickable=false, bounds=[152,944][264,1000], enabled=true, focused=false, checked=false, scrollable=false, selected=false, class=android.widget.TextView, important-for-accessibility=true, error=}, children=[], clickable=false, enabled=true, focused=false, checked=false, selected=false)], clickable=true, enabled=true, focused=false, checked=false, selected=false), bounds=Bounds(x=56, y=772, width=304, height=230))
+08:09:44.702 [ INFO] maestro.Maestro.tap-HgV9Ck0: Tap aimed via settled hierarchy
+08:09:44.702 [ INFO] maestro.Maestro.hierarchyBasedTap-ogj28Uc: Tapping at (208, 887) using hierarchy based logic for wait
+08:09:47.396 [ INFO] maestro.Maestro.hierarchyBasedTap-ogj28Uc: Something has changed in the UI judging by view hierarchy. Proceed.
+08:09:47.397 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandFinished: Pick reason Lunch COMPLETED
+08:09:47.397 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandStart: Assert that id: active-downtime-end-button is visible RUNNING
+08:09:47.588 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandFinished: Assert that id: active-downtime-end-button is visible COMPLETED
+08:09:47.589 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandStart: Take screenshot active-downtime RUNNING
+08:09:47.590 [ INFO] maestro.Maestro.takeScreenshot: Taking screenshot
+08:09:47.590 [TRACE] maestro.utils.ScreenshotUtils.takeScreenshot: Taking screenshot to output sink
+08:09:47.822 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandFinished: Take screenshot active-downtime COMPLETED
+08:09:47.822 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandStart: End downtime event RUNNING
+08:09:48.053 [ INFO] maestro.Maestro.tap-HgV9Ck0: Tapping on element:  UiElement(treeNode=TreeNode(attributes={text=, accessibilityText=End downtime event, hintText=, ignoreBoundsFiltering=false, resource-id=active-downtime-end-button, clickable=true, bounds=[56,1380][1024,1504], enabled=true, focused=false, checked=false, scrollable=false, selected=false, class=android.widget.Button, important-for-accessibility=true, error=}, children=[TreeNode(attributes={text=End downtime event, accessibilityText=, hintText=, ignoreBoundsFiltering=false, resource-id=, clickable=false, bounds=[308,1412][771,1471], enabled=true, focused=false, checked=false, scrollable=false, selected=false, class=android.widget.TextView, important-for-accessibility=true, error=}, children=[], clickable=false, enabled=true, focused=false, checked=false, selected=false)], clickable=true, enabled=true, focused=false, checked=false, selected=false), bounds=Bounds(x=56, y=1380, width=968, height=124))
+08:09:49.439 [ INFO] maestro.Maestro.tap-HgV9Ck0: Tap aimed via settled hierarchy
+08:09:49.440 [ INFO] maestro.Maestro.hierarchyBasedTap-ogj28Uc: Tapping at (540, 1442) using hierarchy based logic for wait
+08:09:50.829 [ INFO] maestro.Maestro.hierarchyBasedTap-ogj28Uc: Something has changed in the UI judging by view hierarchy. Proceed.
+08:09:50.829 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandFinished: End downtime event COMPLETED
+08:09:50.830 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandStart: Assert that id: downtime-summary-done-button is visible RUNNING
+08:09:50.927 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandFinished: Assert that id: downtime-summary-done-button is visible COMPLETED
+08:09:50.927 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandStart: Assert that "Session complete" is visible RUNNING
+08:09:51.130 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandFinished: Assert that "Session complete" is visible COMPLETED
+08:09:51.130 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandStart: Take screenshot final-state RUNNING
+08:09:51.131 [ INFO] maestro.Maestro.takeScreenshot: Taking screenshot
+08:09:51.131 [TRACE] maestro.utils.ScreenshotUtils.takeScreenshot: Taking screenshot to output sink
+08:09:51.379 [ INFO] maestro.cli.runner.CliConsoleListener.onCommandFinished: Take screenshot final-state COMPLETED
